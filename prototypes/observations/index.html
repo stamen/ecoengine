@@ -6,19 +6,19 @@ body {
   font-size: 12px;
   width: 100%;
 }
-p.listing {
-  font-size: 10px;
-  background: #f3f3f3;
-  border: 1px solid #e2e2e2;
-  border-radius: 3px;
-  padding: 4px;
-  width: 400px;
-  margin-right: 10px;
-  float: left;
-  overflow: scroll;
+
+
+.wrap {
+  margin: 8px;
 }
+
+.pagination {
+  width: 100%;
+}
+
 .pagination span {
   margin-right: 7px;
+  float: left;
   cursor: pointer;
   padding: 1px 3px;
   color: #317eac;
@@ -30,10 +30,25 @@ p.listing {
   padding: 1px 6px;
   cursor: default;
 }
+p.listing {
+  font-size: 10px;
+  background: #f4f4f4;
+  border: 1px solid #efefef;
+  border-radius: 3px;
+  padding: 6px;
+  margin: 0 12px 12px 0;
+  float: left;
+}
+.listing .key {
+  margin-right: 8px;
+  color: #aaa;
+}
 </style>
 <body>
-<p>Search term <input type="text" value="Lynx" id="searchterm"></input></p>
-<div id="results"></div>
+<div class="wrap">
+  <p>Search term <input type="text" value="Lynx" id="searchterm"></input></p>
+  <div id="results"></div>
+</div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
 var limit = 60;
@@ -76,6 +91,9 @@ function query() {
         query();
       });
 
+    d3.select(".pagination").append("div")
+      .style("clear", "both");
+
     var startitem = limit*(page-1);
     var enditem = Math.min(limit*(page),data.count);
     d3.select("#results").append("p").text("Results " + (startitem+1) + " to " + enditem);
@@ -93,14 +111,16 @@ function query() {
           .enter().append("div")
 
         entry.append("span")
-          .style("margin-right", "12px")
+          .attr("class", "key")
           .text(String);
-        entry.append("strong")
-        .text(function(key) {
-          return typeof d[key] == "string"
-            ? d[key]
-            : JSON.stringify(d[key]);
-          });
+
+        entry.append("span")
+          .attr("class", "value")
+          .text(function(key) {
+            return typeof d[key] == "string"
+              ? d[key]
+              : JSON.stringify(d[key]);
+            });
       });
   });
 };
