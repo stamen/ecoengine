@@ -29,27 +29,37 @@ p.listing {
 }
 </style>
 <body>
+<p>Search term <input type="text" value="Lynx" id="searchterm"></input></p>
+<div id="results"></div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
 var limit = 100;
 var page = 1;
+var term = "lynx";
 
 query();
 
+d3.select("#searchterm")
+  .on("change", function() {
+    term = this.value;
+    d3.select("#results").style("color", "#bbb");
+    query();
+  });
+
 function query() {
-  d3.json("https://ecoengine.berkeley.edu/api/observations/?q=lynx&format=json&page_size=" + limit + "&page=" + page, function(error, data) {
+  d3.json("https://ecoengine.berkeley.edu/api/observations/?q=" + term + "&format=json&page_size=" + limit + "&page=" + page, function(error, data) {
     console.log(data);
 
-    d3.select("body").html("").style("color", null);
+    d3.select("#results").html("").style("color", null);
 
     // Display total number of results
-    var countdiv = d3.select("body").append("div");
+    var countdiv = d3.select("#results").append("div");
     countdiv.append("strong").text("Results: ");
     countdiv.append("span").text(data.count);
 
     // Paging
     var pagecount = Math.ceil(data.count/limit);
-    d3.select("body").append("p")
+    d3.select("#results").append("p")
       .attr("class", "pagination")
       .selectAll("span")
       .data(d3.range(1, pagecount+1))
@@ -59,15 +69,15 @@ function query() {
       .on("click", function(d) {
         if (d == page) return;
         page = d;
-        d3.select("body").style("color", "#bbb");
+        d3.select("#results").style("color", "#bbb");
         query();
       });
 
     var startitem = limit*(page-1);
     var enditem = Math.min(limit*(page),data.count);
-    d3.select("body").append("h4").text("Results " + (startitem+1) + " to " + enditem);
+    d3.select("#results").append("h4").text("Results " + (startitem+1) + " to " + enditem);
       
-    d3.select("body")
+    d3.select("#results")
       .selectAll("p")
       .data(data.results)
       .enter().append("p")
