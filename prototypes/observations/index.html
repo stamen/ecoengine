@@ -3,13 +3,15 @@
 <style>
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
   width: 100%;
 }
 p.listing {
   font-size: 10px;
-  background: #eee;
-  border: 1px solid #d0d0d0;
+  background: #f3f3f3;
+  border: 1px solid #e2e2e2;
   border-radius: 3px;
+  padding: 4px;
   width: 400px;
   margin-right: 10px;
   float: left;
@@ -19,9 +21,10 @@ p.listing {
   margin-right: 7px;
   cursor: pointer;
   padding: 1px 3px;
+  color: #317eac;
 }
 .pagination span.active {
-  background: #000;
+  background: #317eac;
   color: #fff;
   border-radius: 3px;
   padding: 1px 6px;
@@ -33,7 +36,7 @@ p.listing {
 <div id="results"></div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
-var limit = 100;
+var limit = 60;
 var page = 1;
 var term = "lynx";
 
@@ -75,7 +78,7 @@ function query() {
 
     var startitem = limit*(page-1);
     var enditem = Math.min(limit*(page),data.count);
-    d3.select("#results").append("h4").text("Results " + (startitem+1) + " to " + enditem);
+    d3.select("#results").append("p").text("Results " + (startitem+1) + " to " + enditem);
       
     d3.select("#results")
       .append("div")
