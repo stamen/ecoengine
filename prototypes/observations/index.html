@@ -34,47 +34,60 @@ p.listing {
 var limit = 100;
 var page = 1;
 
-d3.json("https://ecoengine.berkeley.edu/api/observations/?q=lynx&format=json&page_size=" + limit + "&page=" + page, function(error, data) {
-  console.log(data);
+query();
 
-  // Display total number of results
-  var countdiv = d3.select("body").append("div");
-  countdiv.append("strong").text("Results: ");
-  countdiv.append("span").text(data.count);
+function query() {
+  d3.json("https://ecoengine.berkeley.edu/api/observations/?q=lynx&format=json&page_size=" + limit + "&page=" + page, function(error, data) {
+    console.log(data);
 
-  // Paging
-  var pagecount = Math.ceil(data.count/limit);
-  d3.select("body").append("p")
-    .attr("class", "pagination")
-    .selectAll("span")
-    .data(d3.range(1, pagecount+1))
-    .enter().append("span")
-    .classed("active", function(d) { return d == page;})
-    .text(String);
+    d3.select("body").html("").style("color", null);
 
-  // Display fetched result count
-  d3.select("body").append("h4").text("First " + limit + " results");
-    
-  d3.select("body")
-    .selectAll("p")
-    .data(data.results)
-    .enter().append("p")
-    .attr("class", "listing")
-    .each(function(d) {
-      var entry = d3.select(this)
-        .selectAll("div")
-        .data(d3.keys(d))
-        .enter().append("div")
+    // Display total number of results
+    var countdiv = d3.select("body").append("div");
+    countdiv.append("strong").text("Results: ");
+    countdiv.append("span").text(data.count);
 
-      entry.append("span")
-        .style("margin-right", "12px")
-        .text(String);
-      entry.append("strong")
-      .text(function(key) {
-        return typeof d[key] == "string"
-          ? d[key]
-          : JSON.stringify(d[key]);
-        });
-    });
-});
+    // Paging
+    var pagecount = Math.ceil(data.count/limit);
+    d3.select("body").append("p")
+      .attr("class", "pagination")
+      .selectAll("span")
+      .data(d3.range(1, pagecount+1))
+      .enter().append("span")
+      .classed("active", function(d) { return d == page;})
+      .text(String)
+      .on("click", function(d) {
+        if (d == page) return;
+        page = d;
+        d3.select("body").style("color", "#bbb");
+        query();
+      });
+
+    var startitem = limit*(page-1);
+    var enditem = Math.min(limit*(page),data.count);
+    d3.select("body").append("h4").text("Results " + (startitem+1) + " to " + enditem);
+      
+    d3.select("body")
+      .selectAll("p")
+      .data(data.results)
+      .enter().append("p")
+      .attr("class", "listing")
+      .each(function(d) {
+        var entry = d3.select(this)
+          .selectAll("div")
+          .data(d3.keys(d))
+          .enter().append("div")
+
+        entry.append("span")
+          .style("margin-right", "12px")
+          .text(String);
+        entry.append("strong")
+        .text(function(key) {
+          return typeof d[key] == "string"
+            ? d[key]
+            : JSON.stringify(d[key]);
+          });
+      });
+  });
+};
 </script>
