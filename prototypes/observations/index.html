@@ -78,6 +78,7 @@ function query() {
     d3.select("#results").append("h4").text("Results " + (startitem+1) + " to " + enditem);
       
     d3.select("#results")
+      .append("div")
       .selectAll("p")
       .data(data.results)
       .enter().append("p")
