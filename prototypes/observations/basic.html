@@ -5,7 +5,7 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   width: 100%;
 }
-p.listing {
+pre {
   font-size: 10px;
   background: #eee;
   border: 1px solid #d0d0d0;
@@ -13,7 +13,7 @@ p.listing {
   width: 400px;
   margin-right: 10px;
   float: left;
-  overflow: scroll;
+  overflow: hidden;
 }
 .pagination span {
   margin-right: 7px;
@@ -51,30 +51,18 @@ d3.json("https://ecoengine.berkeley.edu/api/observations/?q=lynx&format=json&pag
     .enter().append("span")
     .classed("active", function(d) { return d == page;})
     .text(String);
+  
+
 
   // Display fetched result count
   d3.select("body").append("h4").text("First " + limit + " results");
     
   d3.select("body")
-    .selectAll("p")
+    .selectAll("pre")
     .data(data.results)
-    .enter().append("p")
-    .attr("class", "listing")
-    .each(function(d) {
-      var entry = d3.select(this)
-        .selectAll("div")
-        .data(d3.keys(d))
-        .enter().append("div")
-
-      entry.append("span")
-        .style("margin-right", "12px")
-        .text(String);
-      entry.append("strong")
-      .text(function(key) {
-        return typeof d[key] == "string"
-          ? d[key]
-          : JSON.stringify(d[key]);
-        });
+    .enter().append("pre")
+    .text(function(d) {
+      return JSON.stringify(d, undefined, 1);
     });
 });
 </script>
