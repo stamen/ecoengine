@@ -60,16 +60,25 @@ query();
 d3.select("#searchterm")
   .on("change", function() {
     term = this.value;
+    page = 1;
     d3.select("#results").style("color", "#bbb");
     query();
   });
 
 function query() {
-  d3.json("https://ecoengine.berkeley.edu/api/observations/?q=" + term + "&format=json&page_size=" + limit + "&page=" + page, function(error, data) {
+  var querystring = "https://ecoengine.berkeley.edu/api/observations/?format=json&q=" + term + "&page_size=" + limit + "&page=" + page;
+  d3.json(querystring, function(error, data) {
+    if (error) {
+      d3.select("#results").html(error.response).style("color", "red");
+      return;
+    }
     console.log(data);
 
     d3.select("#results").html("").style("color", null);
 
+    d3.select("#results")
+      .append("p")
+      .text(querystring);
     // Display total number of results
     var countdiv = d3.select("#results").append("div");
     countdiv.append("strong").text("Results: ");
