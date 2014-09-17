@@ -5,8 +5,12 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 12px;
   width: 100%;
+  color: #222;
 }
 
+a {
+  color: #317eac;
+}
 
 .wrap {
   margin: 8px;
@@ -35,13 +39,16 @@ p.listing {
   background: #f4f4f4;
   border: 1px solid #efefef;
   border-radius: 3px;
-  padding: 6px;
+  padding: 6px 9px;
   margin: 0 12px 12px 0;
   float: left;
 }
 .listing .key {
   margin-right: 8px;
   color: #aaa;
+}
+.listing .title {
+  font-weight: bold;
 }
 </style>
 <body>
@@ -115,22 +122,40 @@ function query() {
       .enter().append("p")
       .attr("class", "listing")
       .each(function(d) {
-        var entry = d3.select(this)
-          .selectAll("div")
-          .data(d3.keys(d))
-          .enter().append("div")
-
-        entry.append("span")
-          .attr("class", "key")
-          .text(String);
-
-        entry.append("span")
-          .attr("class", "value")
-          .text(function(key) {
-            return typeof d[key] == "string"
-              ? d[key]
-              : JSON.stringify(d[key]);
-            });
+        d3.select(this)
+          .append("div")
+          .attr("class", "title")
+          .text(d.scientific_name);
+        d3.select(this)
+          .append("div")
+          .attr("class", "subtitle")
+          .text("Type: " + d.observation_type);
+        d3.select(this)
+          .append("div")
+          .attr("class", "subtitle")
+          .text(d.state_province + ", " + d.country);
+        d3.select(this)
+          .append("div")
+          .attr("class", "date")
+          .text(d3.time.format("%b %d, %Y")(new Date(d.begin_date)));
+        var links = d3.select(this)
+          .append("div")
+          .attr("class", "links")
+        links.append("a")
+          .attr("href", d.url)
+          .text("URL")
+        links.append("span")
+          .text(" | ")
+        links.append("a")
+          .attr("href", d.source)
+          .text("Source")
+        if (d.remote_resource) {
+          links.append("span")
+            .text(" | ")
+          links.append("a")
+            .attr("href", d.remote_resource)
+            .text("Resource")
+        }
       });
   });
 };
