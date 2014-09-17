@@ -68,17 +68,18 @@ d3.select("#searchterm")
 function query() {
   var querystring = "https://ecoengine.berkeley.edu/api/observations/?format=json&q=" + term + "&page_size=" + limit + "&page=" + page;
   d3.json(querystring, function(error, data) {
-    if (error) {
-      d3.select("#results").html(error.response).style("color", "red");
-      return;
-    }
-    console.log(data);
-
     d3.select("#results").html("").style("color", null);
 
     d3.select("#results")
       .append("p")
       .text(querystring);
+
+    if (error) {
+      d3.select("#results").append("div").html(error.responseText).style("color", "red");
+      return;
+    }
+    console.log(data);
+
     // Display total number of results
     var countdiv = d3.select("#results").append("div");
     countdiv.append("strong").text("Results: ");
