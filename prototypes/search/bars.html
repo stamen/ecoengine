@@ -41,7 +41,7 @@ h3 {
 var barwidth = d3.scale.linear()
   .range([0, 100])
 
-d3.json("https://ecoengine.berkeley.edu/api/search/?q=lynx&format=json", function(error, data) {
+d3.json("https://dev-ecoengine.berkeley.edu/api/search/?q=lynx&format=json", function(error, data) {
   console.log(data);
 
   // Total bar width

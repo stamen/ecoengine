@@ -34,7 +34,7 @@ pre {
 var limit = 100;
 var page = 1;
 
-d3.json("https://ecoengine.berkeley.edu/api/observations/?q=lynx&format=json&page_size=" + limit + "&page=" + page, function(error, data) {
+d3.json("https://dev-ecoengine.berkeley.edu/api/observations/?q=lynx&format=json&page_size=" + limit + "&page=" + page, function(error, data) {
   console.log(data);
 
   // Display total number of results

@@ -72,7 +72,7 @@ d3.select("#searchterm")
   });
 
 function query() {
-  var querystring = "https://ecoengine.berkeley.edu/api/observations/?format=json&q=" + term + "&page_size=" + limit + "&page=" + page;
+  var querystring = "https://dev-ecoengine.berkeley.edu/api/observations/?format=json&q=" + term + "&page_size=" + limit + "&page=" + page;
   d3.json(querystring, function(error, data) {
     d3.select("#results").html("").style("color", null);
 
