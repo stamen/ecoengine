@@ -46,27 +46,30 @@ p.listing {
 </style>
 <body>
 <div class="wrap">
-  <p>Search term <input type="text" value="rufus" id="searchterm"></input></p>
+  <p>Search term <input type="text" value="rufus" id="searchterm" class="eco-param"></input></p>
+  <p>Min Year <input type="text" value="1920" id="minyear" class="eco-param"></input></p>
+  <p>Max Year <input type="text" value="1975" id="maxyear" class="eco-param"></input></p>
   <div id="results"></div>
 </div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
 var limit = 60;
 var page = 1;
-var term = "rufus";
 
 query();
 
-d3.select("#searchterm")
+d3.selectAll(".eco-param")
   .on("change", function() {
-    term = this.value;
     page = 1;
     d3.select("#results").style("color", "#bbb");
     query();
   });
 
 function query() {
-  var querystring = "https://dev-ecoengine.berkeley.edu/api/observations/?format=json&q=" + term + "&page_size=" + limit + "&page=" + page;
+  var term = d3.select("#searchterm").node().value;
+  var minyear = d3.select("#minyear").node().value;
+  var maxyear = d3.select("#maxyear").node().value;
+  var querystring = "https://dev-ecoengine.berkeley.edu/api/observations/?format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
   d3.json(querystring, function(error, data) {
     d3.select("#results").html("").style("color", null);
 
