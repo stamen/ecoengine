@@ -36,55 +36,71 @@ h3 {
 }
 </style>
 <body>
+  <p>
+    Search Term: <input type="text" value="rufus" id="searchterm" class="eco-param"></input>
+  </p>
+  <div id="results"></div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
 var barwidth = d3.scale.linear()
   .range([0, 100])
 
-d3.json("https://dev-ecoengine.berkeley.edu/api/search/?q=lynx&format=json", function(error, data) {
-  console.log(data);
+d3.selectAll(".eco-param")
+  .on("change", function() {
+    page = 1;
+    query();
+  });
 
-  // Total bar width
-  var maxcount = 0;
-  for (var key in data.fields) {
-    var count = 0;
-    data.fields[key].forEach(function(d) {
-      count += d[1];
-    });
-    if (count > maxcount) maxcount = count;
-  }
-  barwidth.domain([0, maxcount]);
+query();
 
-  // Groups
-  var fieldplot = d3.select("body")
-    .selectAll("div.field-plot")
-    .data(d3.keys(data.fields).map(function(key) { return {
-      "field": key,
-      "values": data.fields[key]
-    }}))
-    .enter().append("div")
-    .attr("class", "field-plot");
+function query() {
+  var term = d3.select("#searchterm").node().value;
+  d3.json("https://dev-ecoengine.berkeley.edu/api/search/?q=" + term + "&format=json", function(error, data) {
+    console.log(data);
 
-  fieldplot.append("h3")
-    .text(function(d) { return d.field});
+    // Total bar width
+    var maxcount = 0;
+    for (var key in data.fields) {
+      var count = 0;
+      data.fields[key].forEach(function(d) {
+        count += d[1];
+      });
+      if (count > maxcount) maxcount = count;
+    }
+    barwidth.domain([0, maxcount]);
 
-  var bars = fieldplot.selectAll("div.bars")
-      .data(function(d) { return d.values; })
+    // Groups
+    var fieldplot = d3.select("#results")
+      .html("")
+      .selectAll("div.field-plot")
+      .data(d3.keys(data.fields).map(function(key) { return {
+        "field": key,
+        "values": data.fields[key]
+      }}))
       .enter().append("div")
-      .attr("class", "bars")
-      .append("a")
-      .attr("href", function(d) { return d[2]; });
+      .attr("class", "field-plot");
 
-  bars.append("div")
-    .attr("class", "bar")
-    .style("height", "12px")
-    .style("width", function(d) { return Math.round(barwidth(d[1])) + "px"; });
+    fieldplot.append("h3")
+      .text(function(d) { return d.field});
 
-  bars.append("span")
-    .attr("class", "count")
-    .text(function(d) { return d[1]; });
+    var bars = fieldplot.selectAll("div.bars")
+        .data(function(d) { return d.values; })
+        .enter().append("div")
+        .attr("class", "bars")
+        .append("a")
+        .attr("href", function(d) { return d[2]; });
 
-  bars.append("span")
-    .text(function(d) { return " " + d[0]; });
-});
+    bars.append("div")
+      .attr("class", "bar")
+      .style("height", "12px")
+      .style("width", function(d) { return Math.round(barwidth(d[1])) + "px"; });
+
+    bars.append("span")
+      .attr("class", "count")
+      .text(function(d) { return d[1]; });
+
+    bars.append("span")
+      .text(function(d) { return " " + d[0]; });
+  });
+};
 </script>
