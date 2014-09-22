@@ -6,10 +6,16 @@ body {
   font-size: 13px;
   width: 100%;
   background: #f6f6f6;
+  margin: 0;
 }
 
 a {
   color: #317eac;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 .wrap {
@@ -53,6 +59,9 @@ svg {
   padding: 1px 3px;
   color: #317eac;
 }
+.pagination span:hover {
+  text-decoration: underline;
+}
 .pagination span.active {
   background: #317eac;
   color: #fff;
@@ -61,14 +70,10 @@ svg {
   cursor: default;
 }
 p.listing {
-  font-size: 10px;
-  border: 1px solid #efefef;
+  border-bottom: 1px solid #e6e6e6;
   background: #fff;
-  border-radius: 2px;
   padding: 6px;
-  margin: 0 6px 6px 0;
-  width: 400px;
-  float: left;
+  margin: 0;
 }
 .listing .key {
   margin-right: 8px;
@@ -82,6 +87,7 @@ p.listing {
     Date Range: <input type="text" value="1920" id="minyear" class="eco-param"></input>
     <span id="time-slider"></span>
     <input type="text" value="1975" id="maxyear" class="eco-param"></input>
+    <br/>
     Export <a href="#" id="export-csv" target="_blank">CSV</a> |
     <a href="#" id="export-json" target="_blank">JSON</a> |
     <a href="#" id="export-geojson" target="_blank">GeoJSON</a>
@@ -179,7 +185,7 @@ function query() {
     console.log(data);
 
     // Display total number of results
-    var countdiv = d3.select("#results").append("div");
+    var countdiv = d3.select("#results p").append("div");
     countdiv.append("strong").text("Results: ");
     countdiv.append("span").text(data.count);
 
@@ -223,11 +229,15 @@ function query() {
 
         entry.append("span")
           .attr("class", "value")
-          .text(function(key) {
-            return typeof d[key] == "string"
-              ? d[key]
-              : JSON.stringify(d[key]);
-            });
+          .html(function(key) {
+            if (typeof d[key] == "string") {
+              if (d[key].slice(0,4) == "http") {
+                return "<a href='" + d[key] + "'>" + d[key] + "</a>";
+              }
+              return d[key]
+            }
+            return JSON.stringify(d[key]);
+          });
       });
   });
 };
