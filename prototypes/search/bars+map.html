@@ -144,6 +144,7 @@
     <script>
       /*
         BROKEN: Loading map results is busted in ECO.loader.load
+        Took the loading pattern from: http://holos.berkeley.edu/explore/#
       */
 
       (function(exports){
@@ -261,7 +262,8 @@
           },
           listeners: [],
           add: function(fn){
-            this.listeners.push(fn)
+            this.listeners.push(fn);
+            return this;
           }
 
         };
@@ -270,18 +272,37 @@
           var __ = {};
 
           var defaultCenter = new L.LatLng(16.2990510145818,-15.468749999999998),
-              defaultZoom = 2;
+              defaultZoom = 2,
+              markers = [],
+              map;
 
-          var map = __.map = L.map('map').setView(defaultCenter, defaultZoom);
+          map = __.map = L.map('map').setView(defaultCenter, defaultZoom);
 
-          var baseLayer = L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/acetate-hillshading/{z}/{x}/{y}.png', {
-            attribution: '&copy;2012 Esri & Stamen, Data from OSM and Natural Earth',
-            subdomains: '0123',
-            minZoom: 2,
+          var baseLayer = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
+            subdomains: 'abc',
+            minZoom: 1,
             maxZoom: 18
           }).addTo(map);
 
-          __.loadMarkers = function(){
+          function clearMarkers() {
+            markers.forEach(function(marker){
+              marker.add(null);
+            });
+          }
+
+          function addMarkers(data) {
+
+          }
+          __.onData = function(data){
+            clearMarkers();
+
+            if (!data.length) {
+              ECO.mapAlert.set('No map data available.');
+              return;
+            }
+
+            ECO.mapAlert.hide();
 
           }
           return __;
@@ -318,7 +339,7 @@
         var map = new ECO.map();
         var list = new ECO.list();
 
-        ECO.loader.add(list.draw);
+        ECO.loader.add(list.draw).add(map.onData);
         ECO.loader.load('');
 
       }

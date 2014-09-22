@@ -185,7 +185,7 @@ function query() {
     var startitem = limit*(page-1);
     var enditem = Math.min(limit*(page),data.count);
     d3.select("#results").append("p").text("Results " + (startitem+1) + " to " + enditem);
-      
+
     d3.select("#results")
       .append("div")
       .selectAll("p")
