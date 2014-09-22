@@ -2,9 +2,10 @@
 <meta charset="utf-8">
 <style>
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 12px;
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 13px;
   width: 100%;
+  background: #f6f6f6;
 }
 
 a {
@@ -61,12 +62,12 @@ svg {
 }
 p.listing {
   font-size: 10px;
-  background: #f4f4f4;
   border: 1px solid #efefef;
-  border-radius: 3px;
+  background: #fff;
+  border-radius: 2px;
   padding: 6px;
-  margin: 0 12px 12px 0;
-  width: 360px;
+  margin: 0 6px 6px 0;
+  width: 400px;
   float: left;
 }
 .listing .key {
@@ -149,28 +150,20 @@ d3.selectAll(".eco-param")
   }
 })();
 
-function exportFile(type) {
-  var term = d3.select("#searchterm").node().value;
-  var minyear = d3.select("#minyear").node().value;
-  var maxyear = d3.select("#maxyear").node().value;
-  var querystring = "https://dev-ecoengine.berkeley.edu/api/observations/?format=" + type + "&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
-  window.open(querystring, '_blank');
-};
-
 function query() {
   d3.select("#results").style("color", "#bbb");
   var term = d3.select("#searchterm").node().value;
   var minyear = d3.select("#minyear").node().value;
   var maxyear = d3.select("#maxyear").node().value;
-  var querystring = "https://dev-ecoengine.berkeley.edu/api/observations/?format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
+  var querystring = "https://dev-ecoengine.berkeley.edu/api/observations/?extra=record&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
 
   // export links
   d3.select("#export-csv")
-    .attr("href", "https://dev-ecoengine.berkeley.edu/api/observations/?format=csv&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+    .attr("href", "https://dev-ecoengine.berkeley.edu/api/observations/?extra=record&format=csv&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
   d3.select("#export-json")
-    .attr("href", "https://dev-ecoengine.berkeley.edu/api/observations/?format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+    .attr("href", "https://dev-ecoengine.berkeley.edu/api/observations/?extra=record&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
   d3.select("#export-geojson")
-    .attr("href", "https://dev-ecoengine.berkeley.edu/api/observations/?format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+    .attr("href", "https://dev-ecoengine.berkeley.edu/api/observations/?extra=record&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
 
   d3.json(querystring, function(error, data) {
     d3.select("#results").html("").style("color", null);
