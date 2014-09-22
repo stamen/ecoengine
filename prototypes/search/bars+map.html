@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<title>Search + Map</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="">
+<style type="text/css">
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 12px;
+    font-size: 13px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  a {
+    color: #317eac;
+  }
+  a:hover {
+    color: #ee4e32;
+  }
+  a:hover .bar {
+    background: #ee4e32;
+  }
+
+  .container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+  }
+  .panel {
+    position: relative;
+    display: inline-block;
+    margin: 0 1% 0 0;
+    padding: 0;
+    vertical-align: top;
+  }
+  .panel.left {
+    width: 30%;
+  }
+  .panel.right {
+    width: 68%;
+  }
+  .panel:last-child {
+    margin-right: 0;
+  }
+
+
+  .field-plot {
+    line-height: 14px;
+  }
+  .field-plot a {
+    text-decoration: none;
+  }
+  .field-plot a {
+    color: #222;
+  }
+  .bar {
+    display: inline-block;
+    margin: 0 8px -1px;
+    background: #317eac;
+  }
+  h3 {
+    font-size: 1em;
+    line-height: 1em;
+    margin: 10px 0 4px 0;
+  }
+
+  /* MAP */
+  #map {
+    width: 100%;
+    height: 500px;
+  }
+
+  .map-info {
+    position: absolute;
+    display: none;
+    top: 0;
+    right: 0;
+    width: 90%;
+    height: auto;
+    background: #fff;
+    background: rgba(255,255,255,0.8);
+    z-index: 1001;
+  }
+  .map-info.visible {
+    display: block;
+  }
+
+  .map-info-close {
+    position: absolute;
+    top: 1px;
+    right: 5px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-weight: normal;
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #aaa;
+    cursor: pointer;
+  }
+
+  .map-info-content {
+    padding: 10px 30px 10px 10px;
+    margin: 0;
+    font-size: 12px;
+    line-height: 18px;
+    color: #333;
+  }
+
+</style>
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="">
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+  <body>
+
+    <div class="container">
+      <div class="panel left">
+        <div class="search-list"></div>
+      </div>
+      <div class="panel right">
+        <div id="map"></div>
+        <div class="map-info">
+            <button class="map-info-close">x</button>
+            <p class="map-info-content"></p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function(exports){
+
+        var ECO = exports.ECO = {};
+        ECO.base = {
+          api: {
+            search: 'https://dev-ecoengine.berkeley.edu/api/search/',
+            observations: 'https://dev-ecoengine.berkeley.edu/api/observations/'
+          }
+        }
+        ECO.list = function() {
+          var __ = {};
+
+          var barwidth = d3.scale.linear()
+            .range([0, 100]);
+
+          __.draw = function(data) {
+            data = data.list || [];
+            // Total bar width
+            var maxcount = 0;
+            for (var key in data.fields) {
+              var count = 0;
+              data.fields[key].forEach(function(d) {
+                count += d[1];
+              });
+              if (count > maxcount) maxcount = count;
+            }
+            barwidth.domain([0, maxcount]);
+
+            // Groups
+            var fieldplot = d3.select(".search-list")
+              .html('')
+              .selectAll("div.field-plot")
+              .data(d3.keys(data.fields).map(function(key) { return {
+                "field": key,
+                "values": data.fields[key]
+              }}))
+              .enter().append("div")
+              .attr("class", "field-plot");
+
+            fieldplot.append("h3")
+              .text(function(d) { return d.field});
+
+            var bars = fieldplot.selectAll("div.bars")
+                .data(function(d) { return d.values; })
+                .enter().append("div")
+                .attr("class", "bars")
+                .append("a")
+                .attr("href", function(d) { return d[2]; })
+                .on('click', function(d){
+                  d3.event.preventDefault();
+                  ECO.loader.load(d);
+                });
+
+            bars.append("div")
+              .attr("class", "bar")
+              .style("height", "12px")
+              .style("width", function(d) { return Math.round(barwidth(d[1])) + "px"; });
+
+            bars.append("span")
+              .attr("class", "count")
+              .text(function(d) { return d[1]; });
+
+            bars.append("span")
+              .text(function(d) { return " " + d[0]; });
+          }
+          return __;
+        }
+
+        ECO.loader = {
+
+          load: function(query) {
+            query = query || '';
+
+            var that = this;
+            if (query instanceof Array) {
+              query = query[2].split('?')[1] || '';
+            }
+
+            var searchUrl = ECO.base.api.search,
+                mapDataUrl = ECO.base.api.observations;
+
+            searchUrl += (query.length) ? '?' + query : query;
+            if (query.length) {
+              mapDataUrl += '?' + query + '&format=geojson&page_size=100&&georeferenced=true';
+            } else {
+              mapDataUrl = null;
+            }
+
+            var results = {
+              list: [],
+              map: []
+            };
+
+            mapDataUrl = null;
+
+            d3.json(searchUrl, function(error,data){
+              results.list = data;
+              if (mapDataUrl) {
+                d3.json(mapDataUrl, function(error, data){
+                  results.map = data;
+                  that.applyListeners(results);
+                });
+              } else {
+                that.applyListeners(results);
+              }
+            });
+          },
+
+          applyListeners: function(data) {
+            this.listeners.forEach(function(listener){
+              listener(data);
+            });
+          },
+          listeners: [],
+          add: function(fn){
+            this.listeners.push(fn)
+          }
+
+        };
+
+        ECO.map = function() {
+          var __ = {};
+
+          var defaultCenter = new L.LatLng(16.2990510145818,-15.468749999999998),
+              defaultZoom = 2;
+
+          var map = __.map = L.map('map').setView(defaultCenter, defaultZoom);
+
+          var baseLayer = L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/acetate-hillshading/{z}/{x}/{y}.png', {
+            attribution: '&copy;2012 Esri & Stamen, Data from OSM and Natural Earth',
+            subdomains: '0123',
+            minZoom: 2,
+            maxZoom: 18
+          }).addTo(map);
+
+          __.loadMarkers = function(){
+
+          }
+          return __;
+        };
+
+        ECO.mapAlert = {
+          rootElm: d3.select('.map-info'),
+          contentElm: d3.select('.map-info-content'),
+          closeElm: null,
+          show: function(){
+            if(this.rootElm.classed('visible')) return;
+            this.rootElm.classed('visible', true);
+          },
+          hide: function() {
+            this.rootElm.classed('visible', false);
+          },
+          set: function(str) {
+            this.contentElm.text(str);
+            if (!this.closeElm) {
+              d3.select('.map-info-close').on('click',function(){
+                ECO.mapAlert.hide();
+              })
+            }
+            if (!this.rootElm.classed('visible')) this.show();
+          }
+
+        }
+
+      })(window);
+
+
+
+      window.onload = function() {
+        var map = new ECO.map();
+        var list = new ECO.list();
+
+        ECO.loader.add(list.draw);
+        ECO.loader.load('');
+
+      }
+
+
+    </script>
+  </body>
+</html>
