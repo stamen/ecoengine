@@ -43,6 +43,9 @@ h4 {
 
   <script src="http://leafletjs.com/dist/leaflet.js"></script>
   <script>
+    var dispatch = d3.dispatch("pan");
+    var maps = {};
+
     d3.json('https://dev-ecoengine.berkeley.edu/api/layers/', function(error, layers) {
       layers.results.forEach(function(d,i) {
         var div = d3.select("#results")
@@ -56,14 +59,25 @@ h4 {
           .style("height", "240px")
           .attr("id", "map" + i);
 
-        var map = L.map('map' + i)
-          .setView([37.733795, -122.446747], 10);
+        maps[d.name] = L.map('map' + i)
+          .setView([37.733795, -122.446747], 10)
+          .on("moveend", function(d) {
+            dispatch.pan(this); 
+          });
 
-          console.log(d);
         L.tileLayer(d.tile_template, {
-          maxZoom: 18,
+          maxZoom: 14,
+          minZoom: 4,
+          animation: 'false',
           attribution: ''
-        }).addTo(map);
+        }).addTo(maps[d.name]);
+
+      });
+
+      dispatch.on("pan", function(map) {
+        for (var key in maps) {
+          maps[key].setView(map.getCenter(), map.getZoom());
+        }
       });
     });
     /*
