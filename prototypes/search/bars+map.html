@@ -116,6 +116,45 @@
     color: #333;
   }
 
+  .eco-basic-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.3);
+  }
+
+  .eco-basic-icon:before {
+      content: ' ';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.2);
+      margin-left: -3px;
+      margin-top: -3px;
+      z-index: 0;
+  }
+
+  .blocker {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: rgba(255,255,255,0.8);
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999999;
+    margin: 0;
+    padding: 0;
+    display: none;
+  }
+  .loading .blocker {
+    display: block;
+  }
+
 </style>
 <!--[if lt IE 9]>
 <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -127,7 +166,7 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>
 </head>
   <body>
-
+    <div class="blocker"></div>
     <div class="container">
       <div class="panel left">
         <div class="search-list"></div>
@@ -163,7 +202,7 @@
             .range([0, 100]);
 
           __.draw = function(data) {
-            data = data.list || [];
+            data = data.listdata || [];
             // Total bar width
             var maxcount = 0;
             for (var key in data.fields) {
@@ -215,59 +254,6 @@
           return __;
         }
 
-        ECO.loader = {
-
-          load: function(query) {
-            query = query || '';
-
-            var that = this;
-            if (query instanceof Array) {
-              query = query[2].split('?')[1] || '';
-            }
-
-            var searchUrl = ECO.base.api.search,
-                mapDataUrl = ECO.base.api.observations;
-
-            searchUrl += (query.length) ? '?' + query : query;
-            if (query.length) {
-              mapDataUrl += '?' + query + '&format=geojson&page_size=100&&georeferenced=true';
-            } else {
-              mapDataUrl = null;
-            }
-
-            var results = {
-              list: [],
-              map: []
-            };
-
-            mapDataUrl = null;
-
-            d3.json(searchUrl, function(error,data){
-              results.list = data;
-              if (mapDataUrl) {
-                d3.json(mapDataUrl, function(error, data){
-                  results.map = data;
-                  that.applyListeners(results);
-                });
-              } else {
-                that.applyListeners(results);
-              }
-            });
-          },
-
-          applyListeners: function(data) {
-            this.listeners.forEach(function(listener){
-              listener(data);
-            });
-          },
-          listeners: [],
-          add: function(fn){
-            this.listeners.push(fn);
-            return this;
-          }
-
-        };
-
         ECO.map = function() {
           var __ = {};
 
@@ -275,6 +261,15 @@
               defaultZoom = 2,
               markers = [],
               map;
+
+          var myIcon = L.divIcon({
+            className: 'eco-basic-icon',
+            iconSize: new L.Point(10,10)
+          });
+
+          var popup = L.popup({
+            closeButton: false
+          });
 
           map = __.map = L.map('map').setView(defaultCenter, defaultZoom);
 
@@ -287,24 +282,71 @@
 
           function clearMarkers() {
             markers.forEach(function(marker){
-              marker.add(null);
+              marker.on('mouseover', null)
+                    .on('mouseout', null);
+              map.removeLayer(marker);
+              marker = undefined;
             });
+
+            markers.length = 0;
           }
 
           function addMarkers(data) {
+            var bds = null;
 
+            data.forEach(function(d){
+              var ll = new L.LatLng(d.geometry.coordinates[1], d.geometry.coordinates[0])
+              var m = L.marker(ll, {icon: myIcon}).addTo(map);
+              m.data_ = d.properties;
+              m.on('mouseover', showTooltip)
+                .on('mouseout', hideTooltip);
+
+              if (!bds) {
+                bds = new L.latLngBounds([ll]);
+              } else {
+                bds.extend(ll);
+              }
+              markers.push(m);
+            });
+            bds.pad(0.1);
+            map.fitBounds(bds);
           }
+
+          function showTooltip() {
+              if (!this.data_) return;
+              popup
+                  .setLatLng(this._latlng)
+                  .setContent(this.data_['scientific_name'] || 'n/a')
+                  .openOn(map);
+          }
+
+          function hideTooltip() {
+              popup._close();
+          }
+
+          function dataFilterCoordinates(data) {
+
+            if (!data || !data.hasOwnProperty('features')) return [];
+            if (!data.features.length) return [];
+
+            return data.features.filter(function(d){
+              return d.geometry.coordinates.length === 2;
+            });
+          }
+
           __.onData = function(data){
             clearMarkers();
 
+            data = dataFilterCoordinates(data.mapdata || []);
             if (!data.length) {
               ECO.mapAlert.set('No map data available.');
               return;
             }
 
             ECO.mapAlert.hide();
-
+            addMarkers(data);
           }
+
           return __;
         };
 
@@ -331,6 +373,86 @@
 
         }
 
+
+        ECO.loader = {
+
+          load: function(query) {
+            query = query || '';
+
+            var that = this;
+            if (query instanceof Array) {
+              query = query[2].split('?')[1] || '';
+            }
+
+            var searchUrl = ECO.base.api.search,
+                mapDataUrl = ECO.base.api.observations;
+
+            searchUrl += (query.length) ? '?' + query : query;
+            if (query.length) {
+              mapDataUrl += '?' + query + '&format=geojson&page_size=100&georeferenced=True';
+            } else {
+              mapDataUrl = null;
+            }
+
+            var results = {
+              listdata: [],
+              mapdata: []
+            };
+
+            console.log('Active requests: ', this.requests.length);
+
+            this.abortAll();
+            d3.select('body').classed('loading', true);
+
+            this.searchloader = d3.json(searchUrl)
+              .on('load', function(data){
+                that.requestComplete(this);
+                results.listdata = data;
+                if (that.listDataCallback) that.listDataCallback(results);
+
+                if (mapDataUrl) {
+                  that.dataloader = d3.json(mapDataUrl)
+                      .on('load', function(data){
+                        that.requestComplete(this);
+                        console.log('Map Data loaded');
+                        results.mapdata = data;
+                        that.mapdata__ = data;
+                        if (that.mapDataCallback) that.mapDataCallback(results);
+                      })
+                      .on('error', function(error){that.requestComplete(this);});
+                      that.requests.push(that.dataloader);
+                      that.dataloader.get();
+                }
+
+              })
+              .on('error', function(error){that.requestComplete(this);});
+              this.requests.push(this.searchloader);
+              this.searchloader.get();
+          },
+          abortAll: function() {
+            this.requests.forEach(function(r){
+              r.abort();
+            })
+            this.requests.length = 0;
+          },
+          requestComplete: function(request) {
+            var idx = this.requests.indexOf(request);
+            if (idx > -1) {
+              this.requests.splice(idx,1);
+            }
+            console.log(this.requests)
+            if (this.requests.length === 0) {
+              d3.select('body').classed('loading', false);
+            }
+          },
+          requests: [],
+          searchloader: null,
+          dataloader:null,
+          listDataCallback: null,
+          mapDataCallback: null
+
+        };
+
       })(window);
 
 
@@ -339,7 +461,9 @@
         var map = new ECO.map();
         var list = new ECO.list();
 
-        ECO.loader.add(list.draw).add(map.onData);
+        map.onData([]);
+        ECO.loader.listDataCallback = list.draw;
+        ECO.loader.mapDataCallback = map.onData;
         ECO.loader.load('');
 
       }
