@@ -2,11 +2,21 @@
 <meta charset="utf-8">
 <style>
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 12px;
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 13px;
   width: 100%;
+  background: #f6f6f6;
+  margin: 0;
 }
 
+a {
+  color: #317eac;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
 
 .wrap {
   margin: 8px;
@@ -49,6 +59,9 @@ svg {
   padding: 1px 3px;
   color: #317eac;
 }
+.pagination span:hover {
+  text-decoration: underline;
+}
 .pagination span.active {
   background: #317eac;
   color: #fff;
@@ -57,14 +70,10 @@ svg {
   cursor: default;
 }
 p.listing {
-  font-size: 10px;
-  background: #f4f4f4;
-  border: 1px solid #efefef;
-  border-radius: 3px;
+  border-bottom: 1px solid #e6e6e6;
+  background: #fff;
   padding: 6px;
-  margin: 0 12px 12px 0;
-  width: 360px;
-  float: left;
+  margin: 0;
 }
 .listing .key {
   margin-right: 8px;
@@ -73,10 +82,16 @@ p.listing {
 </style>
 <body>
 <div class="wrap">
-  <p>Search Term: <input type="text" value="rufus" id="searchterm" class="eco-param"></input>
-  Date Range: <input type="text" value="1920" id="minyear" class="eco-param"></input>
-  <span id="time-slider"></span>
-  <input type="text" value="1975" id="maxyear" class="eco-param"></input></p>
+  <p>
+    Search Term: <input type="text" value="rufus" id="searchterm" class="eco-param"></input>
+    Date Range: <input type="text" value="1920" id="minyear" class="eco-param"></input>
+    <span id="time-slider"></span>
+    <input type="text" value="1975" id="maxyear" class="eco-param"></input>
+    <br/>
+    Export <a href="#" id="export-csv" target="_blank">CSV</a> |
+    <a href="#" id="export-json" target="_blank">JSON</a> |
+    <a href="#" id="export-geojson" target="_blank">GeoJSON</a>
+  </p>
   <div id="results"></div>
 </div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -92,6 +107,7 @@ d3.selectAll(".eco-param")
     page = 1;
     query();
   });
+
 
 // time slider
 (function() {
@@ -145,7 +161,16 @@ function query() {
   var term = d3.select("#searchterm").node().value;
   var minyear = d3.select("#minyear").node().value;
   var maxyear = d3.select("#maxyear").node().value;
-  var querystring = "https://dev-ecoengine.berkeley.edu/api/observations/?format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
+  var querystring = "https://dev-ecoengine.berkeley.edu/api/observations/?extra=record&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
+
+  // export links
+  d3.select("#export-csv")
+    .attr("href", "https://dev-ecoengine.berkeley.edu/api/observations/?extra=record&format=csv&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+  d3.select("#export-json")
+    .attr("href", "https://dev-ecoengine.berkeley.edu/api/observations/?extra=record&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+  d3.select("#export-geojson")
+    .attr("href", "https://dev-ecoengine.berkeley.edu/api/observations/?extra=record&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+
   d3.json(querystring, function(error, data) {
     d3.select("#results").html("").style("color", null);
 
@@ -160,7 +185,7 @@ function query() {
     console.log(data);
 
     // Display total number of results
-    var countdiv = d3.select("#results").append("div");
+    var countdiv = d3.select("#results p").append("div");
     countdiv.append("strong").text("Results: ");
     countdiv.append("span").text(data.count);
 
@@ -204,11 +229,15 @@ function query() {
 
         entry.append("span")
           .attr("class", "value")
-          .text(function(key) {
-            return typeof d[key] == "string"
-              ? d[key]
-              : JSON.stringify(d[key]);
-            });
+          .html(function(key) {
+            if (typeof d[key] == "string") {
+              if (d[key].slice(0,4) == "http") {
+                return "<a href='" + d[key] + "'>" + d[key] + "</a>";
+              }
+              return d[key]
+            }
+            return JSON.stringify(d[key]);
+          });
       });
   });
 };

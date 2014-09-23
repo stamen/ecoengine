@@ -1,0 +1,2467 @@
+{
+    "count": 60, 
+    "next": null, 
+    "previous": null, 
+    "results": [
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-02-16/{z}/{x}/{y}/", 
+            "id": 28, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2031-02-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2031-02-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 259.249420166016, 
+            "maxval": 299.943145751953, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2031-02-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-02-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-03-16/{z}/{x}/{y}/", 
+            "id": 18, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2031-03-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2031-03-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 262.552062988281, 
+            "maxval": 299.220367431641, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2031-03-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-03-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-04-16/{z}/{x}/{y}/", 
+            "id": 30, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2031-04-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2031-04-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 264.688018798828, 
+            "maxval": 303.137878417969, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2031-04-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-04-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-05-16/{z}/{x}/{y}/", 
+            "id": 1, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2031-05-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2031-05-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 264.430450439453, 
+            "maxval": 308.005554199219, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2031-05-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-05-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-06-16/{z}/{x}/{y}/", 
+            "id": 51, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2031-06-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2031-06-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 268.841064453125, 
+            "maxval": 313.520935058594, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2031-06-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-06-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-07-16/{z}/{x}/{y}/", 
+            "id": 21, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2031-07-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2031-07-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 271.473388671875, 
+            "maxval": 316.572021484375, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2031-07-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-07-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-08-16/{z}/{x}/{y}/", 
+            "id": 14, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2031-08-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2031-08-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 275.995849609375, 
+            "maxval": 319.341369628906, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2031-08-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-08-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-09-16/{z}/{x}/{y}/", 
+            "id": 47, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2031-09-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2031-09-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 277.744842529297, 
+            "maxval": 319.805206298828, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2031-09-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-09-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-10-16/{z}/{x}/{y}/", 
+            "id": 20, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2031-10-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2031-10-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 276.187347412109, 
+            "maxval": 315.856628417969, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2031-10-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-10-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-11-16/{z}/{x}/{y}/", 
+            "id": 29, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2031-11-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2031-11-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 267.997802734375, 
+            "maxval": 306.890411376953, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2031-11-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-11-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-12-16/{z}/{x}/{y}/", 
+            "id": 45, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2031-12-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2031-12-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 262.64404296875, 
+            "maxval": 303.443389892578, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2031-12-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-12-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-01-16/{z}/{x}/{y}/", 
+            "id": 9, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-01-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2032-01-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 262.206298828125, 
+            "maxval": 299.590972900391, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2032-01-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-01-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-02-16/{z}/{x}/{y}/", 
+            "id": 35, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-02-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2032-02-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 257.066284179688, 
+            "maxval": 299.737854003906, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2032-02-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-02-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-03-16/{z}/{x}/{y}/", 
+            "id": 22, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-03-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2032-03-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 263.613677978516, 
+            "maxval": 299.403198242188, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2032-03-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-03-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-04-16/{z}/{x}/{y}/", 
+            "id": 3, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-04-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2032-04-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 262.76025390625, 
+            "maxval": 302.710174560547, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2032-04-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-04-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-05-16/{z}/{x}/{y}/", 
+            "id": 10, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-05-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2032-05-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 265.690551757812, 
+            "maxval": 309.553009033203, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2032-05-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-05-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-06-16/{z}/{x}/{y}/", 
+            "id": 8, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-06-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2032-06-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 269.741088867188, 
+            "maxval": 310.989013671875, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2032-06-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-06-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-07-16/{z}/{x}/{y}/", 
+            "id": 55, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-07-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2032-07-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 273.531707763672, 
+            "maxval": 314.817474365234, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2032-07-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-07-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-08-16/{z}/{x}/{y}/", 
+            "id": 48, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-08-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2032-08-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 277.216125488281, 
+            "maxval": 321.030242919922, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2032-08-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-08-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-09-16/{z}/{x}/{y}/", 
+            "id": 57, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-09-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2032-09-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 278.714904785156, 
+            "maxval": 321.154266357422, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2032-09-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-09-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-10-16/{z}/{x}/{y}/", 
+            "id": 49, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-10-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2032-10-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 274.103515625, 
+            "maxval": 315.440582275391, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2032-10-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-10-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-11-16/{z}/{x}/{y}/", 
+            "id": 34, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-11-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2032-11-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 270.397491455078, 
+            "maxval": 307.440124511719, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2032-11-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-11-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-12-16/{z}/{x}/{y}/", 
+            "id": 15, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-12-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2032-12-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 263.833129882812, 
+            "maxval": 302.032379150391, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2032-12-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-12-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-01-16/{z}/{x}/{y}/", 
+            "id": 6, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-01-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2033-01-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 258.988861083984, 
+            "maxval": 301.803070068359, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2033-01-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-01-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-02-16/{z}/{x}/{y}/", 
+            "id": 39, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-02-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2033-02-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 258.509216308594, 
+            "maxval": 302.259552001953, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2033-02-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-02-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-03-16/{z}/{x}/{y}/", 
+            "id": 46, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-03-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2033-03-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 260.992919921875, 
+            "maxval": 300.894012451172, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2033-03-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-03-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-04-16/{z}/{x}/{y}/", 
+            "id": 56, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-04-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2033-04-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 260.263214111328, 
+            "maxval": 305.03076171875, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2033-04-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-04-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-05-16/{z}/{x}/{y}/", 
+            "id": 60, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-05-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2033-05-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 265.431335449219, 
+            "maxval": 307.964691162109, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2033-05-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-05-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-06-16/{z}/{x}/{y}/", 
+            "id": 12, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-06-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2033-06-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 266.958679199219, 
+            "maxval": 312.058349609375, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2033-06-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-06-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-07-16/{z}/{x}/{y}/", 
+            "id": 38, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-07-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2033-07-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 272.244262695312, 
+            "maxval": 320.592620849609, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2033-07-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-07-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-08-16/{z}/{x}/{y}/", 
+            "id": 54, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-08-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2033-08-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 273.617401123047, 
+            "maxval": 321.746124267578, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2033-08-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-08-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-09-16/{z}/{x}/{y}/", 
+            "id": 25, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-09-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2033-09-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 280.549591064453, 
+            "maxval": 320.403900146484, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2033-09-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-09-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-10-16/{z}/{x}/{y}/", 
+            "id": 19, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-10-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2033-10-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 273.225555419922, 
+            "maxval": 316.744812011719, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2033-10-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-10-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-11-16/{z}/{x}/{y}/", 
+            "id": 17, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-11-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2033-11-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 271.539154052734, 
+            "maxval": 312.4775390625, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2033-11-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-11-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-12-16/{z}/{x}/{y}/", 
+            "id": 53, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-12-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2033-12-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 262.647491455078, 
+            "maxval": 303.042510986328, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2033-12-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-12-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-01-16/{z}/{x}/{y}/", 
+            "id": 59, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-01-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2034-01-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 263.920593261719, 
+            "maxval": 300.242462158203, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2034-01-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-01-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-02-16/{z}/{x}/{y}/", 
+            "id": 58, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-02-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2034-02-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 263.535491943359, 
+            "maxval": 297.888122558594, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2034-02-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-02-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-03-16/{z}/{x}/{y}/", 
+            "id": 41, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-03-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2034-03-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 261.8984375, 
+            "maxval": 299.829376220703, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2034-03-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-03-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-04-16/{z}/{x}/{y}/", 
+            "id": 24, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-04-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2034-04-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 263.7236328125, 
+            "maxval": 301.983947753906, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2034-04-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-04-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-05-16/{z}/{x}/{y}/", 
+            "id": 36, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-05-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2034-05-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 265.889221191406, 
+            "maxval": 308.66845703125, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2034-05-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-05-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-06-16/{z}/{x}/{y}/", 
+            "id": 43, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-06-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2034-06-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 266.300903320312, 
+            "maxval": 313.450134277344, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2034-06-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-06-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-07-16/{z}/{x}/{y}/", 
+            "id": 50, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-07-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2034-07-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 271.626586914062, 
+            "maxval": 318.203582763672, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2034-07-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-07-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-08-16/{z}/{x}/{y}/", 
+            "id": 13, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-08-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2034-08-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 277.822937011719, 
+            "maxval": 319.553863525391, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2034-08-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-08-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-09-16/{z}/{x}/{y}/", 
+            "id": 27, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-09-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2034-09-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 276.049194335938, 
+            "maxval": 319.457824707031, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2034-09-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-09-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-10-16/{z}/{x}/{y}/", 
+            "id": 31, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-10-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2034-10-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 276.638153076172, 
+            "maxval": 314.668487548828, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2034-10-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-10-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-11-16/{z}/{x}/{y}/", 
+            "id": 40, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-11-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2034-11-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 268.091979980469, 
+            "maxval": 307.893707275391, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2034-11-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-11-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-12-16/{z}/{x}/{y}/", 
+            "id": 33, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-12-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2034-12-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 261.918823242188, 
+            "maxval": 303.673980712891, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2034-12-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-12-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-01-16/{z}/{x}/{y}/", 
+            "id": 11, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-01-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2035-01-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 259.338592529297, 
+            "maxval": 301.988983154297, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2035-01-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-01-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-02-16/{z}/{x}/{y}/", 
+            "id": 52, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-02-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2035-02-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 261.162414550781, 
+            "maxval": 299.165283203125, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2035-02-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-02-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-03-16/{z}/{x}/{y}/", 
+            "id": 26, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-03-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2035-03-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 264.142761230469, 
+            "maxval": 298.828735351562, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2035-03-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-03-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-04-16/{z}/{x}/{y}/", 
+            "id": 44, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-04-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2035-04-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 264.533325195312, 
+            "maxval": 304.426940917969, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2035-04-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-04-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-05-16/{z}/{x}/{y}/", 
+            "id": 5, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-05-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2035-05-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 265.457641601562, 
+            "maxval": 309.064544677734, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2035-05-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-05-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-06-16/{z}/{x}/{y}/", 
+            "id": 4, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-06-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2035-06-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 268.884857177734, 
+            "maxval": 316.222991943359, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2035-06-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-06-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-07-16/{z}/{x}/{y}/", 
+            "id": 42, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-07-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2035-07-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 273.312927246094, 
+            "maxval": 318.696044921875, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2035-07-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-07-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-08-16/{z}/{x}/{y}/", 
+            "id": 32, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-08-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2035-08-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 279.184539794922, 
+            "maxval": 322.346954345703, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2035-08-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-08-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-09-16/{z}/{x}/{y}/", 
+            "id": 16, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-09-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2035-09-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 274.896240234375, 
+            "maxval": 319.608337402344, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2035-09-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-09-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-10-16/{z}/{x}/{y}/", 
+            "id": 2, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-10-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2035-10-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 272.215118408203, 
+            "maxval": 317.884063720703, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2035-10-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-10-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-11-16/{z}/{x}/{y}/", 
+            "id": 37, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-11-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2035-11-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 268.047668457031, 
+            "maxval": 311.120300292969, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2035-11-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-11-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-12-16/{z}/{x}/{y}/", 
+            "id": 7, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-12-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2035-12-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 264.384796142578, 
+            "maxval": 304.875671386719, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2035-12-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-12-16"
+        }, 
+        {
+            "units": "kelvin", 
+            "tags": [], 
+            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2036-01-16/{z}/{x}/{y}/", 
+            "id": 23, 
+            "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2036-01-16.tif", 
+            "geom": {
+                "type": "Polygon", 
+                "coordinates": [
+                    [
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            24.058333333335
+                        ], 
+                        [
+                            -66.483333356745, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            49.933333322985
+                        ], 
+                        [
+                            -125.02499999999502, 
+                            24.058333333335
+                        ]
+                    ]
+                ]
+            }, 
+            "event": "2036-01-16", 
+            "srs": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"degree\",0.0174532925199433],AUTHORITY[\"EPSG\",\"4326\"]]", 
+            "minval": 261.4384765625, 
+            "maxval": 301.880798339844, 
+            "nodata": 1.00000002004088e+20, 
+            "name": "NASA NEX GFDL-ESM2M maximum temperature 2036-01-16", 
+            "slug": "tasmax_rcp60_r1i1p1_gfdl-esm2m-2036-01-16"
+        }
+    ]
+}
