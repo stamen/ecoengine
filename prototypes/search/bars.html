@@ -55,7 +55,9 @@ query();
 
 function query() {
   var term = d3.select("#searchterm").node().value;
+  d3.selectAll(".field-plot a").style("color", "#bbb");
   d3.json("https://dev-ecoengine.berkeley.edu/api/search/?q=" + term + "&format=json", function(error, data) {
+    d3.selectAll(".field-plot a").style("color", null);
     console.log(data);
 
     // Total bar width
