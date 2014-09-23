@@ -195,6 +195,19 @@
             observations: 'https://dev-ecoengine.berkeley.edu/api/observations/'
           }
         }
+
+        var sortOrder = {
+          kingdom: 0,
+          phylum: 1,
+          clss: 2,
+          order: 3,
+          family: 4,
+          genus: 5,
+          'scientific_name': 6,
+          'state_province': 7,
+          resource: 8
+        };
+
         ECO.list = function() {
           var __ = {};
 
@@ -203,6 +216,8 @@
 
           __.draw = function(data) {
             data = data.listdata || [];
+
+            console.log(data)
             // Total bar width
             var maxcount = 0;
             for (var key in data.fields) {
@@ -221,7 +236,10 @@
               .data(d3.keys(data.fields).map(function(key) { return {
                 "field": key,
                 "values": data.fields[key]
-              }}))
+              }})
+              .sort(function(a,b){
+                return sortOrder[a.field] - sortOrder[b.field];
+              }))
               .enter().append("div")
               .attr("class", "field-plot");
 
