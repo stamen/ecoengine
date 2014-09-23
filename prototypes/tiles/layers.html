@@ -63,6 +63,9 @@ h4 {
           .setView([37.733795, -122.446747], 10)
           .on("moveend", function(d) {
             dispatch.pan(this); 
+          })
+          .on("zoomend", function(d) {
+            dispatch.pan(this); 
           });
 
         L.tileLayer(d.tile_template, {

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<style>
+body {
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  width: 100%;
+  background: #f6f6f6;
+  margin: 0;
+}
+
+a {
+  color: #317eac;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.map-container {
+  width: 180px;
+  height: 205px;
+  margin: 6px;
+  float: left;
+}
+
+h5 {
+  margin-bottom: 2px;
+}
+
+</style>
+<head>
+  <title>Leaflet Multiple Layers Example</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="http://leafletjs.com/dist/leaflet.css" />
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+<body>
+  <div id="results"></div>
+
+  <script src="http://leafletjs.com/dist/leaflet.js"></script>
+  <script>
+    var dispatch = d3.dispatch("pan");
+    var maps = {};
+    var nummaps = 18;
+
+    // https://dev-ecoengine.berkeley.edu/api/rstore/
+    d3.json('rstore.json', function(error, layers) {
+      layers.results.slice(0,nummaps).forEach(function(d,i) {
+        var div = d3.select("#results")
+          .append("div")
+          .attr("class", "map-container");
+
+        div.append("h5").text(d.name);
+
+        div.append("div")
+          .style("width", "180px")
+          .style("height", "180px")
+          .attr("id", "map" + i);
+
+        maps[d.name] = L.map('map' + i)
+          .setView([37.733795, -122.446747], 8)
+          .on("moveend", function(d) {
+            dispatch.pan(this); 
+          })
+          .on("zoomend", function(d) {
+            dispatch.pan(this); 
+          });
+
+        L.tileLayer(d.tile_template, {
+          maxZoom: 14,
+          minZoom: 4,
+          animation: 'false',
+          attribution: ''
+        }).addTo(maps[d.name]);
+
+      });
+
+      dispatch.on("pan", function(map) {
+        for (var key in maps) {
+          maps[key].setView(map.getCenter(), map.getZoom());
+        }
+      });
+    });
+    /*
+    var map2 = L.map('map2')
+      .setView([37.733795, -122.446747], 10);
+
+    L.tileLayer('https://dev-ecoengine.berkeley.edu/tiles/cacounties/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: ''
+    }).addTo(map2);
+    */
+
+  </script>
+</body>
+</html>
+
