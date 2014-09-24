@@ -103,6 +103,16 @@ svg {
 <script>
 var limit = 60;
 var page = 1;
+var fields = [
+  "record",
+  "scientific_name",
+  "country",
+  "state_province",
+  "begin_date",
+  "end_date",
+  "geojson",
+  "observation_type"
+];
 
 query();
 
@@ -222,7 +232,7 @@ function query() {
 
     table.append("tr")
       .selectAll("th")
-      .data(d3.keys(data.results[0]))
+      .data(fields)
       .enter().append("th")
       .text(String);
 
@@ -235,7 +245,7 @@ function query() {
       .each(function(d) {
         var entry = d3.select(this)
           .selectAll("td")
-          .data(d3.keys(d))
+          .data(fields)
           .enter().append("td")
 
         entry.append("span")

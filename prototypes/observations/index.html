@@ -98,6 +98,16 @@ p.listing {
 <script>
 var limit = 60;
 var page = 1;
+var fields = [
+  "record",
+  "scientific_name",
+  "country",
+  "state_province",
+  "begin_date",
+  "end_date",
+  "geojson",
+  "observation_type"
+];
 
 query();
 
@@ -220,7 +230,7 @@ function query() {
       .each(function(d) {
         var entry = d3.select(this)
           .selectAll("div")
-          .data(d3.keys(d))
+          .data(fields)
           .enter().append("div")
 
         entry.append("span")
