@@ -241,7 +241,7 @@ function query() {
       .data(data.results)
       .enter().append("tr")
       .attr("class", "listing")
-      .classed("zebra", function(d,i) { return i % 2 == 0;})
+      .classed("zebra", function(d,i) { return (i+1) % 2 == 0;})
       .each(function(d) {
         var entry = d3.select(this)
           .selectAll("td")
