@@ -244,6 +244,9 @@ function query() {
               if (d[key].slice(0,4) == "http") {
                 return "<a href='" + d[key] + "'>" + d[key] + "</a>";
               }
+              if (key == "record") {
+                return "<a href='" + d["url"] + "'>" + d[key] + "</a>";
+              }
               return d[key]
             }
             return JSON.stringify(d[key]);
