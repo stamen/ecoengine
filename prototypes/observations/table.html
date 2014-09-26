@@ -71,12 +71,15 @@ svg {
   cursor: default;
 }
 #results table {
-  font-size: 10px;
+  font-size: 12px;
 }
 
 #results table td,
 #results table th {
-  padding: 0 3px;
+  padding: 2px 4px;
+}
+#results table th {
+  border-bottom: 2px solid #e6e6e6;
 }
 .listing {
   border-bottom: 1px solid #e6e6e6;
@@ -101,7 +104,7 @@ svg {
 </div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
-var limit = 60;
+var limit = 100;
 var page = 1;
 var fields = [
   "record",
@@ -113,6 +116,8 @@ var fields = [
   "geojson",
   "observation_type"
 ];
+
+var dateformat = d3.time.format("%Y %b %e");
 
 query();
 
@@ -241,7 +246,7 @@ function query() {
       .data(data.results)
       .enter().append("tr")
       .attr("class", "listing")
-      .classed("zebra", function(d,i) { return (i+1) % 2 == 0;})
+      .classed("zebra", function(d,i) { return i % 2 == 0;})
       .each(function(d) {
         var entry = d3.select(this)
           .selectAll("td")
@@ -258,7 +263,16 @@ function query() {
               if (key == "record") {
                 return "<a href='" + d["url"] + "'>" + d[key] + "</a>";
               }
+              if (key == "begin_date") {
+                return dateformat(new Date(d[key]));
+              }
+              if (key == "end_date") {
+                return dateformat(new Date(d[key]));
+              }
               return d[key]
+            }
+            if (key == "geojson") {
+              return !!d[key] ? "Yes" : "";
             }
             return JSON.stringify(d[key]);
           });
