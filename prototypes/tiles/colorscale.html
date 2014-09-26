@@ -16,7 +16,7 @@ body { margin: 0; }
 <script>
 var colorscale = d3.scale.linear()
   .domain([0,255])
-  .range(["hsl(62,100%,90%)", "hsl(222,30%,20%)"])
+  .range(["hsl(222,30%,20%)", "hsl(62,100%,90%)"])
   .interpolate(d3.interpolateHcl);
 
 function hexToR(h) {return parseInt((cutHex(h)).substring(0,2),16)}
