@@ -267,7 +267,7 @@
               .text(function(d) { return d[1]; });
 
             bars.append("span")
-              .text(function(d) { return " " + d[0]; });
+              .text(function(d) { return " " + capitaliseFirstLetter(d[0]); });
           }
           return __;
         }
@@ -471,6 +471,9 @@
 
         };
 
+        function capitaliseFirstLetter(string) {
+          return string.charAt(0).toUpperCase() + string.slice(1);
+        };
       })(window);
 
 
