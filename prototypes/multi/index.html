@@ -71,17 +71,65 @@ svg {
   cursor: default;
 }
 
-#search-bars,
-#results {
-  float: left;
+.panel {
+  position: relative;
+  display: inline-block;
+  margin: 0 1% 0 0;
+  padding: 0;
+  vertical-align: top;
+}
+.panel.left {
+  width: 30%;
+}
+.panel.right {
+  width: 68%;
+}
+.panel:last-child {
+  margin-right: 0;
 }
 
-#search-bars {
-  width: 20%;
+/* MAP */
+#map {
+  width: 100%;
+  height: 500px;
 }
 
-#results {
-  width: 80%;
+.map-info {
+  position: absolute;
+  display: none;
+  top: 0;
+  right: 0;
+  width: 90%;
+  height: auto;
+  background: #fff;
+  background: rgba(255,255,255,0.8);
+  z-index: 1001;
+}
+.map-info.visible {
+  display: block;
+}
+
+.map-info-close {
+  position: absolute;
+  top: 1px;
+  right: 5px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-weight: normal;
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #aaa;
+  cursor: pointer;
+}
+
+.map-info-content {
+  padding: 10px 30px 10px 10px;
+  margin: 0;
+  font-size: 12px;
+  line-height: 18px;
+  color: #333;
 }
 
 #results table {
@@ -148,8 +196,17 @@ h3 {
     <a href="#" id="export-json" target="_blank">JSON</a> |
     <a href="#" id="export-geojson" target="_blank">GeoJSON</a>
   </p>
-  <div id="search-bars"></div>
-  <div id="results"></div>
+  <div class="panel left">
+    <div id="search-bars"></div>
+  </div>
+  <div class="panel right">
+    <div id="map"></div>
+    <div class="map-info">
+        <button class="map-info-close">x</button>
+        <p class="map-info-content"></p>
+    </div>
+    <div id="results"></div>
+  </div>
 </div>
 
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
@@ -185,7 +242,8 @@ var ECO = {};
 ECO.base = {
   api: {
     search: 'https://dev-ecoengine.berkeley.edu/api/search/',
-    observations: 'https://dev-ecoengine.berkeley.edu/api/observations/'
+    observations: 'https://dev-ecoengine.berkeley.edu/api/observations/',
+    tiles: 'https://dev-ecoengine.berkeley.edu/tiles/vtmveg/{z}/{x}/{y}.png'
   }
 }
 
@@ -206,9 +264,96 @@ var dateformat = d3.time.format("%Y %b %e");
 ECO.map = function() {
   var __ = {};
 
-  __.draw = function(data) {
-    // TODO
-  };
+  var defaultCenter = new L.LatLng(37.7,-122),
+      defaultZoom = 6,
+      markers = [],
+      map;
+
+  var myIcon = L.divIcon({
+    className: 'eco-basic-icon',
+    iconSize: new L.Point(10,10)
+  });
+
+  var popup = L.popup({
+    closeButton: false
+  });
+
+  map = __.map = L.map('map').setView(defaultCenter, defaultZoom);
+
+  var baseLayer = L.tileLayer(ECO.base.api.tiles, {
+    attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
+    subdomains: 'abc',
+    minZoom: 1,
+    maxZoom: 18
+  }).addTo(map);
+
+  function clearMarkers() {
+    markers.forEach(function(marker){
+      marker.on('mouseover', null)
+            .on('mouseout', null);
+      map.removeLayer(marker);
+      marker = undefined;
+    });
+
+    markers.length = 0;
+  }
+
+  function addMarkers(data) {
+    var bds = null;
+
+    data.forEach(function(d){
+      var ll = new L.LatLng(d.geometry.coordinates[1], d.geometry.coordinates[0])
+      var m = L.marker(ll, {icon: myIcon}).addTo(map);
+      m.data_ = d.properties;
+      m.on('mouseover', showTooltip)
+        .on('mouseout', hideTooltip);
+
+      if (!bds) {
+        bds = new L.latLngBounds([ll]);
+      } else {
+        bds.extend(ll);
+      }
+      markers.push(m);
+    });
+    bds.pad(0.1);
+    map.fitBounds(bds);
+  }
+
+  function showTooltip() {
+      if (!this.data_) return;
+      popup
+          .setLatLng(this._latlng)
+          .setContent(this.data_['scientific_name'] || 'n/a')
+          .openOn(map);
+  }
+
+  function hideTooltip() {
+      popup._close();
+  }
+
+  function dataFilterCoordinates(data) {
+
+    if (!data || !data.hasOwnProperty('features')) return [];
+    if (!data.features.length) return [];
+
+    return data.features.filter(function(d){
+      return d.geometry.coordinates.length === 2;
+    });
+  }
+
+  __.onData = function(data){
+    clearMarkers();
+
+    data = dataFilterCoordinates(data.mapdata || []);
+    if (!data.length) {
+      ECO.mapAlert.set('No map data available.');
+      return;
+    }
+
+    ECO.mapAlert.hide();
+    addMarkers(data);
+  }
+
   return __;
 };
 
@@ -471,7 +616,7 @@ function query() {
     d3.select("#results").append("p").text("Results " + (startitem+1) + " to " + enditem);
 
     datatable.draw(data);
-    map.draw(data);
+    //map.draw(data);
   });
 
 
