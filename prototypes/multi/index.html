@@ -631,11 +631,11 @@ function query() {
 
   // export links
   d3.select("#export-csv")
-    .attr("href", ECO.base.api.observations + "?extra=record&format=csv&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + "?fields=" + facetstring + "&format=csv&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
   d3.select("#export-json")
-    .attr("href", ECO.base.api.observations + "?extra=record&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + "?fields=" + facetstring + "&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
   d3.select("#export-geojson")
-    .attr("href", ECO.base.api.observations + "?extra=record&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + "?fields=" + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
 
   d3.json(querystring, function(error, data) {
     d3.select("#results").html("").style("color", null);
