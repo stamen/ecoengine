@@ -198,6 +198,15 @@ var sortOrder = {
 
 var dateformat = d3.time.format("%Y %b %e");
 
+ECO.map = function() {
+  var __ = {};
+
+  __.draw = function(data) {
+    // TODO
+  };
+  return __;
+};
+
 ECO.list = function() {
   var __ = {};
 
@@ -384,8 +393,10 @@ d3.selectAll(".eco-param")
   }
 })();
 
-var list = new ECO.list();
+var fieldlist = new ECO.list();
 var datatable = new ECO.datatable();
+var map = new ECO.map();
+
 function query() {
   d3.select("#results").style("color", "#bbb");
   var term = d3.select("#searchterm").node().value;
@@ -451,12 +462,13 @@ function query() {
     d3.select("#results").append("p").text("Results " + (startitem+1) + " to " + enditem);
 
     datatable.draw(data);
+    map.draw(data);
   });
 
 
   d3.selectAll(".field-plot a").style("color", "#bbb");
   d3.json(searchquerystring, function(error, data) {
-    list.draw(data);
+    fieldlist.draw(data);
   });
 
 };
