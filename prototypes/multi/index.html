@@ -117,9 +117,14 @@ a:hover .bar {
 .field-plot a.active {
   font-weight: bold;
 }
-.field-plot a.active:hover {
+.field-plot .x {
+  display: none;
   color: #ee4e32;
+  font-weight: bold;
 }
+.field-plot a.active:hover .x {
+  display: inline;
+} 
 .bar {
   display: inline-block;
   margin: 0 8px -1px;
@@ -276,6 +281,10 @@ ECO.list = function() {
 
     bars.append("span")
       .text(function(d) { return " " + capitaliseFirstLetter(d[0]); });
+
+    bars.append("span")
+      .attr("class", "x")
+      .text(" x");
   }
   return __;
 };
