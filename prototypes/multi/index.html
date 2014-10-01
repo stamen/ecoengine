@@ -114,6 +114,12 @@ a:hover .bar {
 .field-plot a {
   color: #222;
 }
+.field-plot a.active {
+  font-weight: bold;
+}
+.field-plot a.active:hover {
+  color: #ee4e32;
+}
 .bar {
   display: inline-block;
   margin: 0 8px -1px;
@@ -147,6 +153,18 @@ h3 {
 <script>
 var limit = 100;
 var page = 1;
+var facets = {
+  kingdom: false,
+  phylum: false,
+  clss: false,
+  order: false,
+  family: false,
+  genus: false,
+  'scientific_name': false,
+  'state_province': false,
+  resource: false
+};
+
 var fields = [
   "record",
   "scientific_name",
@@ -200,17 +218,19 @@ ECO.list = function() {
     }
     barwidth.domain([0, maxcount]);
 
+    var searchfields = d3.keys(data.fields);
+    searchfields.sort(function(a,b){
+      return sortOrder[a] - sortOrder[b];
+    });
+
     // Groups
     var fieldplot = d3.select("#search-bars")
       .html("")
       .selectAll("div.field-plot")
-      .data(d3.keys(data.fields).map(function(key) { return {
+      .data(searchfields.map(function(key) { return {
         "field": key,
         "values": data.fields[key]
       }}))
-      .sort(function(a,b){
-        return sortOrder[a.field] - sortOrder[b.field];
-      })
       .enter().append("div")
       .attr("class", "field-plot");
 
@@ -222,7 +242,19 @@ ECO.list = function() {
         .enter().append("div")
         .attr("class", "bars")
         .append("a")
-        .attr("href", function(d) { return d[2]; });
+        .attr("href", function(d) { return "#"; })
+        .classed("active", function(d,i,g) {
+          return facets[searchfields[g]] == d[0];
+        })
+        .on("click", function(d,i,g) {
+          page = 1;
+          if (facets[searchfields[g]] == d[0]) {
+            facets[searchfields[g]] = false;
+          } else {
+            facets[searchfields[g]] = d[0];
+          }
+          query();
+        });
 
     bars.append("div")
       .attr("class", "bar")
@@ -359,8 +391,16 @@ function query() {
   var term = d3.select("#searchterm").node().value;
   var minyear = d3.select("#minyear").node().value;
   var maxyear = d3.select("#maxyear").node().value;
-  var querystring = ECO.base.api.observations + "?extra=record&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
-  var searchquerystring = ECO.base.api.search + "?extra=record&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear;
+
+  var facetlist = d3.entries(facets)
+    .filter(function(d) { return d.value; })
+  var facetstring = facetlist.map(function(d) {
+    return "&selected_facets=" + d.key + "_exact%3A%22" + d.value + "%22";
+  }).join("&");
+
+  var querystring = ECO.base.api.observations + "?extra=record" + facetstring + "&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
+  var searchquerystring = ECO.base.api.search + "?extra=record" + facetstring + "&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear;
+  console.log(searchquerystring);
 
   // export links
   d3.select("#export-csv")
