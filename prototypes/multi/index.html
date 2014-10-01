@@ -235,7 +235,7 @@ ECO.list = function() {
       .attr("class", "field-plot");
 
     fieldplot.append("h3")
-      .text(function(d) { return d.field});
+      .text(function(d) { return capitaliseFirstLetter(d.field.replace("_", " "))});
 
     var bars = fieldplot.selectAll("div.bars")
         .data(function(d) { return d.values; })
