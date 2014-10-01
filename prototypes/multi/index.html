@@ -140,6 +140,9 @@ h3 {
   <div id="search-bars"></div>
   <div id="results"></div>
 </div>
+
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
 var limit = 100;
@@ -155,10 +158,142 @@ var fields = [
   "observation_type"
 ];
 
+var ECO = {};
+ECO.base = {
+  api: {
+    search: 'https://dev-ecoengine.berkeley.edu/api/search/',
+    observations: 'https://dev-ecoengine.berkeley.edu/api/observations/'
+  }
+}
+
+var sortOrder = {
+  kingdom: 0,
+  phylum: 1,
+  clss: 2,
+  order: 3,
+  family: 4,
+  genus: 5,
+  'scientific_name': 6,
+  'state_province': 7,
+  resource: 8
+};
+
 var dateformat = d3.time.format("%Y %b %e");
 
-var barwidth = d3.scale.linear()
-  .range([0, 100])
+ECO.list = function() {
+  var __ = {};
+
+  var barwidth = d3.scale.linear()
+    .range([0, 100]);
+
+  __.draw = function(data) {
+    d3.selectAll(".field-plot a").style("color", null);
+
+    // Total bar width
+    var maxcount = 0;
+    for (var key in data.fields) {
+      var count = 0;
+      data.fields[key].forEach(function(d) {
+        count += d[1];
+      });
+      if (count > maxcount) maxcount = count;
+    }
+    barwidth.domain([0, maxcount]);
+
+    // Groups
+    var fieldplot = d3.select("#search-bars")
+      .html("")
+      .selectAll("div.field-plot")
+      .data(d3.keys(data.fields).map(function(key) { return {
+        "field": key,
+        "values": data.fields[key]
+      }}))
+      .sort(function(a,b){
+        return sortOrder[a.field] - sortOrder[b.field];
+      })
+      .enter().append("div")
+      .attr("class", "field-plot");
+
+    fieldplot.append("h3")
+      .text(function(d) { return d.field});
+
+    var bars = fieldplot.selectAll("div.bars")
+        .data(function(d) { return d.values; })
+        .enter().append("div")
+        .attr("class", "bars")
+        .append("a")
+        .attr("href", function(d) { return d[2]; });
+
+    bars.append("div")
+      .attr("class", "bar")
+      .style("height", "12px")
+      .style("width", function(d) { return Math.round(barwidth(d[1])) + "px"; });
+
+    bars.append("span")
+      .attr("class", "count")
+      .text(function(d) { return d[1]; });
+
+    bars.append("span")
+      .text(function(d) { return " " + capitaliseFirstLetter(d[0]); });
+  }
+  return __;
+};
+
+ECO.datatable = function() {
+  var __ = {};
+
+  __.draw = function(data) {
+    var table = d3.select("#results")
+      .append("table")
+      .attr("class", "table");
+
+    table.append("tr")
+      .selectAll("th")
+      .data(fields)
+      .enter().append("th")
+      .text(String);
+
+    table
+      .selectAll("tr.listing")
+      .data(data.results)
+      .enter().append("tr")
+      .attr("class", "listing")
+      .classed("zebra", function(d,i) { return i % 2 == 0;})
+      .each(function(d) {
+        var entry = d3.select(this)
+          .selectAll("td")
+          .data(fields)
+          .enter().append("td")
+
+        entry.append("span")
+          .attr("class", "value")
+          .html(function(key) {
+            if (typeof d[key] == "string") {
+              if (d[key].slice(0,4) == "http") {
+                return "<a href='" + d[key] + "'>" + d[key] + "</a>";
+              }
+              if (key == "record") {
+                return "<a href='" + d["url"] + "'>" + d[key] + "</a>";
+              }
+              if (key == "begin_date") {
+                return dateformat(new Date(d[key]));
+              }
+              if (key == "end_date") {
+                return dateformat(new Date(d[key]));
+              }
+              return d[key]
+            }
+            if (key == "geojson") {
+              return !!d[key] ? "Yes" : "";
+            }
+            return JSON.stringify(d[key]);
+          });
+      });
+  }
+
+  return __;
+};
+
 
 query();
 
@@ -217,21 +352,23 @@ d3.selectAll(".eco-param")
   }
 })();
 
+var list = new ECO.list();
+var datatable = new ECO.datatable();
 function query() {
   d3.select("#results").style("color", "#bbb");
   var term = d3.select("#searchterm").node().value;
   var minyear = d3.select("#minyear").node().value;
   var maxyear = d3.select("#maxyear").node().value;
-  var querystring = "https://dev-ecoengine.berkeley.edu/api/observations/?extra=record&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
-  var searchquerystring = "https://dev-ecoengine.berkeley.edu/api/search/?extra=record&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear;
+  var querystring = ECO.base.api.observations + "?extra=record&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
+  var searchquerystring = ECO.base.api.search + "?extra=record&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear;
 
   // export links
   d3.select("#export-csv")
-    .attr("href", "https://dev-ecoengine.berkeley.edu/api/observations/?extra=record&format=csv&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + "?extra=record&format=csv&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
   d3.select("#export-json")
-    .attr("href", "https://dev-ecoengine.berkeley.edu/api/observations/?extra=record&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + "?extra=record&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
   d3.select("#export-geojson")
-    .attr("href", "https://dev-ecoengine.berkeley.edu/api/observations/?extra=record&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + "?extra=record&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
 
   d3.json(querystring, function(error, data) {
     d3.select("#results").html("").style("color", null);
@@ -273,102 +410,13 @@ function query() {
     var enditem = Math.min(limit*(page),data.count);
     d3.select("#results").append("p").text("Results " + (startitem+1) + " to " + enditem);
 
-    var table = d3.select("#results")
-      .append("table")
-      .attr("class", "table");
-
-    table.append("tr")
-      .selectAll("th")
-      .data(fields)
-      .enter().append("th")
-      .text(String);
-
-    table
-      .selectAll("tr.listing")
-      .data(data.results)
-      .enter().append("tr")
-      .attr("class", "listing")
-      .classed("zebra", function(d,i) { return i % 2 == 0;})
-      .each(function(d) {
-        var entry = d3.select(this)
-          .selectAll("td")
-          .data(fields)
-          .enter().append("td")
-
-        entry.append("span")
-          .attr("class", "value")
-          .html(function(key) {
-            if (typeof d[key] == "string") {
-              if (d[key].slice(0,4) == "http") {
-                return "<a href='" + d[key] + "'>" + d[key] + "</a>";
-              }
-              if (key == "record") {
-                return "<a href='" + d["url"] + "'>" + d[key] + "</a>";
-              }
-              if (key == "begin_date") {
-                return dateformat(new Date(d[key]));
-              }
-              if (key == "end_date") {
-                return dateformat(new Date(d[key]));
-              }
-              return d[key]
-            }
-            if (key == "geojson") {
-              return !!d[key] ? "Yes" : "";
-            }
-            return JSON.stringify(d[key]);
-          });
-      });
+    datatable.draw(data);
   });
 
 
   d3.selectAll(".field-plot a").style("color", "#bbb");
   d3.json(searchquerystring, function(error, data) {
-    d3.selectAll(".field-plot a").style("color", null);
-
-    // Total bar width
-    var maxcount = 0;
-    for (var key in data.fields) {
-      var count = 0;
-      data.fields[key].forEach(function(d) {
-        count += d[1];
-      });
-      if (count > maxcount) maxcount = count;
-    }
-    barwidth.domain([0, maxcount]);
-
-    // Groups
-    var fieldplot = d3.select("#search-bars")
-      .html("")
-      .selectAll("div.field-plot")
-      .data(d3.keys(data.fields).map(function(key) { return {
-        "field": key,
-        "values": data.fields[key]
-      }}))
-      .enter().append("div")
-      .attr("class", "field-plot");
-
-    fieldplot.append("h3")
-      .text(function(d) { return d.field});
-
-    var bars = fieldplot.selectAll("div.bars")
-        .data(function(d) { return d.values; })
-        .enter().append("div")
-        .attr("class", "bars")
-        .append("a")
-        .attr("href", function(d) { return d[2]; });
-
-    bars.append("div")
-      .attr("class", "bar")
-      .style("height", "12px")
-      .style("width", function(d) { return Math.round(barwidth(d[1])) + "px"; });
-
-    bars.append("span")
-      .attr("class", "count")
-      .text(function(d) { return d[1]; });
-
-    bars.append("span")
-      .text(function(d) { return " " + capitaliseFirstLetter(d[0]); });
+    list.draw(data);
   });
 
 };
