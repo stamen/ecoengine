@@ -132,6 +132,46 @@ svg {
   color: #333;
 }
 
+.eco-basic-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.3);
+}
+
+.eco-basic-icon:before {
+    content: ' ';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.2);
+    margin-left: -3px;
+    margin-top: -3px;
+    z-index: 0;
+}
+
+.blocker {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: rgba(255,255,255,0.8);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999999;
+  margin: 0;
+  padding: 0;
+  display: none;
+}
+.loading .blocker {
+  display: block;
+}
+
+
 #results table {
   font-size: 12px;
 }
@@ -341,7 +381,7 @@ ECO.map = function() {
     });
   }
 
-  __.onData = function(data){
+  __.draw = function(data){
     clearMarkers();
 
     data = dataFilterCoordinates(data.mapdata || []);
@@ -355,6 +395,28 @@ ECO.map = function() {
   }
 
   return __;
+};
+
+ECO.mapAlert = {
+  rootElm: d3.select('.map-info'),
+  contentElm: d3.select('.map-info-content'),
+  closeElm: null,
+  show: function(){
+    if(this.rootElm.classed('visible')) return;
+    this.rootElm.classed('visible', true);
+  },
+  hide: function() {
+    this.rootElm.classed('visible', false);
+  },
+  set: function(str) {
+    this.contentElm.text(str);
+    if (!this.closeElm) {
+      d3.select('.map-info-close').on('click',function(){
+        ECO.mapAlert.hide();
+      })
+    }
+    if (!this.rootElm.classed('visible')) this.show();
+  }
 };
 
 ECO.list = function() {
@@ -616,7 +678,7 @@ function query() {
     d3.select("#results").append("p").text("Results " + (startitem+1) + " to " + enditem);
 
     datatable.draw(data);
-    //map.draw(data);
+    map.draw(data);
   });
 
 
