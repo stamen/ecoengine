@@ -221,6 +221,10 @@ svg {
   background: #f6f6f6;
 }
 
+table .active {
+  background: #fea;
+}
+
 a:hover .bar {
   background: #ee4e32;
 }
@@ -285,7 +289,7 @@ h3 {
 <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
-var limit = 100;
+var limit = 50;
 var page = 1;
 var facets = {
   kingdom: false,
@@ -616,11 +620,17 @@ ECO.datatable = function() {
       over: function(evt) {
         if (!evt.target.data_) return;
         var props = evt.target.data_;
+        __.table.selectAll("tr.listing")
+          .classed("active", function(d) {
+            return props.record == d.properties.record;
+          });
         console.log("Datatable: Marker mouseover: ", props.record);
       },
       out: function(evt) {
         if (!evt.target.data_) return;
         var props = evt.target.data_;
+        __.table.selectAll("tr.listing")
+          .classed("active", false);
         console.log("Datatable: Marker mouseout: ", props.record);
       },
       click: function(evt) {
@@ -631,17 +641,17 @@ ECO.datatable = function() {
   };
 
   __.draw = function(data) {
-    var table = d3.select("#results")
+    __.table = d3.select("#results")
       .append("table")
       .attr("class", "table");
 
-    table.append("tr")
+    __.table.append("tr")
       .selectAll("th")
       .data(fields)
       .enter().append("th")
       .text(String);
 
-    table
+    __.table
       .selectAll("tr.listing")
       .data(data.features)
       .enter().append("tr")
@@ -686,7 +696,7 @@ ECO.datatable = function() {
 
 var fieldlist = new ECO.list();
 var datatable = new ECO.datatable();
-var map = new ECO.map();
+var map = new ECO.map().subscribe(datatable.mapEvents);
 var timebrush = d3.svg.brush()
 
 // text boxes
