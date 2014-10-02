@@ -212,7 +212,7 @@ a:hover .bar {
 }
 .field-plot a.active:hover .x {
   display: inline;
-} 
+}
 .bar {
   display: inline-block;
   margin: 0 8px -1px;
@@ -309,10 +309,6 @@ ECO.map = function() {
       markers = [],
       map;
 
-  var myIcon = L.divIcon({
-    className: 'eco-basic-icon',
-    iconSize: new L.Point(10,10)
-  });
 
   var popup = L.popup({
     closeButton: false
@@ -320,15 +316,24 @@ ECO.map = function() {
 
   map = __.map = L.map('map').setView(defaultCenter, defaultZoom);
 
-  var baseLayer = L.tileLayer(ECO.base.api.tiles, {
+  var baseLayer = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
+    subdomains: 'abc',
+    minZoom: 1,
+    maxZoom: 18
+  }).addTo(map);
+  /*
+  var apiLayer = L.tileLayer(ECO.base.api.tiles, {
     attribution: '&copy; <a href="http://ecoengine.berkeley.edu">EcoEngine</a>',
     subdomains: 'abc',
     minZoom: 1,
     maxZoom: 18
   }).addTo(map);
+  */
 
   function clearMarkers() {
     markers.forEach(function(marker){
+      console.log('m:',marker)
       marker.on('mouseover', null)
             .on('mouseout', null);
       map.removeLayer(marker);
@@ -342,8 +347,15 @@ ECO.map = function() {
     var bds = null;
 
     data.forEach(function(d){
+
+      // create icon...
+      var icon = L.divIcon({
+        className: 'eco-basic-icon',
+        iconSize: new L.Point(10,10)
+      });
+
       var ll = new L.LatLng(d.geometry.coordinates[1], d.geometry.coordinates[0])
-      var m = L.marker(ll, {icon: myIcon}).addTo(map);
+      var m = L.marker(ll, {icon: icon}).addTo(map);
       m.data_ = d.properties;
       m.on('mouseover', showTooltip)
         .on('mouseout', hideTooltip);
@@ -355,8 +367,11 @@ ECO.map = function() {
       }
       markers.push(m);
     });
+
     bds.pad(0.1);
-    map.fitBounds(bds);
+    setTimeout(function(){
+      map.fitBounds(bds);
+    },1);
   }
 
   function showTooltip() {
@@ -372,19 +387,19 @@ ECO.map = function() {
   }
 
   function dataFilterCoordinates(data) {
-
     if (!data || !data.hasOwnProperty('features')) return [];
     if (!data.features.length) return [];
 
     return data.features.filter(function(d){
-      return d.geometry.coordinates.length === 2;
+      return d.geometry && d.geometry.coordinates.length === 2;
     });
   }
 
   __.draw = function(data){
     clearMarkers();
 
-    data = dataFilterCoordinates(data.mapdata || []);
+    data = dataFilterCoordinates(data || []);
+
     if (!data.length) {
       ECO.mapAlert.set('No map data available.');
       return;
@@ -512,7 +527,7 @@ ECO.datatable = function() {
 
     table
       .selectAll("tr.listing")
-      .data(data.results)
+      .data(data.features)
       .enter().append("tr")
       .attr("class", "listing")
       .classed("zebra", function(d,i) { return i % 2 == 0;})
@@ -525,25 +540,26 @@ ECO.datatable = function() {
         entry.append("span")
           .attr("class", "value")
           .html(function(key) {
-            if (typeof d[key] == "string") {
-              if (d[key].slice(0,4) == "http") {
-                return "<a href='" + d[key] + "'>" + d[key] + "</a>";
+            var props = d.properties;
+            if (typeof props[key] == "string") {
+              if (props[key].slice(0,4) == "http") {
+                return "<a href='" + props[key] + "'>" + props[key] + "</a>";
               }
               if (key == "record") {
-                return "<a href='" + d["url"] + "'>" + d[key] + "</a>";
+                return "<a href='" + props["url"] + "'>" + props[key] + "</a>";
               }
               if (key == "begin_date") {
-                return dateformat(new Date(d[key]));
+                return dateformat(new Date(props[key]));
               }
               if (key == "end_date") {
-                return dateformat(new Date(d[key]));
+                return dateformat(new Date(props[key]));
               }
-              return d[key]
+              return props[key]
             }
             if (key == "geojson") {
-              return !!d[key] ? "Yes" : "";
+              return !!d.geometry ? "Yes" : "";
             }
-            return JSON.stringify(d[key]);
+            return JSON.stringify(props[key]);
           });
       });
   }
@@ -552,7 +568,7 @@ ECO.datatable = function() {
 };
 
 
-query();
+
 
 // text boxes
 d3.selectAll(".eco-param")
@@ -612,6 +628,7 @@ d3.selectAll(".eco-param")
 var fieldlist = new ECO.list();
 var datatable = new ECO.datatable();
 var map = new ECO.map();
+query();
 
 function query() {
   d3.select("#results").style("color", "#bbb");
@@ -625,7 +642,7 @@ function query() {
     return "&selected_facets=" + d.key + "_exact%3A%22" + d.value + "%22";
   }).join("&");
 
-  var querystring = ECO.base.api.observations + "?extra=record" + facetstring + "&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
+  var querystring = ECO.base.api.observations + "?extra=record" + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
   var searchquerystring = ECO.base.api.search + "?extra=record" + facetstring + "&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear;
   console.log(searchquerystring);
 
@@ -648,6 +665,7 @@ function query() {
       d3.select("#results").append("div").html(error.responseText).style("color", "red");
       return;
     }
+
     console.log(data);
 
     // Display total number of results
