@@ -153,6 +153,13 @@ svg {
     z-index: 0;
 }
 
+.eco-photo-icon {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    background: rgba(255,0,0,0.3);
+}
+
 .blocker {
   position: absolute;
   height: 100%;
@@ -343,19 +350,13 @@ ECO.map = function() {
     markers.length = 0;
   }
 
-  function addMarkers(data) {
+  function addMarkers(data, icon) {
     var bds = null;
 
     data.forEach(function(d){
-
-      // create icon...
-      var icon = L.divIcon({
-        className: 'eco-basic-icon',
-        iconSize: new L.Point(10,10)
-      });
-
+      var markerIcon = d.icon || icon;
       var ll = new L.LatLng(d.geometry.coordinates[1], d.geometry.coordinates[0])
-      var m = L.marker(ll, {icon: icon}).addTo(map);
+      var m = L.marker(ll, {icon: markerIcon}).addTo(map);
       m.data_ = d.properties;
       m.on('mouseover', showTooltip)
         .on('mouseout', hideTooltip);
@@ -406,7 +407,31 @@ ECO.map = function() {
     }
 
     ECO.mapAlert.hide();
-    addMarkers(data);
+
+    // set an icon for a marker, you can either
+    // create an icon object for use with the whole data Array
+    // or create an icon object for each element in the data Array.
+    // addMarker will look for an icon in the element first then default
+    // to the general icon.  Must set one or the other.
+
+    // method 1
+    var icon = L.divIcon({
+      className: 'eco-basic-icon',
+      iconSize: new L.Point(10,10)
+    });
+
+    /*
+    // method 2
+    data.forEach(function(d){
+      d.icon = L.divIcon({
+        className: 'eco-photo-icon',
+        iconSize: new L.Point(10,10)
+      });
+    });
+    */
+
+
+    addMarkers(data, icon);
   }
 
   return __;
