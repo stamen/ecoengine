@@ -157,6 +157,7 @@ svg {
     width: 10px;
     height: 10px;
     border-radius: 3px;
+
     background: rgba(255,0,0,0.3);
 }
 
@@ -314,11 +315,13 @@ ECO.map = function() {
   var defaultCenter = new L.LatLng(37.7,-122),
       defaultZoom = 6,
       markers = [],
+      subscribers = [],
       map;
 
 
   var popup = L.popup({
-    closeButton: false
+    closeButton: false,
+    offset: new L.Point(0,-4)
   });
 
   map = __.map = L.map('map').setView(defaultCenter, defaultZoom);
@@ -340,9 +343,10 @@ ECO.map = function() {
 
   function clearMarkers() {
     markers.forEach(function(marker){
-      console.log('m:',marker)
-      marker.on('mouseover', null)
-            .on('mouseout', null);
+      marker.off('mouseover', onMarkerOver)
+            .off('mouseout', onMarkerOut)
+            .off('click', onMarkerClick);
+
       map.removeLayer(marker);
       marker = undefined;
     });
@@ -350,16 +354,38 @@ ECO.map = function() {
     markers.length = 0;
   }
 
+  function onMarkerOver(evt) {
+    showTooltip(evt);
+    subscribers.forEach(function(s){
+      if (s.over) s.over(evt);
+    });
+  }
+
+  function onMarkerOut(evt) {
+    hideTooltip();
+    subscribers.forEach(function(s){
+      if (s.out) s.out(evt);
+    });
+  }
+
+  function onMarkerClick(evt) {
+    evt.originalEvent.preventDefault();
+    subscribers.forEach(function(s){
+      if (s.click) s.click(evt);
+    });
+  }
+
   function addMarkers(data, icon) {
     var bds = null;
 
     data.forEach(function(d){
-      var markerIcon = d.icon || icon;
+      var markerIcon = d.icon || icon || new L.Icon.Default();
       var ll = new L.LatLng(d.geometry.coordinates[1], d.geometry.coordinates[0])
-      var m = L.marker(ll, {icon: markerIcon}).addTo(map);
+      var m = L.marker(ll, {riseOnHover: true, icon: markerIcon}).addTo(map);
       m.data_ = d.properties;
-      m.on('mouseover', showTooltip)
-        .on('mouseout', hideTooltip);
+      m.on('mouseover', onMarkerOver)
+        .on('mouseout', onMarkerOut)
+        .on('click', onMarkerClick);
 
       if (!bds) {
         bds = new L.latLngBounds([ll]);
@@ -370,16 +396,28 @@ ECO.map = function() {
     });
 
     bds.pad(0.1);
+
     setTimeout(function(){
-      map.fitBounds(bds);
+      // basic method to determine if bounds is big enough to set
+      var tr = map.latLngToLayerPoint(bds.getNorthEast()),
+          bl = map.latLngToLayerPoint(bds.getSouthWest()),
+          xDiff = Math.abs(tr.x - bl.x),
+          yDiff = Math.abs(tr.y - bl.y);
+
+      if (xDiff < 200 || yDiff < 200) {
+        map.setView(bds.getCenter(), 5);
+      } else {
+        map.fitBounds(bds);
+      }
+
     },1);
   }
 
-  function showTooltip() {
-      if (!this.data_) return;
+  function showTooltip(evt) {
+      if (!evt.target.data_) return;
       popup
-          .setLatLng(this._latlng)
-          .setContent(this.data_['scientific_name'] || 'n/a')
+          .setLatLng(evt.target._latlng)
+          .setContent(evt.target.data_['scientific_name'] || 'n/a')
           .openOn(map);
   }
 
@@ -396,6 +434,17 @@ ECO.map = function() {
     });
   }
 
+  /**
+   * Add listener objects for markers
+   * @param  Object {over:fn, out: fn, click: fn}
+   * @return subscribers Array || this
+   */
+  __.subscribe = function(_) {
+    if (!_) return subscribers;
+    subscribers.push(_);
+    return __;
+  }
+
   __.draw = function(data){
     clearMarkers();
 
@@ -407,6 +456,7 @@ ECO.map = function() {
     }
 
     ECO.mapAlert.hide();
+
 
     // set an icon for a marker, you can either
     // create an icon object for use with the whole data Array
@@ -429,7 +479,6 @@ ECO.map = function() {
       });
     });
     */
-
 
     addMarkers(data, icon);
   }
@@ -538,6 +587,24 @@ ECO.list = function() {
 
 ECO.datatable = function() {
   var __ = {};
+
+  __.mapEvents = {
+      over: function(evt) {
+        if (!evt.target.data_) return;
+        var props = evt.target.data_;
+        console.log("Datatable: Marker mouseover: ", props.record);
+      },
+      out: function(evt) {
+        if (!evt.target.data_) return;
+        var props = evt.target.data_;
+        console.log("Datatable: Marker mouseout: ", props.record);
+      },
+      click: function(evt) {
+        if (!evt.target.data_) return;
+        var props = evt.target.data_;
+        console.log("Datatable: Marker click: ", props.record);
+      }
+  };
 
   __.draw = function(data) {
     var table = d3.select("#results")
@@ -652,7 +719,7 @@ d3.selectAll(".eco-param")
 
 var fieldlist = new ECO.list();
 var datatable = new ECO.datatable();
-var map = new ECO.map();
+var map = new ECO.map().subscribe(datatable.mapEvents);
 query();
 
 function query() {
