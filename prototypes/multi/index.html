@@ -23,9 +23,21 @@ a:hover {
   margin: 8px;
 }
 
+.eco-param {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 0 2px;
+}
+
+#minyear,
+#maxyear {
+  width: 48px;
+  text-align: center;
+}
+
 /* Time Slider */
 svg {
-  font: 10px sans-serif;
+  font-size: 12px;
 }
 
 .axis path,
@@ -49,13 +61,17 @@ svg {
   margin-bottom: -12px;
 }
 
+
+.paging { 
+  margin: 8px 4px;
+}
+
 .pagination {
-  width: 100%;
+  margin: 0;
 }
 
 .pagination span {
   margin-right: 7px;
-  float: left;
   cursor: pointer;
   padding: 1px 3px;
   color: #317eac;
@@ -77,11 +93,11 @@ svg {
   vertical-align: top;
 }
 .panel.left {
-  width: 200px;
+  width: 220px;
   float: left;
 }
 .panel.right {
-  margin-left: 210px;
+  margin-left: 228px;
 }
 .panel:last-child {
   margin-right: 0;
@@ -237,8 +253,9 @@ h3 {
     Date Range: <input type="text" value="1920" id="minyear" class="eco-param"></input>
     <span id="time-slider"></span>
     <input type="text" value="1975" id="maxyear" class="eco-param"></input>
-    <br/>
-    Export <a href="#" id="export-csv" target="_blank">CSV</a> |
+  </p>
+  <p>
+    Export Observations <a href="#" id="export-csv" target="_blank">CSV</a> |
     <a href="#" id="export-json" target="_blank">JSON</a> |
     <a href="#" id="export-geojson" target="_blank">GeoJSON</a>
   </p>
@@ -592,11 +609,19 @@ ECO.datatable = function() {
 };
 
 
-
+var fieldlist = new ECO.list();
+var datatable = new ECO.datatable();
+var map = new ECO.map();
+var timebrush = d3.svg.brush()
 
 // text boxes
 d3.selectAll(".eco-param")
   .on("change", function() {
+    var minyear = d3.select("#minyear").node().value;
+    var maxyear = d3.select("#maxyear").node().value;
+    timebrush.extent([new Date(minyear), new Date(maxyear)]);
+    d3.select("#time-slider .brush").call(timebrush)
+
     page = 1;
     query();
   });
@@ -604,9 +629,9 @@ d3.selectAll(".eco-param")
 
 // time slider
 (function() {
-  var margin = {top: 2, right: 14, bottom: 24, left: 14};
+  var margin = {top: 1, right: 14, bottom: 26, left: 14};
   var height = 1;
-  var width = 350;
+  var width = 420;
 
   var minyear = d3.select("#minyear").node().value;
   var maxyear = d3.select("#maxyear").node().value;
@@ -617,10 +642,10 @@ d3.selectAll(".eco-param")
 //    .domain([new Date(minyear), new Date(maxyear)]).nice();
 
   var xAxis = d3.svg.axis().scale(x).orient("bottom");
-  var brush = d3.svg.brush()
-      .x(x)
+  timebrush.x(x)
       .on("brush", brushed)
-      .on("brushend", query);
+      .on("brushend", query)
+      .extent([new Date(minyear),new Date(maxyear)]);
 
   var context = d3.select("#time-slider")
       .append("svg")
@@ -637,21 +662,20 @@ d3.selectAll(".eco-param")
 
   context.append("g")
       .attr("class", "x brush")
-      .call(brush)
+      .call(timebrush)
     .selectAll("rect")
       .attr("y", -6)
       .attr("height", height + margin.bottom);
 
+
   function brushed() {
-    var extent = brush.extent();
-    d3.select("#minyear").attr("value", extent[0].getFullYear());
-    d3.select("#maxyear").attr("value", extent[1].getFullYear());
+    var extent = timebrush.extent();
+    d3.select("#minyear").node().value = extent[0].getFullYear();
+    d3.select("#maxyear").node().value = extent[1].getFullYear();
   }
 })();
 
-var fieldlist = new ECO.list();
-var datatable = new ECO.datatable();
-var map = new ECO.map();
+
 query();
 
 function query() {
@@ -681,10 +705,6 @@ function query() {
   d3.json(querystring, function(error, data) {
     d3.select("#results").html("").style("color", null);
 
-    d3.select("#results")
-      .append("p")
-      .html("<strong>Query:</strong> " + querystring);
-
     if (error) {
       d3.select("#results").append("div").html(error.responseText).style("color", "red");
       return;
@@ -692,17 +712,19 @@ function query() {
 
     console.log(data);
 
-    // Display total number of results
-    var countdiv = d3.select("#results p").append("div");
-    countdiv.append("strong").text("Results: ");
-    countdiv.append("span").text(data.count);
-
     // Paging
+    var startitem = limit*(page-1);
+    var enditem = Math.min(limit*(page),data.count);
+    var pagination = d3.select("#results").append("p")
+      .attr("class", "paging");
+    
+    pagination.append("span").text("Results " + (startitem+1) + " to " + enditem + " of " + data.count + " - ");
+
     var pagecount = Math.ceil(data.count/limit);
-    d3.select("#results").append("p")
+    pagination.append("span")
       .attr("class", "pagination")
       .selectAll("span")
-      .data(d3.range(1, pagecount+1))
+      .data(d3.range(1, pagecount+1).slice(0,20))
       .enter().append("span")
       .classed("active", function(d) { return d == page;})
       .text(String)
@@ -712,12 +734,14 @@ function query() {
         query();
       });
 
+    // TEMPORARY warning of high page counts
+    if (pagecount > 20) {
+      d3.select("#results .pagination").append("em")
+        .text("(more data available)");
+    }
+
     d3.select(".pagination").append("div")
       .style("clear", "both");
-
-    var startitem = limit*(page-1);
-    var enditem = Math.min(limit*(page),data.count);
-    d3.select("#results").append("p").text("Results " + (startitem+1) + " to " + enditem);
 
     datatable.draw(data);
     map.draw(data);
