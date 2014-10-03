@@ -117,6 +117,12 @@ svg {
   pointer-events: none;
 }
 
+#layer-select {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
 .map-info {
   position: absolute;
   display: none;
@@ -283,6 +289,9 @@ h3 {
         <button class="map-info-close">x</button>
         <p class="map-info-content"></p>
     </div>
+    <select id="layer-select">
+      <option value="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png">OpenStreetMap</option>
+    </select>
     <div id="results"></div>
   </div>
 </div>
@@ -321,7 +330,8 @@ ECO.base = {
   api: {
     search: 'https://dev-ecoengine.berkeley.edu/api/search/',
     observations: 'https://dev-ecoengine.berkeley.edu/api/observations/',
-    tiles: 'https://dev-ecoengine.berkeley.edu/tiles/vtmveg/{z}/{x}/{y}.png'
+    layers: 'https://dev-ecoengine.berkeley.edu/api/layers/',
+    rasters: 'https://dev-ecoengine.berkeley.edu/api/rstore/'
   }
 }
 
@@ -362,6 +372,34 @@ ECO.map = function() {
     minZoom: 1,
     maxZoom: 18
   }).addTo(map);
+
+  // Layer select box
+  d3.json(ECO.base.api.layers, function(error, layers) {
+    d3.json(ECO.base.api.rasters, function(error, rasters) {
+      if (!rasters) return;
+      rasters.results.forEach(function(d) {
+        d3.select("#layer-select")
+          .append("option")
+          .attr("value", d.tile_template)
+          .text(d.name);
+      });
+    });
+
+    if (!layers) return;
+    layers.results.forEach(function(d) {
+      d3.select("#layer-select")
+        .append("option")
+        .attr("value", d.tile_template)
+        .text(d.name);
+    });
+  });
+
+  d3.select("#layer-select")
+    .on("change", function() {
+      baseLayer.setUrl(this.value);
+    });
+
+
   /*
   var apiLayer = L.tileLayer(ECO.base.api.tiles, {
     attribution: '&copy; <a href="http://ecoengine.berkeley.edu">EcoEngine</a>',
