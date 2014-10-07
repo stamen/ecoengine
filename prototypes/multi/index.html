@@ -325,6 +325,9 @@ var fields = [
   "observation_type"
 ];
 
+var sortFields = {};
+fields.forEach(function(d) { sortFields[d] = false; });
+
 var ECO = {};
 ECO.base = {
   api: {
@@ -689,7 +692,25 @@ ECO.datatable = function() {
       .selectAll("th")
       .data(fields)
       .enter().append("th")
-      .text(String);
+      .text(String)
+      .style("color", function(d) {
+        if (sortFields[d] == "+") { 
+          return "#0a0";
+        }
+        if (sortFields[d] == "-") { 
+          return "#b00";
+        }
+      })
+      .on("click", function(d) {
+        if (sortFields[d] == false) { 
+          sortFields[d] = "+";
+        } else if (sortFields[d] == "+") { 
+          sortFields[d] = "-";
+        } else if (sortFields[d] == "-") { 
+          sortFields[d] = "+";
+        }
+        query();
+      });
 
     __.table
       .selectAll("tr.listing")
@@ -809,22 +830,28 @@ function query() {
   var maxyear = d3.select("#maxyear").node().value;
 
   var facetlist = d3.entries(facets)
-    .filter(function(d) { return d.value; })
+    .filter(function(d) { return d.value; });
   var facetstring = facetlist.map(function(d) {
     return "&selected_facets=" + d.key + "_exact%3A%22" + d.value + "%22";
   }).join("&");
 
-  var querystring = ECO.base.api.observations + "?extra=record" + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
-  var searchquerystring = ECO.base.api.search + "?extra=record" + facetstring + "&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear;
+  var sortlist = d3.entries(sortFields)
+    .filter(function(d) { return d.value; });
+  var sortstring = sortlist.map(function(d) {
+    return (d.value == "-" ? "-" : "") + d.key;
+  }).join(",");
+
+  var querystring = ECO.base.api.observations + "?extra=record&ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
+  var searchquerystring = ECO.base.api.search + "?extra=record&ordering=" + sortstring + facetstring + "&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear;
   console.log(searchquerystring);
 
   // export links
   d3.select("#export-csv")
-    .attr("href", ECO.base.api.observations + "?fields=" + facetstring + "&format=csv&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + "?fields=&ordering=" + sortstring + facetstring + "&format=csv&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
   d3.select("#export-json")
-    .attr("href", ECO.base.api.observations + "?fields=" + facetstring + "&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + "?fields=&ordering=" + sortstring + facetstring + "&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
   d3.select("#export-geojson")
-    .attr("href", ECO.base.api.observations + "?fields=" + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + "?fields=&ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
 
   d3.json(querystring, function(error, data) {
     d3.select("#results").html("").style("color", null);
