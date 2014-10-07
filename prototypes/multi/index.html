@@ -6,7 +6,7 @@ body {
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 13px;
   width: 100%;
-  background: #f6f6f6;
+  background: #f2f2f2;
   margin: 0;
 }
 
@@ -20,7 +20,21 @@ a:hover {
 }
 
 .wrap {
-  margin: 8px;
+  margin: 0 8px;
+}
+
+.header {
+  color: #000;
+  background: #fff;
+  border-bottom: 1px solid #d0d0d0;
+  padding: 8px;
+}
+
+h2.app-title {
+  margin: 0 12px 0 0;
+  display: inline-block;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .eco-param {
@@ -92,6 +106,8 @@ svg {
 }
 
 .panel {
+  background: transparent;
+  border: none;
   position: relative;
   padding: 0;
   vertical-align: top;
@@ -162,12 +178,15 @@ svg {
 }
 
 .eco-basic-icon {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
-    background: rgba(0,0,0,0.3);
+    background: #317eac;
+    background: rgba(49,126,172,1);
+    border: 1px solid #fff;
 }
 
+/*
 .eco-basic-icon:before {
     content: ' ';
     position: absolute;
@@ -176,17 +195,17 @@ svg {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0,0,0,0.2);
     margin-left: -3px;
     margin-top: -3px;
     z-index: 0;
 }
+*/
 
 .eco-photo-icon {
     width: 10px;
     height: 10px;
     border-radius: 3px;
-
     background: rgba(255,0,0,0.3);
 }
 
@@ -218,6 +237,9 @@ svg {
   height: 45px;
   display: inline-block;
 }
+#photos .inner-photos {
+  width: 120%;
+}
 
 #results table {
   font-size: 12px;
@@ -234,7 +256,7 @@ svg {
   border-bottom: 1px solid #e6e6e6;
 }
 .zebra {
-  background: #f6f6f6;
+  background: #fff;
 }
 
 table .active {
@@ -276,20 +298,22 @@ h3 {
   line-height: 1em;
   margin: 10px 0 4px 0;
 }
+
 </style>
 <body>
+<div class="header">
+  <h2 class="app-title">
+    Ecoengine
+  </h2>
+  Search Term: <input type="text" value="" id="searchterm" class="eco-param"></input>
+  Date Range: <input type="text" value="1920" id="minyear" class="eco-param"></input>
+  <span id="time-slider"></span>
+  <input type="text" value="1975" id="maxyear" class="eco-param"></input>
+  Export <a href="#" id="export-csv" target="_blank">CSV</a> |
+  <a href="#" id="export-json" target="_blank">JSON</a> |
+  <a href="#" id="export-geojson" target="_blank">GeoJSON</a>
+</div>
 <div class="wrap">
-  <p>
-    Search Term: <input type="text" value="" id="searchterm" class="eco-param"></input>
-    Date Range: <input type="text" value="1920" id="minyear" class="eco-param"></input>
-    <span id="time-slider"></span>
-    <input type="text" value="1975" id="maxyear" class="eco-param"></input>
-  </p>
-  <p>
-    Export Observations <a href="#" id="export-csv" target="_blank">CSV</a> |
-    <a href="#" id="export-json" target="_blank">JSON</a> |
-    <a href="#" id="export-geojson" target="_blank">GeoJSON</a>
-  </p>
   <div class="panel left">
     <div id="search-bars"></div>
   </div>
@@ -300,10 +324,13 @@ h3 {
         <p class="map-info-content"></p>
     </div>
     <select id="layer-select">
-      <option value="http://d.tile.stamen.com/terrain/{z}/{x}/{y}.jpg">Stamen Terrain</option>
+      <option value="http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.jpg">Stamen Terrain</option>
       <option value="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png">OpenStreetMap</option>
     </select>
-    <div id="photos"></div>
+    <div id="photos">
+      <div class="inner-photos">
+      </div>
+    </div>
     <div id="results"></div>
   </div>
 </div>
@@ -382,7 +409,7 @@ ECO.map = function() {
 
   map = __.map = L.map('map').setView(defaultCenter, defaultZoom);
 
-  var baseLayer = L.tileLayer('http://d.tile.stamen.com/terrain/{z}/{x}/{y}.jpg', {
+  var baseLayer = L.tileLayer('http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.jpg', {
     attribution: '',
     subdomains: 'abc',
     minZoom: 4,
@@ -920,7 +947,7 @@ function query() {
   });
 
   d3.json(photoquerystring, function(error, data) {
-    var photos = d3.select("#photos")
+    var photos = d3.select("#photos .inner-photos")
       .html("")
       .selectAll("a")
       .data(data.features)
