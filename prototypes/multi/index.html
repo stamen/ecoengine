@@ -300,6 +300,7 @@ h3 {
         <p class="map-info-content"></p>
     </div>
     <select id="layer-select">
+      <option value="http://d.tile.stamen.com/terrain/{z}/{x}/{y}.jpg">Stamen Terrain</option>
       <option value="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png">OpenStreetMap</option>
     </select>
     <div id="photos"></div>
@@ -381,8 +382,8 @@ ECO.map = function() {
 
   map = __.map = L.map('map').setView(defaultCenter, defaultZoom);
 
-  var baseLayer = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
+  var baseLayer = L.tileLayer('http://d.tile.stamen.com/terrain/{z}/{x}/{y}.jpg', {
+    attribution: '',
     subdomains: 'abc',
     minZoom: 1,
     maxZoom: 18
