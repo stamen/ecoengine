@@ -6,8 +6,9 @@ body {
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 13px;
   width: 100%;
-  background: #f7f7f7;
+  background: #fff;
   margin: 0;
+  min-width: 960px;
 }
 
 a {
@@ -19,20 +20,35 @@ a:hover {
   text-decoration: underline;
 }
 
+#map {
+  margin: 38px 0 0 0;
+  position: relative;
+}
+
 .wrap {
-  margin: 40px 0 0 8px;
+  margin: 8px 0 0 8px;
 }
 
 .header {
-  color: #000;
-  background: #fff;
-  border-bottom: 1px solid #d0d0d0;
+  color: #fff;
+  background: #317eac;
+  border-bottom: 1px solid #114e7c;
   padding: 8px;
   position: fixed;
   top: 0;
-  height: 40px;
+  height: 38px;
   width: 100%;
   z-index: 2000;
+  overflow: hidden;
+}
+
+.header a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.header a:hover {
+  text-decoration: underline;
 }
 
 h2.app-title {
@@ -44,18 +60,25 @@ h2.app-title {
 
 .eco-param {
   font-size: 15px;
+  line-height: 15px;
   font-weight: bold;
   padding: 0 2px;
+  color: #303030;
 }
 
 h4 {
-  margin-left: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
 }
 
 #minyear,
 #maxyear {
   width: 48px;
   text-align: center;
+}
+
+.export-buttons {
 }
 
 /* Time Slider */
@@ -78,6 +101,7 @@ svg {
 
 #time-slider {
   display: inline;
+  display: none;
 }
 
 #time-slider svg {
@@ -118,11 +142,11 @@ svg {
   vertical-align: top;
 }
 .panel.left {
-  width: 220px;
+  width: 26%;
   float: left;
 }
 .panel.right {
-  margin-left: 228px;
+  margin-left: 26%;
 }
 .panel:last-child {
   margin-right: 0;
@@ -131,7 +155,7 @@ svg {
 /* MAP */
 #map {
   width: 100%;
-  height: 300px;
+  height: 340px;
 }
 
 .leaflet-popup-pane {
@@ -142,6 +166,8 @@ svg {
   position: absolute;
   top: 10px;
   right: 10px;
+  z-index: 100;
+  width: 180px;
 }
 
 .map-info {
@@ -235,15 +261,26 @@ svg {
 
 #photos {
   width: 100%;
-  height: 45px;
-  overflow: hidden;
+  color: #fff;
+  background: #111;
+  min-height: 24px;
 }
 #photos img {
-  height: 45px;
+  height: 40px;
   display: inline-block;
+  padding: 1px;
 }
-#photos .inner-photos {
-  width: 120%;
+
+#photos {
+  position: relative;
+}
+
+#photos h4 {
+  pointer-events: none;
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  background: rgba(0,0,0,0.5);
 }
 
 #results table {
@@ -311,32 +348,39 @@ h3 {
   <h2 class="app-title">
     Ecoengine
   </h2>
-  Search Term: <input type="text" value="" id="searchterm" class="eco-param"></input>
-  Date Range: <input type="text" value="1920" id="minyear" class="eco-param"></input>
+  Search Term: <input type="text" value="Dendromecon" id="searchterm" class="eco-param"></input>
+  &nbsp; Date Range: <input type="text" value="1920" id="minyear" class="eco-param"></input>
+  to
   <span id="time-slider"></span>
   <input type="text" value="1975" id="maxyear" class="eco-param"></input>
-  Export <a href="#" id="export-csv" target="_blank">CSV</a> |
-  <a href="#" id="export-json" target="_blank">JSON</a> |
-  <a href="#" id="export-geojson" target="_blank">GeoJSON</a>
+  &nbsp; <span class="export-buttons">
+    <a href="#" id="export-csv" target="_blank">CSV</a> |
+    <a href="#" id="export-json" target="_blank">JSON</a> |
+    <a href="#" id="export-geojson" target="_blank">GeoJSON</a>
+  <span>
+</div>
+<div id="map">
+  <select id="layer-select">
+    <option value="http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.jpg">Stamen Terrain</option>
+    <option value="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png">OpenStreetMap</option>
+  </select>
+</div>
+<div class="map-info">
+    <button class="map-info-close">x</button>
+    <p class="map-info-content"></p>
+</div>
+<div id="photos" class="photos">
+  <h4>Photos</h4>
+  <div class="inner-photos">
+  </div>
 </div>
 <div class="wrap">
   <div class="panel left">
+    <h4>Search Results</h4>
     <div id="search-bars"></div>
   </div>
   <div class="panel right">
-    <div id="map"></div>
-    <div class="map-info">
-        <button class="map-info-close">x</button>
-        <p class="map-info-content"></p>
-    </div>
-    <select id="layer-select">
-      <option value="http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.jpg">Stamen Terrain</option>
-      <option value="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png">OpenStreetMap</option>
-    </select>
-    <div id="photos">
-      <div class="inner-photos">
-      </div>
-    </div>
+    <h4>Observations</h4>
     <div id="results"></div>
   </div>
 </div>
@@ -907,9 +951,6 @@ function query() {
       d3.select("#results").append("div").html(error.responseText).style("color", "red");
       return;
     }
-
-    d3.select("#results").append("h4")
-      .text("Observations")
 
     // Paging
     var startitem = limit*(page-1);
