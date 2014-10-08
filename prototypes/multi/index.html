@@ -62,8 +62,10 @@ h2.app-title {
   font-size: 15px;
   line-height: 15px;
   font-weight: bold;
-  padding: 0 2px;
+  padding: 1px 2px 2px;
   color: #303030;
+  border: 1px solid #666;
+  border-radius: 2px;
 }
 
 h4 {
@@ -361,7 +363,7 @@ h3 {
 </div>
 <div id="map">
   <select id="layer-select">
-    <option value="http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.jpg">Stamen Terrain</option>
+    <option value="http://{s}.tile.stamen.com/terrain-background/{z}/{x}/{y}.jpg">Stamen Terrain</option>
     <option value="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png">OpenStreetMap</option>
   </select>
 </div>
@@ -459,7 +461,7 @@ ECO.map = function() {
 
   map = __.map = L.map('map').setView(defaultCenter, defaultZoom);
 
-  var baseLayer = L.tileLayer('http://{s}.tile.stamen.com/terrain/{z}/{x}/{y}.jpg', {
+  var baseLayer = L.tileLayer('http://{s}.tile.stamen.com/terrain-background/{z}/{x}/{y}.jpg', {
     attribution: '',
     subdomains: 'abc',
     minZoom: 4,
