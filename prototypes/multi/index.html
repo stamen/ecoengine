@@ -512,16 +512,19 @@ ECO.base = {
 }
 
 var sortOrder = {
-  kingdom: 0,
-  phylum: 1,
-  clss: 2,
-  order: 3,
-  family: 4,
-  genus: 5,
-  'scientific_name': 6,
-  'state_province': 7,
-  resource: 8
+  georeferenced: 1,
+  'state_province': 3,
+  phylum: 5,
+  kingdom: 7,
+  clss: 9,
+  order: 11,
+  family: 13,
+  genus: 15,
+  'scientific_name': 17,
+  'observation_type': 19
 };
+
+
 
 var dateformat = d3.time.format("%Y %b %e");
 
@@ -873,7 +876,9 @@ ECO.list = function() {
 
     var searchfields = d3.keys(data.fields);
     searchfields.sort(function(a,b){
-      return sortOrder[a] - sortOrder[b];
+      var one = a in sortOrder ? sortOrder[a] : 100;
+      var two = b in sortOrder ? sortOrder[b] : 100;
+      return one - two;
     });
 
     // Groups
