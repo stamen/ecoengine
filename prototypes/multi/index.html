@@ -142,19 +142,38 @@ svg {
   position: relative;
   padding: 0;
   vertical-align: top;
+  margin: 0;
 }
 .panel.left {
-  width: 26%;
+  width: 30%;
   float: left;
 }
 .panel.right {
-  margin-left: 26%;
+  margin-left: 30%;
 }
 .panel:last-child {
   margin-right: 0;
 }
 
 /* MAP */
+.map-detail {
+  height: 340px;
+}
+
+.map-detail.left {
+  padding: 8px 0 0 8px;
+  overflow: auto;
+}
+
+#detail-view {
+  margin-top: 8px;
+}
+
+#detail-view img {
+  max-width: 240px;
+  margin-bottom: 8px;
+}
+
 #map {
   width: 100%;
   height: 340px;
@@ -361,15 +380,22 @@ h3 {
     <a href="#" id="export-geojson" target="_blank">GeoJSON</a>
   <span>
 </div>
-<div id="map">
-  <select id="layer-select">
-    <option value="http://{s}.tile.stamen.com/terrain-background/{z}/{x}/{y}.jpg">Stamen Terrain</option>
-    <option value="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png">OpenStreetMap</option>
-  </select>
+<div class="panel left map-detail">
+  <h4><span id="detail-type"></span> Details</h4>
+  <p id="detail-view">
+  </p>
 </div>
-<div class="map-info">
-    <button class="map-info-close">x</button>
-    <p class="map-info-content"></p>
+<div class="panel right map-detail">
+  <div id="map">
+    <select id="layer-select">
+      <option value="http://{s}.tile.stamen.com/terrain-background/{z}/{x}/{y}.jpg">Stamen Terrain</option>
+      <option value="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png">OpenStreetMap</option>
+    </select>
+  </div>
+  <div class="map-info">
+      <button class="map-info-close">x</button>
+      <p class="map-info-content"></p>
+  </div>
 </div>
 <div id="photos" class="photos">
   <h4>Photos</h4>
@@ -443,6 +469,38 @@ var sortOrder = {
 };
 
 var dateformat = d3.time.format("%Y %b %e");
+
+ECO.detailview = function(row) {
+  // TODO Move to detail view
+  var container = d3.select("#detail-view")
+    .html("")
+
+  if ("media_url" in row && row.media_url) {
+    container.append("a")
+      .attr("href", row.media_url)
+    .append("img")
+      .attr("src", row.media_url);
+  }
+
+  var divs = container.selectAll("div")
+    .data(d3.entries(row))
+    .enter().append("div")
+
+  divs.append("strong")
+    .html(function(d) { return d.key + " &nbsp; "; });
+
+  divs.append("span")
+    .html(function(d) {
+
+      if (typeof d.value == "string") {
+        if (d.value.slice(0,4) == "http") {
+          return "<a href='" + d.value + "'>" + d.value + "</a>";
+        }
+        return d.value;
+      }
+      return JSON.stringify(d.value);
+    });
+};
 
 ECO.map = function() {
   var __ = {};
@@ -519,6 +577,8 @@ ECO.map = function() {
 
   function onMarkerOver(evt) {
     showTooltip(evt);
+    d3.select("#detail-type").text("Observation");
+    ECO.detailview(evt.target.data_);
     subscribers.forEach(function(s){
       if (s.over) s.over(evt);
     });
@@ -719,6 +779,15 @@ ECO.list = function() {
         .classed("active", function(d,i,g) {
           return facets[searchfields[g]] == d[0];
         })
+        .on("mouseover", function(d,i,g) {
+          d3.select("#detail-type").text("Search");
+          ECO.detailview({
+            "field": searchfields[g],
+            "value": d[0],
+            "count": d[1],
+            "url": d[2]
+          });
+        })
         .on("click", function(d,i,g) {
           page = 1;
           if (facets[searchfields[g]] == d[0]) {
@@ -810,6 +879,10 @@ ECO.datatable = function() {
       .enter().append("tr")
       .attr("class", "listing")
       .classed("zebra", function(d,i) { return i % 2 == 0;})
+      .on("mouseover", function(d) {
+        d3.select("#detail-type").text("Observation");
+        ECO.detailview(d.properties);
+      })
       .each(function(d) {
         var entry = d3.select(this)
           .selectAll("td")
@@ -1001,7 +1074,11 @@ function query() {
       .selectAll("a")
       .data(data.features)
       .enter().append("a")
-      .attr("href", function(d) { return d.properties.url; });
+      .attr("href", function(d) { return d.properties.url; })
+      .on("mouseover", function(d) {
+        d3.select("#detail-type").text("Photo");
+        ECO.detailview(d.properties);
+      });
 
     photos.append("img")
       .attr("src", function(d) { return d.properties.media_url; });
