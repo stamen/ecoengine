@@ -438,6 +438,11 @@ h3 {
 <div class="panel left map-detail">
   <h4><span id="detail-type"></span> Details</h4>
   <p id="detail-view">
+    <h5>Todo</h5>
+    <ul>
+      <li>Display active search parameters</li>
+      <li>Display loading status of APIs</li>
+    </ul>
   </p>
 </div>
 <div class="panel right map-detail">
@@ -1160,9 +1165,6 @@ function query() {
       d3.select("#results").append("div").html(error.responseText).style("color", "red");
       return;
     }
-
-    d3.select("#detail-type").text("Observation");
-    ECO.detailview(data.features[0].properties);
 
     // Paging
     var startitem = limit*(page-1);
