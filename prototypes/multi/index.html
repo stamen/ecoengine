@@ -408,8 +408,12 @@ h3 {
 <div id="advanced-search" class="flydown">
   <h4>Advanced Search</h4>
   <p>
-    <strong>Todo:</strong><br/>
-    Footprint Search<br/>
+    <strong>Todo (nonfunctional):</strong><br/>
+    Footprint <select id="reserve-list">
+      
+    </select><select id="jepson-list">
+      
+    </select><br/>
     Search By Field<br/>
   </p>
   <a href="#" class="hide-btn">Hide</a>
@@ -500,7 +504,9 @@ ECO.base = {
     observations: 'https://dev-ecoengine.berkeley.edu/api/observations/',
     photos: 'https://dev-ecoengine.berkeley.edu/api/photos/',
     layers: 'https://dev-ecoengine.berkeley.edu/api/layers/',
-    rasters: '../tiles/rstore.json'
+    rasters: '../tiles/rstore.json',
+    reserves: 'https://dev-ecoengine.berkeley.edu/api/layers/reserves/features/?page_size=500',
+    jepson: 'https://dev-ecoengine.berkeley.edu/api/layers/jepson-regions/features/?page_size=500'
   }
 }
 
@@ -519,6 +525,11 @@ var sortOrder = {
 var dateformat = d3.time.format("%Y %b %e");
 
 d3.select("#advanced-search-btn").on("click", function() {
+  if (d3.select("#advanced-search").style("display") == "block") {
+    hideflydowns();
+    return;
+  }
+
   d3.selectAll(".flydown")
     .style("display", null)
     .style("opacity", 0);
@@ -530,6 +541,11 @@ d3.select("#advanced-search-btn").on("click", function() {
 });
 
 d3.select("#export-btn").on("click", function() {
+  if (d3.select("#export-pane").style("display") == "block") {
+    hideflydowns();
+    return;
+  }
+
   d3.selectAll(".flydown")
     .style("display", null)
     .style("opacity", 0)
@@ -540,7 +556,9 @@ d3.select("#export-btn").on("click", function() {
     .style("opacity", 1);
 });
 
-d3.selectAll(".hide-btn").on("click", function() {
+d3.selectAll(".hide-btn").on("click", hideflydowns);
+
+function hideflydowns() {
   d3.selectAll(".flydown")
     .transition()
     .duration(250)
@@ -549,8 +567,27 @@ d3.selectAll(".hide-btn").on("click", function() {
     .transition()
     .delay(250)
     .style("display", null)
+};
+
+d3.json(ECO.base.api.reserves, function(error, data) {
+  if (!data) return;
+  data.results.forEach(function(d) {
+    d3.select("#reserve-list")
+      .append("option")
+      .attr("value", JSON.stringify(d.geometry))
+      .text(d.properties.name);
+  });
 });
 
+d3.json(ECO.base.api.jepson, function(error, data) {
+  if (!data) return;
+  data.results.forEach(function(d) {
+    d3.select("#jepson-list")
+      .append("option")
+      .attr("value", JSON.stringify(d.geometry))
+      .text(d.properties.name);
+  });
+});
 
 ECO.detailview = function(row) {
   // TODO Move to detail view
