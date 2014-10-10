@@ -1113,6 +1113,9 @@ function query() {
       return;
     }
 
+    d3.select("#detail-type").text("Observation");
+    ECO.detailview(data.features[0].properties);
+
     // Paging
     var startitem = limit*(page-1);
     var enditem = Math.min(limit*(page),data.count);
