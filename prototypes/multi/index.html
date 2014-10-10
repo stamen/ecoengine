@@ -1021,7 +1021,10 @@ ECO.datatable = function() {
                 return "<a href='" + props[key] + "'>" + props[key] + "</a>";
               }
               if (key == "record") {
-                return "<a href='" + props["url"] + "'>" + props[key] + "</a>";
+                if (props["remote_resource"] !== "") {
+                  return "<a href='" + props["remote_resource"] + "'>" + props[key] + "</a>";
+                }
+                return props[key]
               }
               if (key == "begin_date") {
                 return dateformat(new Date(props[key]));
