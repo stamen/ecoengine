@@ -435,11 +435,9 @@ h3 {
 <div class="panel left map-detail">
   <h4><span id="detail-type"></span> Details</h4>
   <p id="detail-view">
-    <h5>Todo</h5>
-    <ul>
-      <li>Display active search parameters</li>
-      <li>Display loading status of APIs</li>
-    </ul>
+    <strong>Todo</strong><br/>
+    Display active search parameters<br/>
+    Display loading status of APIs<br/>
   </p>
 </div>
 <div class="panel right map-detail">
@@ -600,7 +598,7 @@ d3.json(ECO.base.api.jepson, function(error, data) {
 ECO.detailview = function(row) {
   // TODO Move to detail view
   var container = d3.select("#detail-view")
-    .html("")
+    .html("");
 
   if ("media_url" in row && row.media_url) {
     container.append("a")
