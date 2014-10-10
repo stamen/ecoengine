@@ -113,24 +113,24 @@ h4 {
 /* Time Slider */
 svg {
   font-size: 12px;
+  fill: #fff;
 }
 
 .axis path,
 .axis line {
   fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+  stroke: #abd;
 }
 
 .brush .extent {
-  stroke: #fff;
-  fill-opacity: .125;
+  stroke: none;
+  fill: #fff;
+  fill-opacity: .5;
   shape-rendering: crispEdges;
 }
 
 #time-slider {
   display: inline;
-  display: none;
 }
 
 #time-slider svg {
@@ -395,12 +395,8 @@ h3 {
 </style>
 <body>
 <div class="header">
-  <h2 class="app-title">
-    Ecoengine
-  </h2>
   Search Term: <input type="text" value="Dendromecon" id="searchterm" class="eco-param"></input>
   &nbsp; Date Range: <input type="text" value="1920" id="minyear" class="eco-param"></input>
-  to
   <span id="time-slider"></span>
   <input type="text" value="2014" id="maxyear" class="eco-param"></input>
   &nbsp; <a href="#" id="advanced-search-btn">Advanced Search</a> |
@@ -1079,7 +1075,7 @@ d3.selectAll(".eco-param")
 
 // time slider
 (function() {
-  var margin = {top: 1, right: 14, bottom: 26, left: 14};
+  var margin = {top: 2, right: 14, bottom: 26, left: 14};
   var height = 1;
   var width = 420;
 
