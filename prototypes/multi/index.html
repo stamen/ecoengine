@@ -42,7 +42,8 @@ a:hover {
   overflow: hidden;
 }
 
-.header a {
+.header a,
+.flydown a {
   color: #fff;
   text-decoration: none;
 }
@@ -74,6 +75,17 @@ h4 {
   margin: 0;
 }
 
+.flydown h4 {
+  margin-bottom: 8px;
+}
+
+.hide-btn {
+  font-weight: bold;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
 #minyear,
 #maxyear {
   width: 48px;
@@ -81,6 +93,21 @@ h4 {
 }
 
 .export-buttons {
+}
+
+.flydown {
+  color: #fff;
+  background: #317eac;
+  border-bottom: 1px solid #114e7c;
+  position: fixed;
+  top: 38px; 
+  bottom: 0;
+  height: 0px;
+  width: 100%;
+  z-index:2000;
+  padding: 8px;
+  overflow: hidden;
+  display: none;
 }
 
 /* Time Slider */
@@ -162,7 +189,8 @@ svg {
 
 .map-detail.left {
   padding: 8px 0 0 8px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 #detail-view {
@@ -374,12 +402,32 @@ h3 {
   to
   <span id="time-slider"></span>
   <input type="text" value="2014" id="maxyear" class="eco-param"></input>
-  &nbsp; <span class="export-buttons">
-    <a href="#" id="export-csv" target="_blank">CSV</a> |
-    <a href="#" id="export-json" target="_blank">JSON</a> |
-    <a href="#" id="export-geojson" target="_blank">GeoJSON</a>
-  <span>
+  &nbsp; <a href="#" id="advanced-search-btn">Advanced Search</a> |
+  <a href="#" id="export-btn">Export</a>
 </div>
+<div id="advanced-search" class="flydown">
+  <h4>Advanced Search</h4>
+  <p>
+    <strong>Todo:</strong><br/>
+    Footprint Search<br/>
+    Search By Field<br/>
+  </p>
+  <a href="#" class="hide-btn">Hide</a>
+</div>
+
+<div id="export-pane" class="flydown">
+  <h4>Export</h4> 
+  <h4>Observations</h4>
+  <p>
+    <span class="export-buttons">
+      <a href="#" id="export-csv" target="_blank">CSV</a> |
+      <a href="#" id="export-json" target="_blank">JSON</a> |
+      <a href="#" id="export-geojson" target="_blank">GeoJSON</a>
+    <span>
+  </p>
+  <a href="#" class="hide-btn">Hide</a>
+</div>
+
 <div class="panel left map-detail">
   <h4><span id="detail-type"></span> Details</h4>
   <p id="detail-view">
@@ -469,6 +517,40 @@ var sortOrder = {
 };
 
 var dateformat = d3.time.format("%Y %b %e");
+
+d3.select("#advanced-search-btn").on("click", function() {
+  d3.selectAll(".flydown")
+    .style("display", null)
+    .style("opacity", 0);
+  d3.select("#advanced-search")
+    .style("display", "block")
+    .transition()
+    .style("height", "360px")
+    .style("opacity", 1);
+});
+
+d3.select("#export-btn").on("click", function() {
+  d3.selectAll(".flydown")
+    .style("display", null)
+    .style("opacity", 0)
+  d3.select("#export-pane")
+    .style("display", "block")
+    .transition()
+    .style("height", "360px")
+    .style("opacity", 1);
+});
+
+d3.selectAll(".hide-btn").on("click", function() {
+  d3.selectAll(".flydown")
+    .transition()
+    .duration(250)
+    .style("opacity", 0)
+    .style("height", "0px")
+    .transition()
+    .delay(250)
+    .style("display", null)
+});
+
 
 ECO.detailview = function(row) {
   // TODO Move to detail view
