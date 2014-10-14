@@ -107,9 +107,14 @@ h4 {
   width: 100%;
   z-index:2000;
   padding: 8px;
-  overflow: hidden;
+  overflow: auto;
   display: none;
 }
+
+.flydown .field span {
+  padding-right: 8px;
+}
+
 
 /* Time Slider */
 svg {
@@ -412,9 +417,10 @@ h3 {
     Footprint <select id="reserve-list">
       
     </select><select id="jepson-list">
+
+    </select>
       
-    </select><br/>
-    Search By Field<br/>
+    <div id="advanced-search-pane"></div>
   </p>
   <a href="#" class="hide-btn">Hide</a>
 </div>
@@ -472,6 +478,7 @@ h3 {
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="config.js"></script>
 <script>
 var limit = 50;
 var page = 1;
@@ -501,7 +508,7 @@ var fields = [
 var sortFields = {};
 fields.forEach(function(d) { sortFields[d] = false; });
 
-var ECO = {};
+var ECO = ECO || {};
 ECO.base = {
   api: {
     search: 'https://dev-ecoengine.berkeley.edu/api/search/',
@@ -527,9 +534,33 @@ var sortOrder = {
   'observation_type': 19
 };
 
-
-
 var dateformat = d3.time.format("%Y %b %e");
+
+var advancedSearchSections = d3.select("#advanced-search-pane")
+  .selectAll("div.section")
+  .data(ECO.advancedSearch)
+  .enter().append("div")
+  .attr("class", "section");
+
+advancedSearchSections.append("h3")
+  .text(function(d) { return d.section; });
+
+var advancedSearchFields = advancedSearchSections
+  .selectAll("div.field")
+  .data(function(d) { return d.fields; })
+  .enter().append("div")
+  .attr("class", "field");
+
+advancedSearchFields.append("span")
+  .text(function(d) { return capitaliseFirstLetter(d.field
+          .replace("_", " ")
+          .replace("clss", "class")
+        ); });
+
+advancedSearchFields.append("input")
+  .attr("type", "text")
+  .attr("value", function(d) { return d.field; })
+  .text(function(d) { return d.field; });
 
 d3.select("#advanced-search-btn").on("click", function() {
   if (d3.select("#advanced-search").style("display") == "block") {
