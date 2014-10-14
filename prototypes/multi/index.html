@@ -496,7 +496,7 @@ h3 {
 </style>
 <body>
 <div class="header">
-  Ecoengine Search <input type="text" value="rufus" id="searchterm" class="eco-param" placeholder="Observations/photos"></input>
+  Ecoengine Search <input type="text" value="CalPhotos" id="searchterm" class="eco-param" placeholder="Observations/photos"></input>
   &nbsp; Date Range <input type="text" value="1920" id="minyear" class="eco-param"></input>
   <span id="time-slider"></span>
   <input type="text" value="2014" id="maxyear" class="eco-param"></input>
@@ -1307,9 +1307,9 @@ function query() {
     return (d.value == "-" ? "-" : "") + d.key;
   }).join(",");
 
-  var querystring = ECO.base.api.observations + "?extra=record&ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
-  var searchquerystring = ECO.base.api.search + "?extra=record&ordering=" + sortstring + facetstring + "&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&facets_limit=50";
-  var photoquerystring = ECO.base.api.photos+ "?extra=record&ordering=" + sortstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
+  var querystring = ECO.base.api.observations + "?ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
+  var searchquerystring = ECO.base.api.search + "?ordering=" + sortstring + facetstring + "&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&facets_limit=50";
+  var photoquerystring = ECO.base.api.photos+ "?ordering=" + sortstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
   console.log(searchquerystring);
 
   // export links
@@ -1372,7 +1372,7 @@ function query() {
 
     /*
     d3.range(2,Math.min(10,pagecount)).forEach(function(nextpage) {
-      var nextquerystring = ECO.base.api.observations + "?extra=record&ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + nextpage;
+      var nextquerystring = ECO.base.api.observations + "?ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + nextpage;
       d3.json(nextquerystring, function(error, data) {
       console.log(data);
         mapData.concat(dataFilterCoordinates(data || []));
