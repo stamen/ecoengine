@@ -324,35 +324,40 @@ svg {
 
 .eco-basic-icon.sensor {
   border-radius: 0px;
-  background: magenta;
+  background: #d95f02;
 }
 
 .eco-basic-icon.vtm-vegetation-feature {
-  background: green;
+  background: #1b9e77;
 }
 
 .eco-basic-icon.plot-survey {
-  background: blue;
+  background: #7570b3;
 }
 
 .eco-basic-icon.photo {
-  background: pink;
+  background: #a6cee3;
+}
+
+.eco-basic-icon.media-photo {
+  border-radius: 1px;
+  background: #a6cee3;
 }
 
 .eco-basic-icon.specimen {
-  background: red;
+  background: #e6ab02;
 }
 
 .eco-basic-icon.fossil {
-  background: purple;
+  background: #a7871d;
 }
 
 .eco-basic-icon.observation {
-  background: orange;
+  background: #1f78b4;
 }
 
 .eco-basic-icon.checklist {
-  background: magenta;
+  background: #666666;
 }
 
 
@@ -596,6 +601,7 @@ var facets = {
 };
 
 var mapData = [];
+var photoData = [];
 var sensorData = [];
 
 var fields = [
@@ -724,8 +730,7 @@ d3.json(ECO.base.api.sensors, function(error, data) {
   map.clear();
   sensorData = data.features;
 
-  map.draw(sensorData);
-  map.draw(mapData);
+  map.draw();
 });
 
 d3.json(ECO.base.api.reserves, function(error, data) {
@@ -883,9 +888,20 @@ ECO.map = function() {
 
   function onMarkerOver(evt) {
     showTooltip(evt);
-    var type = 'observation_type' in evt.target.data_ ? 'Observation' : 'Sensor';
+    var type = '';
+    if ('observation_type' in evt.target.data_) {
+      type = 'Observation';
+    } else if ('media_url' in evt.target.data_) {
+      type = 'Photo';
+    } else {
+      type = 'Sensor';
+    }
+
     if (type == 'Observation') {
       d3.select("#detail-type").html("<span class='eco-basic-icon " + evt.target.data_.observation_type + "'></span> Observation")
+    }
+    if (type == 'Photo') {
+      d3.select("#detail-type").html("<span class='eco-basic-icon media-photo'></span> Photo")
     }
     if (type == 'Sensor') {
       d3.select("#detail-type").html("<span class='eco-basic-icon sensor'></span> Sensor")
@@ -915,11 +931,25 @@ ECO.map = function() {
     var bds = null;
 
     data.forEach(function(d){
-      var type = 'observation_type' in d.properties ? 'observation' : 'sensor';
-       
+      var type = '';
+      if ('observation_type' in d.properties) {
+        type = 'observation';
+      } else if ('media_url' in d.properties) {
+        type = 'photo';
+      } else {
+        type = 'sensor';
+      }      
+
       if (type == 'observation') {
         var markerIcon= L.divIcon({
           className: 'eco-basic-icon ' + d.properties.observation_type.replace(/ /g,"-"),
+          iconSize: new L.Point(12,12)
+        });
+      }
+
+      if (type == 'photo') {
+        var markerIcon= L.divIcon({
+          className: 'eco-basic-icon media-photo',
           iconSize: new L.Point(12,12)
         });
       }
@@ -966,12 +996,22 @@ ECO.map = function() {
 
   function showTooltip(evt) {
       if (!evt.target.data_) return;
-      var type = 'observation_type' in evt.target.data_ ? 'Observation' : 'Sensor';
+      var type = ''
+      if ('observation_type' in evt.target.data_) {
+        type = 'Observation';
+      } else if ('media_url' in evt.target.data_) {
+        type = 'Photo';
+      } else {
+        type = 'Sensor';
+      }
 
       var content = "<strong>" + type + "</strong><br/>";
       
       if (type == 'Observation') {
         content += evt.target.data_['scientific_name'] + "<br/>" + evt.target.data_['record'];
+      }
+      if (type == 'Photo') {
+        content += evt.target.data_['authors'] + "<br/>" + evt.target.data_['record'];
       }
       if (type == 'Sensor') {
         content += evt.target.data_['station_name'] + "<br/>" + evt.target.data_['record'];
@@ -1000,16 +1040,19 @@ ECO.map = function() {
 
   __.clear = clearMarkers;
 
-  __.draw = function(data) {
+  __.draw = function() {
+    /*
     if (!data.length) {
       ECO.mapAlert.set('No map data available.');
       return;
     }
+    */
 
     ECO.mapAlert.hide();
 
-    addMarkers(data);
-    addMarkers(sensorData);
+    if (mapData.length) addMarkers(mapData);
+    if (sensorData.length) addMarkers(sensorData);
+    if (photoData.length) addMarkers(photoData);
   }
 
   return __;
@@ -1323,7 +1366,6 @@ query();
 
 function query() {
   d3.select("#results").style("color", "#bbb");
-  map.clear();
 
   var term = d3.select("#searchterm").node().value;
   var minyear = d3.select("#minyear").node().value;
@@ -1402,7 +1444,8 @@ function query() {
     datatable.draw(data);
 
     mapData = dataFilterCoordinates(data || []);
-    map.draw(mapData);
+    map.clear();
+    map.draw();
 
     /*
     d3.range(2,Math.min(10,pagecount)).forEach(function(nextpage) {
@@ -1424,6 +1467,10 @@ function query() {
   });
 
   d3.json(photoquerystring, function(error, data) {
+    photoData = dataFilterCoordinates(data || []);
+
+    map.draw();
+
     var photos = d3.select("#photos .inner-photos")
       .html("")
       .selectAll("a")
