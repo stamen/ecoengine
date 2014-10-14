@@ -107,6 +107,16 @@ h4 {
   margin: 0;
 }
 
+.search-btn {
+  background: #317eac;
+  color: #fff;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: inline-block;
+}
+
 .flydown h4 {
   margin-bottom: 8px;
 }
@@ -502,7 +512,7 @@ h3 {
 </style>
 <body>
 <div class="header">
-  Ecoengine Search <input type="text" value="CalPhotos" id="searchterm" class="eco-param" placeholder="Observations/photos"></input>
+  Search <input type="text" value="CalPhotos" id="searchterm" class="eco-param" placeholder="Observations/photos"></input>
   &nbsp; Date Range <input type="text" value="1920" id="minyear" class="eco-param"></input>
   <span id="time-slider"></span>
   <input type="text" value="2014" id="maxyear" class="eco-param"></input>
@@ -511,17 +521,21 @@ h3 {
 </div>
 <div id="advanced-search" class="flydown">
   <h4>Advanced Search</h4>
-  <p><strong>This panel is <em>not yet functional</em>.</strong></p>
   <p>
     <strong>Footprint</strong><br/>
+    <p>
     Footprint <select id="reserve-list">
-      
+      <option></option>
     </select><select id="jepson-list">
-
+      <option></option>
     </select>
+    </p>
+    <p>
+      <div class="search-btn">Search</div>
+    </p>
       
+    <p><strong>Everything below is <em>not yet functional</em>.</strong></p>
     <div id="advanced-search-pane"></div>
-    <div class="search-btn">Search</div>
   </p>
   <a href="#" class="hide-btn">Hide</a>
 </div>
