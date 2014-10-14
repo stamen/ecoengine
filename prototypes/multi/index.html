@@ -423,6 +423,16 @@ a:hover .bar {
 .field-plot a.active:hover .x {
   display: inline;
 }
+.field-plot .show-more {
+  color: #bbb;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 15px;
+  margin-left: 7px;
+}
+.field-plot .show-more:hover {
+  color: #333;
+}
 .bar {
   display: inline-block;
   margin: 0 8px -1px;
@@ -438,7 +448,7 @@ h3 {
 </style>
 <body>
 <div class="header">
-  Full Text Search <input type="text" value="Dendromecon" id="searchterm" class="eco-param"></input>
+  Full Text Search <input type="text" value="rufus" id="searchterm" class="eco-param"></input>
   &nbsp; Date Range <input type="text" value="1920" id="minyear" class="eco-param"></input>
   <span id="time-slider"></span>
   <input type="text" value="2014" id="maxyear" class="eco-param"></input>
@@ -530,6 +540,9 @@ var facets = {
   resource: false
 };
 
+var mapData = [];
+var sensorData = [];
+
 var fields = [
   "record",
   "scientific_name",
@@ -550,6 +563,7 @@ ECO.base = {
     search: 'https://dev-ecoengine.berkeley.edu/api/search/',
     observations: 'https://ecoengine.berkeley.edu/api/observations/',
     photos: 'https://dev-ecoengine.berkeley.edu/api/photos/',
+    sensors: 'https://dev-ecoengine.berkeley.edu/api/sensors/?pagesize=5000&format=geojson',
     layers: 'https://dev-ecoengine.berkeley.edu/api/layers/',
     rasters: '../tiles/rstore.json',
     reserves: 'https://dev-ecoengine.berkeley.edu/api/layers/reserves/features/?page_size=500',
@@ -595,8 +609,7 @@ advancedSearchFields.append("span")
 
 advancedSearchFields.append("input")
   .attr("type", "text")
-  .attr("value", function(d) { return d.field; })
-  .text(function(d) { return d.field; });
+  .attr("class", "eco-param");
 
 d3.select("#advanced-search-btn").on("click", function() {
   if (d3.select("#advanced-search").style("display") == "block") {
@@ -642,6 +655,11 @@ function hideflydowns() {
     .delay(250)
     .style("display", null)
 };
+
+d3.json(ECO.base.api.sensors, function(error, data) {
+  sensorData = data.features;
+
+});
 
 d3.json(ECO.base.api.reserves, function(error, data) {
   if (!data) return;
@@ -845,14 +863,6 @@ ECO.map = function() {
       popup._close();
   }
 
-  function dataFilterCoordinates(data) {
-    if (!data || !data.hasOwnProperty('features')) return [];
-    if (!data.features.length) return [];
-
-    return data.features.filter(function(d){
-      return d.geometry && d.geometry.coordinates.length === 2;
-    });
-  }
 
   /**
    * Add listener objects for markers
@@ -868,8 +878,6 @@ ECO.map = function() {
   __.clear = clearMarkers;
 
   __.draw = function(data) {
-    data = dataFilterCoordinates(data || []);
-
     if (!data.length) {
       ECO.mapAlert.set('No map data available.');
       return;
@@ -955,6 +963,7 @@ ECO.list = function() {
         .enter().append("div")
         .attr("class", "bars")
         .append("a")
+        .style("display", function(d,i) { return i > 9 ? "none" : null})
         .attr("href", function(d) { return "#"; })
         .classed("active", function(d,i,g) {
           return facets[searchfields[g]] == d[0];
@@ -993,6 +1002,21 @@ ECO.list = function() {
     bars.append("span")
       .attr("class", "x")
       .text(" x");
+
+    fieldplot
+      .filter(function(d) { return d.values.length > 9; })
+      .append("span")
+      .attr("class", "show-more")
+      .text("[+]")
+      .on("click", function(d) {
+        bars.filter(function(p,i,g) { 
+          console.log(searchfields[g]);
+          return searchfields[g] == d.field;
+        })
+        .style("display", "block");
+
+        d3.select(this).remove();
+      });
   }
   return __;
 };
@@ -1195,7 +1219,7 @@ function query() {
   }).join(",");
 
   var querystring = ECO.base.api.observations + "?extra=record&ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
-  var searchquerystring = ECO.base.api.search + "?extra=record&ordering=" + sortstring + facetstring + "&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear;
+  var searchquerystring = ECO.base.api.search + "?extra=record&ordering=" + sortstring + facetstring + "&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&facets_limit=50";
   var photoquerystring = ECO.base.api.photos+ "?extra=record&ordering=" + sortstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
   console.log(searchquerystring);
 
@@ -1247,7 +1271,21 @@ function query() {
       .style("clear", "both");
 
     datatable.draw(data);
-    map.draw(data);
+
+    mapData = dataFilterCoordinates(data || []);
+    map.draw(mapData);
+
+    /*
+    d3.range(2,Math.min(10,pagecount)).forEach(function(nextpage) {
+      var nextquerystring = ECO.base.api.observations + "?extra=record&ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + nextpage;
+      d3.json(nextquerystring, function(error, data) {
+      console.log(data);
+        mapData.concat(dataFilterCoordinates(data || []));
+        map.draw(mapData);
+      });
+    });
+    */
+
   });
 
 
@@ -1276,4 +1314,13 @@ function query() {
 function capitaliseFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
+
+function dataFilterCoordinates(data) {
+  if (!data || !data.hasOwnProperty('features')) return [];
+  if (!data.features.length) return [];
+
+  return data.features.filter(function(d){
+    return d.geometry && d.geometry.coordinates.length === 2;
+  });
+}
 </script>
