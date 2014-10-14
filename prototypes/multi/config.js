@@ -45,12 +45,12 @@ ECO.advancedSearch = [
       {
         'field': 'begin_date',
         'type': 'text',
-        'placholder': '1920-01-01'
+        'placeholder': '1920-01-01'
       },
       {
         'field': 'end_date',
         'type': 'text',
-        'placholder': '2010-11-25'
+        'placeholder': '2010-11-25'
       }
     ]
   },

@@ -690,9 +690,10 @@ rows.append("td")
 rows.append("td")
   .append("input")
   .attr("type", "text")
-  .attr("class", "eco-param");
-
-
+  .attr("class", "eco-param")
+  .attr("placeholder", function(d) {
+    return "placeholder" in d ? d.placeholder : null;
+  });
 
 
 d3.select("#advanced-search-btn").on("click", function() {
