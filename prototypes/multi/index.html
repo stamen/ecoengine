@@ -264,14 +264,50 @@ svg {
   color: #333;
 }
 
-.eco-basic-icon {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: #317eac;
-    background: rgba(49,126,172,1);
-    border: 1px solid #fff;
+.table .eco-basic-icon {
+  display: inline-block;
+  position: relative;
+  margin-right: 4px;
+  top: 2px;
 }
+
+.eco-basic-icon {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #317eac;
+  background: rgba(49,126,172,1);
+  border: 1px solid #fff;
+}
+
+.eco-basic-icon.vtm-vegetation-feature {
+  background: green;
+}
+
+.eco-basic-icon.plot-survey {
+  background: blue;
+}
+
+.eco-basic-icon.photo {
+  background: pink;
+}
+
+.eco-basic-icon.specimen {
+  background: red;
+}
+
+.eco-basic-icon.fossil {
+  background: purple;
+}
+
+.eco-basic-icon.observation {
+  background: orange;
+}
+
+.eco-basic-icon.checklist {
+  background: magenta;
+}
+
 
 /*
 .eco-basic-icon:before {
@@ -553,7 +589,7 @@ var advancedSearchFields = advancedSearchSections
 
 advancedSearchFields.append("span")
   .text(function(d) { return capitaliseFirstLetter(d.field
-          .replace("_", " ")
+          .replace(/_/g, " ")
           .replace("clss", "class")
         ); });
 
@@ -755,11 +791,15 @@ ECO.map = function() {
     });
   }
 
-  function addMarkers(data, icon) {
+  function addMarkers(data) {
     var bds = null;
 
     data.forEach(function(d){
-      var markerIcon = d.icon || icon || new L.Icon.Default();
+      var markerIcon= L.divIcon({
+        className: 'eco-basic-icon ' + d.properties.observation_type.replace(/ /g,"-"),
+        iconSize: new L.Point(10,10)
+      });
+
       var ll = new L.LatLng(d.geometry.coordinates[1], d.geometry.coordinates[0])
       var m = L.marker(ll, {riseOnHover: true, icon: markerIcon}).addTo(map);
       m.data_ = d.properties;
@@ -825,9 +865,9 @@ ECO.map = function() {
     return __;
   }
 
-  __.draw = function(data){
-    clearMarkers();
+  __.clear = clearMarkers;
 
+  __.draw = function(data) {
     data = dataFilterCoordinates(data || []);
 
     if (!data.length) {
@@ -837,30 +877,7 @@ ECO.map = function() {
 
     ECO.mapAlert.hide();
 
-
-    // set an icon for a marker, you can either
-    // create an icon object for use with the whole data Array
-    // or create an icon object for each element in the data Array.
-    // addMarker will look for an icon in the element first then default
-    // to the general icon.  Must set one or the other.
-
-    // method 1
-    var icon = L.divIcon({
-      className: 'eco-basic-icon',
-      iconSize: new L.Point(10,10)
-    });
-
-    /*
-    // method 2
-    data.forEach(function(d){
-      d.icon = L.divIcon({
-        className: 'eco-photo-icon',
-        iconSize: new L.Point(10,10)
-      });
-    });
-    */
-
-    addMarkers(data, icon);
+    addMarkers(data);
   }
 
   return __;
@@ -929,7 +946,7 @@ ECO.list = function() {
     fieldplot.append("h3")
       .text(function(d) {
         return capitaliseFirstLetter(d.field
-          .replace("_", " ")
+          .replace(/_/g, " ")
           .replace("clss", "class")
         )});
 
@@ -1072,6 +1089,9 @@ ECO.datatable = function() {
               if (key == "end_date") {
                 return dateformat(new Date(props[key]));
               }
+              if (key == "observation_type") {
+                return "<span class='eco-basic-icon " + props[key].replace(/ /g,"-") + "'></span>" + props[key];
+              }
               return props[key]
             }
             if (key == "geojson") {
@@ -1156,6 +1176,8 @@ query();
 
 function query() {
   d3.select("#results").style("color", "#bbb");
+  map.clear();
+
   var term = d3.select("#searchterm").node().value;
   var minyear = d3.select("#minyear").node().value;
   var maxyear = d3.select("#maxyear").node().value;
