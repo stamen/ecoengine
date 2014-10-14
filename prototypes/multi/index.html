@@ -1019,7 +1019,11 @@ ECO.map = function() {
         type = 'Sensor';
       }
 
-      var content = "<strong>" + type + "</strong><br/>";
+      if (type = 'Observation') {
+        var content = "<strong>" + type + " (" + evt.target.data_.observation_type + ")</strong><br/>";
+    } else {
+        var content = "<strong>" + type + "</strong><br/>";
+      }
       
       if (type == 'Observation') {
         content += evt.target.data_['scientific_name'] + "<br/>" + evt.target.data_['record'];
