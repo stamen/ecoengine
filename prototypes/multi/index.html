@@ -150,7 +150,7 @@ h4 {
 
 /* Time Slider */
 svg {
-  font-size: 12px;
+  font-size: 10px;
   fill: #fff;
 }
 
@@ -250,12 +250,13 @@ svg {
   pointer-events: none;
 }
 
-#layer-select {
+.layer-selection {
   position: absolute;
   top: 10px;
   right: 10px;
+  text-align: right;
   z-index: 100;
-  width: 180px;
+  width: 100%;
 }
 
 .map-info {
@@ -405,7 +406,7 @@ svg {
   padding: 1px;
 }
 #photos img {
-  height: 40px;
+  height: 64px;
   display: inline-block;
   padding: 1px;
 }
@@ -544,10 +545,15 @@ h3 {
 </div>
 <div class="panel right map-detail">
   <div id="map">
-    <select id="layer-select">
-      <option value="http://{s}.tile.stamen.com/terrain-background/{z}/{x}/{y}.jpg">Stamen Terrain</option>
-      <option value="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png">OpenStreetMap</option>
-    </select>
+    <div class="layer-selection">
+      <select id="overlay-select">
+        <option value="https://dev-ecoengine.berkeley.edu/tiles/vtmveg/{z}/{x}/{y}.png">VTM Vegetation Features</option>
+      </select>
+      <select id="layer-select">
+        <option value="http://{s}.tile.stamen.com/terrain-background/{z}/{x}/{y}.jpg">Stamen Terrain</option>
+        <option value="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png">OpenStreetMap</option>
+      </select>
+    </div>
   </div>
   <div class="map-info">
       <button class="map-info-close">x</button>
@@ -791,31 +797,56 @@ ECO.map = function() {
 
   map = __.map = L.map('map').setView(defaultCenter, defaultZoom);
 
+
   var baseLayer = L.tileLayer('http://{s}.tile.stamen.com/terrain-background/{z}/{x}/{y}.jpg', {
     attribution: '',
     subdomains: 'abc',
     minZoom: 2,
+    transparent: true,
     maxZoom: 16
   }).addTo(map);
+
+  var overlayLayer = L.tileLayer('https://dev-ecoengine.berkeley.edu/tiles/vtmveg/{z}/{x}/{y}.png', {
+    attribution: '',
+    subdomains: 'abc',
+    minZoom: 2,
+    transparent: true,
+    maxZoom: 16
+  }).addTo(map);
+
 
   // Layer select box
   d3.json(ECO.base.api.layers, function(error, layers) {
     d3.json(ECO.base.api.rasters, function(error, rasters) {
       if (!rasters) return;
       rasters.results.forEach(function(d) {
-        d3.select("#layer-select")
-          .append("option")
-          .attr("value", d.tile_template)
-          .text(d.name);
+        if (d.tags.indexOf("boundaries") > -1) { 
+          d3.select("#overlay-select")
+            .append("option")
+            .attr("value", d.tile_template)
+            .text(d.name);
+        } else {
+          d3.select("#layer-select")
+            .append("option")
+            .attr("value", d.tile_template)
+            .text(d.name);
+        }
       });
     });
 
     if (!layers) return;
     layers.results.forEach(function(d) {
-      d3.select("#layer-select")
-        .append("option")
-        .attr("value", d.tile_template)
-        .text(d.name);
+        if (d.tags.indexOf("boundaries") > -1) { 
+          d3.select("#overlay-select")
+            .append("option")
+            .attr("value", d.tile_template)
+            .text(d.name);
+        } else {
+          d3.select("#layer-select")
+            .append("option")
+            .attr("value", d.tile_template)
+            .text(d.name);
+        }
     });
   });
 
@@ -823,7 +854,10 @@ ECO.map = function() {
     .on("change", function() {
       baseLayer.setUrl(this.value);
     });
-
+  d3.select("#overlay-select")
+    .on("change", function() {
+      overlayLayer.setUrl(this.value);
+    });
 
   /*
   var apiLayer = L.tileLayer(ECO.base.api.tiles, {
@@ -1241,7 +1275,7 @@ d3.selectAll(".eco-param")
 (function() {
   var margin = {top: 2, right: 14, bottom: 26, left: 14};
   var height = 1;
-  var width = 420;
+  var width = 320;
 
   var minyear = d3.select("#minyear").node().value;
   var maxyear = d3.select("#maxyear").node().value;
@@ -1309,7 +1343,7 @@ function query() {
 
   var querystring = ECO.base.api.observations + "?ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
   var searchquerystring = ECO.base.api.search + "?ordering=" + sortstring + facetstring + "&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&facets_limit=50";
-  var photoquerystring = ECO.base.api.photos+ "?ordering=" + sortstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
+  var photoquerystring = ECO.base.api.photos+ "?ordering=" + sortstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=28&page=1";
   console.log(searchquerystring);
 
   // export links
