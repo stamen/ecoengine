@@ -280,6 +280,11 @@ svg {
   border: 1px solid #fff;
 }
 
+.eco-basic-icon.sensor {
+  border-radius: 2px;
+  background: magenta;
+}
+
 .eco-basic-icon.vtm-vegetation-feature {
   background: green;
 }
@@ -657,8 +662,11 @@ function hideflydowns() {
 };
 
 d3.json(ECO.base.api.sensors, function(error, data) {
+  map.clear();
   sensorData = data.features;
 
+  map.draw(sensorData);
+  map.draw(mapData);
 });
 
 d3.json(ECO.base.api.reserves, function(error, data) {
@@ -810,13 +818,25 @@ ECO.map = function() {
   }
 
   function addMarkers(data) {
+    console.log('markers', data)
     var bds = null;
 
     data.forEach(function(d){
-      var markerIcon= L.divIcon({
-        className: 'eco-basic-icon ' + d.properties.observation_type.replace(/ /g,"-"),
-        iconSize: new L.Point(10,10)
-      });
+      var type = 'observation_type' in d.properties ? 'observation' : 'sensor';
+       
+      if (type == 'observation') {
+        var markerIcon= L.divIcon({
+          className: 'eco-basic-icon ' + d.properties.observation_type.replace(/ /g,"-"),
+          iconSize: new L.Point(10,10)
+        });
+      }
+
+      if (type == 'sensor') {
+        var markerIcon= L.divIcon({
+          className: 'eco-basic-icon sensor',
+          iconSize: new L.Point(10,10)
+        });
+      }
 
       var ll = new L.LatLng(d.geometry.coordinates[1], d.geometry.coordinates[0])
       var m = L.marker(ll, {riseOnHover: true, icon: markerIcon}).addTo(map);
@@ -853,9 +873,16 @@ ECO.map = function() {
 
   function showTooltip(evt) {
       if (!evt.target.data_) return;
+      var type = 'observation_type' in evt.target.data_ ? 'observation' : 'sensor';
+      if (type == 'observation') {
+        var content = evt.target.data_['scientific_name'] + "<br/>" + evt.target.data_['record'];
+      }
+      if (type == 'sensor') {
+        var content = evt.target.data_['station_name'] + "<br/>" + evt.target.data_['record'];
+      }
       popup
           .setLatLng(evt.target._latlng)
-          .setContent(evt.target.data_['scientific_name'] + "<br/>" + evt.target.data_['record'])
+          .setContent(content)
           .openOn(map);
   }
 
@@ -886,6 +913,7 @@ ECO.map = function() {
     ECO.mapAlert.hide();
 
     addMarkers(data);
+    addMarkers(sensorData);
   }
 
   return __;
