@@ -44,11 +44,13 @@ ECO.advancedSearch = [
     'fields': [
       {
         'field': 'begin_date',
-        'type': 'text'
+        'type': 'text',
+        'placholder': '1920-01-01'
       },
       {
         'field': 'end_date',
-        'type': 'text'
+        'type': 'text',
+        'placholder': '2010-11-25'
       }
     ]
   },

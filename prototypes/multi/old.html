@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <meta charset="utf-8">
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
@@ -7,7 +8,6 @@ body {
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 13px;
   width: 100%;
-  height: 100%;
   background: #fff;
   margin: 0;
   min-width: 960px;
@@ -44,7 +44,8 @@ a:hover {
   overflow: hidden;
 }
 
-.header a {
+.header a,
+.flydown a {
   color: #fff;
   text-decoration: none;
 }
@@ -60,45 +61,14 @@ h2.app-title {
   font-weight: bold;
 }
 
-.header .eco-param {
-  text-align: center;
-}
-
 .eco-param {
+  font-size: 15px;
   line-height: 15px;
-  height: 22px;
   font-weight: bold;
-  padding: 2px;
+  padding: 1px 2px 2px;
   color: #303030;
   border: 1px solid #666;
   border-radius: 2px;
-}
-
-#searchterm { 
-  width: 120px;
-}
-
-.eco-param::-webkit-input-placeholder { /* WebKit browsers */
-  color:    #bbb;
-  font-weight: normal;
-  font-size: 13px;
-}
-.eco-param:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-  color:    #bbb;
-  font-weight: normal;
-  font-size: 13px;
-  opacity:  1;
-}
-.eco-param::-moz-placeholder { /* Mozilla Firefox 19+ */
-  color:    #bbb;
-  font-size: 13px;
-  font-weight: normal;
-  opacity:  1;
-}
-.eco-param:-ms-input-placeholder { /* Internet Explorer 10+ */
-  color:    #bbb;
-  font-weight: normal;
-  font-size: 13px;
 }
 
 h4 {
@@ -113,10 +83,9 @@ h4 {
 
 .hide-btn {
   font-weight: bold;
-  font-size: 15px;
-  position: fixed;
-  top: 46px;
-  right: 24px;
+  position: absolute;
+  top: 8px;
+  right: 8px;
 }
 
 #minyear,
@@ -129,24 +98,19 @@ h4 {
 }
 
 .flydown {
-  background: #fff;
+  color: #fff;
+  background: #317eac;
   border-bottom: 1px solid #114e7c;
   position: fixed;
-  top: 0; 
+  top: 38px; 
   bottom: 0;
-  height: 100%; 
+  height: 0px;
   width: 100%;
   z-index:2000;
   padding: 8px;
-  overflow: auto;
+  overflow: hidden;
   display: none;
-  margin-top: 38px;
 }
-
-.flydown .field td {
-  padding: 4px 8px;
-}
-
 
 /* Time Slider */
 svg {
@@ -297,63 +261,13 @@ svg {
 }
 
 .eco-basic-icon {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #317eac;
-  background: rgba(49,126,172,1);
-  border: 1px solid #fff;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #317eac;
+    background: rgba(49,126,172,1);
+    border: 1px solid #fff;
 }
-
-#detail-type .eco-basic-icon {
-  display: inline-block;
-  height: 16px;
-  width: 16px;
-  display: inline-block;
-  position: relative;
-  top: 2px;
-}
-
-.table .eco-basic-icon {
-  display: inline-block;
-  position: relative;
-  margin-right: 4px;
-  top: 2px;
-}
-
-.eco-basic-icon.sensor {
-  border-radius: 0px;
-  background: magenta;
-}
-
-.eco-basic-icon.vtm-vegetation-feature {
-  background: green;
-}
-
-.eco-basic-icon.plot-survey {
-  background: blue;
-}
-
-.eco-basic-icon.photo {
-  background: pink;
-}
-
-.eco-basic-icon.specimen {
-  background: red;
-}
-
-.eco-basic-icon.fossil {
-  background: purple;
-}
-
-.eco-basic-icon.observation {
-  background: orange;
-}
-
-.eco-basic-icon.checklist {
-  background: magenta;
-}
-
 
 /*
 .eco-basic-icon:before {
@@ -402,7 +316,6 @@ svg {
   color: #fff;
   background: #111;
   min-height: 24px;
-  padding: 1px;
 }
 #photos img {
   height: 40px;
@@ -469,18 +382,6 @@ a:hover .bar {
 .field-plot a.active:hover .x {
   display: inline;
 }
-.field-plot .show-more {
-  color: #bbb;
-  cursor: pointer;
-  font-size: 12px;
-  line-height: 15px;
-  display: block;
-  width: 100%;
-  text-align: center;
-}
-.field-plot .show-more:hover {
-  color: #333;
-}
 .bar {
   display: inline-block;
   margin: 0 8px -1px;
@@ -496,26 +397,24 @@ h3 {
 </style>
 <body>
 <div class="header">
-  Ecoengine Search <input type="text" value="rufus" id="searchterm" class="eco-param" placeholder="Observations/photos"></input>
+  Full Text Search <input type="text" value="Dendromecon" id="searchterm" class="eco-param"></input>
   &nbsp; Date Range <input type="text" value="1920" id="minyear" class="eco-param"></input>
   <span id="time-slider"></span>
   <input type="text" value="2014" id="maxyear" class="eco-param"></input>
-  &nbsp; <a href="#" id="advanced-search-btn">Advanced</a> |
+  &nbsp; <a href="#" id="advanced-search-btn">Advanced Search</a> |
   <a href="#" id="export-btn">Export</a>
 </div>
 <div id="advanced-search" class="flydown">
   <h4>Advanced Search</h4>
-  <p><strong>This panel is <em>not yet functional</em>.</strong></p>
+  <p>This flyout is intended to provide configuration of advanced query parameters.</p>
   <p>
-    <strong>Footprint</strong><br/>
+    <strong>Todo (nonfunctional):</strong><br/>
     Footprint <select id="reserve-list">
       
     </select><select id="jepson-list">
-
-    </select>
       
-    <div id="advanced-search-pane"></div>
-    <div class="search-btn">Search</div>
+    </select><br/>
+    Search By Field<br/>
   </p>
   <a href="#" class="hide-btn">Hide</a>
 </div>
@@ -573,7 +472,6 @@ h3 {
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="config.js"></script>
 <script>
 var limit = 50;
 var page = 1;
@@ -589,9 +487,6 @@ var facets = {
   resource: false
 };
 
-var mapData = [];
-var sensorData = [];
-
 var fields = [
   "record",
   "scientific_name",
@@ -606,13 +501,12 @@ var fields = [
 var sortFields = {};
 fields.forEach(function(d) { sortFields[d] = false; });
 
-var ECO = ECO || {};
+var ECO = {};
 ECO.base = {
   api: {
     search: 'https://dev-ecoengine.berkeley.edu/api/search/',
     observations: 'https://dev-ecoengine.berkeley.edu/api/observations/',
     photos: 'https://dev-ecoengine.berkeley.edu/api/photos/',
-    sensors: 'https://dev-ecoengine.berkeley.edu/api/sensors/?page_size=5000&format=geojson',
     layers: 'https://dev-ecoengine.berkeley.edu/api/layers/',
     rasters: '../tiles/rstore.json',
     reserves: 'https://dev-ecoengine.berkeley.edu/api/layers/reserves/features/?page_size=500',
@@ -633,41 +527,9 @@ var sortOrder = {
   'observation_type': 19
 };
 
+
+
 var dateformat = d3.time.format("%Y %b %e");
-
-
-
-var advancedSearchSections = d3.select("#advanced-search-pane")
-  .selectAll("div.section")
-  .data(ECO.advancedSearch)
-  .enter().append("div")
-  .attr("class", "section");
-
-advancedSearchSections.append("h3")
-  .text(function(d) { return d.section; });
-
-var table = advancedSearchSections
-  .append("table")
-
-var rows = table
-  .selectAll("tr.field")
-  .data(function(d) { return d.fields; })
-  .enter().append("tr")
-  .attr("class", "field");
-
-rows.append("td")
-  .text(function(d) { return capitaliseFirstLetter(d.field
-          .replace(/_/g, " ")
-          .replace("clss", "class")
-        ); });
-
-rows.append("td")
-  .append("input")
-  .attr("type", "text")
-  .attr("class", "eco-param");
-
-
-
 
 d3.select("#advanced-search-btn").on("click", function() {
   if (d3.select("#advanced-search").style("display") == "block") {
@@ -681,7 +543,7 @@ d3.select("#advanced-search-btn").on("click", function() {
   d3.select("#advanced-search")
     .style("display", "block")
     .transition()
-    .style("height", (window.innerHeight-38) + "px")
+    .style("height", "360px")
     .style("opacity", 1);
 });
 
@@ -697,7 +559,7 @@ d3.select("#export-btn").on("click", function() {
   d3.select("#export-pane")
     .style("display", "block")
     .transition()
-    .style("height", (window.innerHeight-38) + "px")
+    .style("height", "360px")
     .style("opacity", 1);
 });
 
@@ -713,14 +575,6 @@ function hideflydowns() {
     .delay(250)
     .style("display", null)
 };
-
-d3.json(ECO.base.api.sensors, function(error, data) {
-  map.clear();
-  sensorData = data.features;
-
-  map.draw(sensorData);
-  map.draw(mapData);
-});
 
 d3.json(ECO.base.api.reserves, function(error, data) {
   if (!data) return;
@@ -849,13 +703,7 @@ ECO.map = function() {
 
   function onMarkerOver(evt) {
     showTooltip(evt);
-    var type = 'observation_type' in evt.target.data_ ? 'Observation' : 'Sensor';
-    if (type == 'Observation') {
-      d3.select("#detail-type").html("<span class='eco-basic-icon " + evt.target.data_.observation_type + "'></span> Observation")
-    }
-    if (type == 'Sensor') {
-      d3.select("#detail-type").html("<span class='eco-basic-icon sensor'></span> Sensor")
-    }
+    d3.select("#detail-type").text("Observation");
     ECO.detailview(evt.target.data_);
     subscribers.forEach(function(s){
       if (s.over) s.over(evt);
@@ -876,27 +724,11 @@ ECO.map = function() {
     });
   }
 
-  function addMarkers(data) {
-    console.log('markers', data)
+  function addMarkers(data, icon) {
     var bds = null;
 
     data.forEach(function(d){
-      var type = 'observation_type' in d.properties ? 'observation' : 'sensor';
-       
-      if (type == 'observation') {
-        var markerIcon= L.divIcon({
-          className: 'eco-basic-icon ' + d.properties.observation_type.replace(/ /g,"-"),
-          iconSize: new L.Point(12,12)
-        });
-      }
-
-      if (type == 'sensor') {
-        var markerIcon= L.divIcon({
-          className: 'eco-basic-icon sensor',
-          iconSize: new L.Point(12,12)
-        });
-      }
-
+      var markerIcon = d.icon || icon || new L.Icon.Default();
       var ll = new L.LatLng(d.geometry.coordinates[1], d.geometry.coordinates[0])
       var m = L.marker(ll, {riseOnHover: true, icon: markerIcon}).addTo(map);
       m.data_ = d.properties;
@@ -932,19 +764,9 @@ ECO.map = function() {
 
   function showTooltip(evt) {
       if (!evt.target.data_) return;
-      var type = 'observation_type' in evt.target.data_ ? 'Observation' : 'Sensor';
-
-      var content = "<strong>" + type + "</strong><br/>";
-      
-      if (type == 'Observation') {
-        content += evt.target.data_['scientific_name'] + "<br/>" + evt.target.data_['record'];
-      }
-      if (type == 'Sensor') {
-        content += evt.target.data_['station_name'] + "<br/>" + evt.target.data_['record'];
-      }
       popup
           .setLatLng(evt.target._latlng)
-          .setContent(content)
+          .setContent(evt.target.data_['scientific_name'] || 'n/a')
           .openOn(map);
   }
 
@@ -952,6 +774,14 @@ ECO.map = function() {
       popup._close();
   }
 
+  function dataFilterCoordinates(data) {
+    if (!data || !data.hasOwnProperty('features')) return [];
+    if (!data.features.length) return [];
+
+    return data.features.filter(function(d){
+      return d.geometry && d.geometry.coordinates.length === 2;
+    });
+  }
 
   /**
    * Add listener objects for markers
@@ -964,9 +794,11 @@ ECO.map = function() {
     return __;
   }
 
-  __.clear = clearMarkers;
+  __.draw = function(data){
+    clearMarkers();
 
-  __.draw = function(data) {
+    data = dataFilterCoordinates(data || []);
+
     if (!data.length) {
       ECO.mapAlert.set('No map data available.');
       return;
@@ -974,8 +806,30 @@ ECO.map = function() {
 
     ECO.mapAlert.hide();
 
-    addMarkers(data);
-    addMarkers(sensorData);
+
+    // set an icon for a marker, you can either
+    // create an icon object for use with the whole data Array
+    // or create an icon object for each element in the data Array.
+    // addMarker will look for an icon in the element first then default
+    // to the general icon.  Must set one or the other.
+
+    // method 1
+    var icon = L.divIcon({
+      className: 'eco-basic-icon',
+      iconSize: new L.Point(10,10)
+    });
+
+    /*
+    // method 2
+    data.forEach(function(d){
+      d.icon = L.divIcon({
+        className: 'eco-photo-icon',
+        iconSize: new L.Point(10,10)
+      });
+    });
+    */
+
+    addMarkers(data, icon);
   }
 
   return __;
@@ -1044,7 +898,7 @@ ECO.list = function() {
     fieldplot.append("h3")
       .text(function(d) {
         return capitaliseFirstLetter(d.field
-          .replace(/_/g, " ")
+          .replace("_", " ")
           .replace("clss", "class")
         )});
 
@@ -1053,7 +907,6 @@ ECO.list = function() {
         .enter().append("div")
         .attr("class", "bars")
         .append("a")
-        .style("display", function(d,i) { return i > 9 ? "none" : null})
         .attr("href", function(d) { return "#"; })
         .classed("active", function(d,i,g) {
           return facets[searchfields[g]] == d[0];
@@ -1092,20 +945,6 @@ ECO.list = function() {
     bars.append("span")
       .attr("class", "x")
       .text(" x");
-
-    fieldplot
-      .filter(function(d) { return d.values.length > 9; })
-      .append("span")
-      .attr("class", "show-more")
-      .text("[+] Show more")
-      .on("click", function(d) {
-        bars.filter(function(p,i,g) { 
-          return searchfields[g] == d.field;
-        })
-        .style("display", "block");
-
-        d3.select(this).remove();
-      });
   }
   return __;
 };
@@ -1173,7 +1012,7 @@ ECO.datatable = function() {
       .attr("class", "listing")
       .classed("zebra", function(d,i) { return i % 2 == 0;})
       .on("mouseover", function(d) {
-        d3.select("#detail-type").html("<span class='eco-basic-icon " + d.properties.observation_type + "'></span> Observation")
+        d3.select("#detail-type").text("Observation");
         ECO.detailview(d.properties);
       })
       .each(function(d) {
@@ -1201,9 +1040,6 @@ ECO.datatable = function() {
               }
               if (key == "end_date") {
                 return dateformat(new Date(props[key]));
-              }
-              if (key == "observation_type") {
-                return "<span class='eco-basic-icon " + props[key].replace(/ /g,"-") + "'></span>" + props[key];
               }
               return props[key]
             }
@@ -1289,8 +1125,6 @@ query();
 
 function query() {
   d3.select("#results").style("color", "#bbb");
-  map.clear();
-
   var term = d3.select("#searchterm").node().value;
   var minyear = d3.select("#minyear").node().value;
   var maxyear = d3.select("#maxyear").node().value;
@@ -1308,7 +1142,7 @@ function query() {
   }).join(",");
 
   var querystring = ECO.base.api.observations + "?extra=record&ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
-  var searchquerystring = ECO.base.api.search + "?extra=record&ordering=" + sortstring + facetstring + "&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&facets_limit=50";
+  var searchquerystring = ECO.base.api.search + "?extra=record&ordering=" + sortstring + facetstring + "&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear;
   var photoquerystring = ECO.base.api.photos+ "?extra=record&ordering=" + sortstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
   console.log(searchquerystring);
 
@@ -1356,31 +1190,11 @@ function query() {
         .text("(more data available)");
     }
 
-    pagination.append("p")
-      .attr("class", "page-size")
-
-    pagination.append("span")
-      .text("Page size");
-
     d3.select(".pagination").append("div")
       .style("clear", "both");
 
     datatable.draw(data);
-
-    mapData = dataFilterCoordinates(data || []);
-    map.draw(mapData);
-
-    /*
-    d3.range(2,Math.min(10,pagecount)).forEach(function(nextpage) {
-      var nextquerystring = ECO.base.api.observations + "?extra=record&ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + nextpage;
-      d3.json(nextquerystring, function(error, data) {
-      console.log(data);
-        mapData.concat(dataFilterCoordinates(data || []));
-        map.draw(mapData);
-      });
-    });
-    */
-
+    map.draw(data);
   });
 
 
@@ -1409,13 +1223,5 @@ function query() {
 function capitaliseFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
-
-function dataFilterCoordinates(data) {
-  if (!data || !data.hasOwnProperty('features')) return [];
-  if (!data.features.length) return [];
-
-  return data.features.filter(function(d){
-    return d.geometry && d.geometry.coordinates.length === 2;
-  });
-}
 </script>
+
