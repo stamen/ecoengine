@@ -512,7 +512,7 @@ var ECO = ECO || {};
 ECO.base = {
   api: {
     search: 'https://dev-ecoengine.berkeley.edu/api/search/',
-    observations: 'https://dev-ecoengine.berkeley.edu/api/observations/',
+    observations: 'https://ecoengine.berkeley.edu/api/observations/',
     photos: 'https://dev-ecoengine.berkeley.edu/api/photos/',
     layers: 'https://dev-ecoengine.berkeley.edu/api/layers/',
     rasters: '../tiles/rstore.json',
@@ -797,7 +797,7 @@ ECO.map = function() {
       if (!evt.target.data_) return;
       popup
           .setLatLng(evt.target._latlng)
-          .setContent(evt.target.data_['scientific_name'] || 'n/a')
+          .setContent(evt.target.data_['scientific_name'] + "<br/>" + evt.target.data_['record'])
           .openOn(map);
   }
 
