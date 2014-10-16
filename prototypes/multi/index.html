@@ -1448,15 +1448,16 @@ function query() {
 
   var advancedString = "";
   for (var key in activeAdvancedFields) {
-    advancedString += "&";
+    advancedString += ",";
     advancedString += key;
-    advancedString += "=";
+    advancedString += ':"';
     advancedString += activeAdvancedFields[key];
+    advancedString += '"';
   }
   console.log(advancedString);
 
-  var querystring = ECO.base.api.observations + "?ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page + advancedString;
-  var searchquerystring = ECO.base.api.search + "?ordering=" + sortstring + facetstring + "&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&facets_limit=50";
+  var querystring = ECO.base.api.observations + "?ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + advancedString + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
+  var searchquerystring = ECO.base.api.search + "?ordering=" + sortstring + facetstring + "&format=json&q=" + term + advancedString + "&min_date=" + minyear + "&max_date=" + maxyear + "&facets_limit=50";
   var photoquerystring = ECO.base.api.photos+ "?ordering=" + sortstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=28&page=1";
 
   console.log(querystring);
