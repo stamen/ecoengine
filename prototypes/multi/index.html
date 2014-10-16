@@ -748,26 +748,6 @@ d3.json(ECO.base.api.sensors, function(error, data) {
   map.draw();
 });
 
-d3.json(ECO.base.api.reserves, function(error, data) {
-  if (!data) return;
-  data.results.forEach(function(d) {
-    d3.select("#reserve-list")
-      .append("option")
-      .attr("value", JSON.stringify(d.geometry))
-      .text(d.properties.name);
-  });
-});
-
-d3.json(ECO.base.api.jepson, function(error, data) {
-  if (!data) return;
-  data.results.forEach(function(d) {
-    d3.select("#jepson-list")
-      .append("option")
-      .attr("value", JSON.stringify(d.geometry))
-      .text(d.properties.name);
-  });
-});
-
 ECO.detailview = function(row) {
   // TODO Move to detail view
   var container = d3.select("#detail-view")
@@ -941,6 +921,24 @@ ECO.map = function() {
     });
   }
 
+  function addPoly(layer, color) {
+    var poly = L.geoJson(layer.geometry, {
+      style: {
+        color: color,
+        weight: 1,
+        opacity: 0.9,
+        fillOpacity: 0.8
+
+      }
+    }).addTo(map); 
+
+    poly.on('mouseover', function() {
+      console.log(layer);
+      d3.select("#detail-type").text("Reserve ");
+      ECO.detailview(layer.properties);
+    });
+  };
+
   function addMarkers(data) {
     //console.log('markers', data)
     var bds = null;
@@ -1073,6 +1071,8 @@ ECO.map = function() {
     if (sensorData.length) addMarkers(sensorData);
     if (photoData.length) addMarkers(photoData);
   }
+
+  __.addPoly = addPoly;
 
   return __;
 };
@@ -1319,6 +1319,28 @@ var fieldlist = new ECO.list();
 var datatable = new ECO.datatable();
 var map = new ECO.map().subscribe(datatable.mapEvents);
 var timebrush = d3.svg.brush()
+
+d3.json(ECO.base.api.reserves, function(error, data) {
+  if (!data) return;
+  data.results.forEach(function(d) {
+    d3.select("#reserve-list")
+      .append("option")
+      .attr("value", JSON.stringify(d.geometry))
+      .text(d.properties.name);
+    map.addPoly(d, "#fb5");
+  });
+});
+
+d3.json(ECO.base.api.jepson, function(error, data) {
+  if (!data) return;
+  data.results.forEach(function(d) {
+    d3.select("#jepson-list")
+      .append("option")
+      .attr("value", JSON.stringify(d.geometry))
+      .text(d.properties.name);
+  });
+});
+
 
 // text boxes
 d3.selectAll(".eco-param")
