@@ -9,11 +9,11 @@ ECO.advancedSearch = [
         'type': 'text'
       },
       {
-        'field': 'collection',
+        'field': 'collection_code',
         'type': 'text'
       },
       {
-        'field': 'institution',
+        'field': 'institution_code',
         'type': 'text'
       }
     ]
@@ -107,6 +107,15 @@ ECO.advancedSearch = [
         'type': 'text'
       },
       {
+        'field': 'specific_epithet',
+        'type': 'text'
+      },
+      {
+        'field': 'infraspecific_epithet',
+        'alias': 'subspecies',
+        'type': 'text'
+      },
+      {
         'field': 'scientific_name',
         'type': 'text'
       }
@@ -116,28 +125,8 @@ ECO.advancedSearch = [
     'section': 'Metadata',
     'fields': [
       {
+        'field': 'authors',
         'field': 'photographer',
-        'type': 'text'
-      }
-    ]
-  },
-  {
-    'section': 'Sensors',
-    'fields': [
-      {
-        'field': 'variable',
-        'type': 'text'
-      },
-      {
-        'field': 'begin_date',
-        'type': 'text'
-      },
-      {
-        'field': 'end_date',
-        'type': 'text'
-      },
-      {
-        'field': 'station_name',
         'type': 'text'
       }
     ]
