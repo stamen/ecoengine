@@ -64,7 +64,8 @@ h2.app-title {
   text-align: center;
 }
 
-.eco-param {
+.eco-param,
+.eco-param2 {
   line-height: 15px;
   height: 22px;
   font-weight: bold;
@@ -78,24 +79,28 @@ h2.app-title {
   width: 120px;
 }
 
+.eco-param::-webkit-input-placeholder,
 .eco-param::-webkit-input-placeholder { /* WebKit browsers */
   color:    #bbb;
   font-weight: normal;
   font-size: 13px;
 }
-.eco-param:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+.eco-param:-moz-placeholder,
+.eco-param2:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
   color:    #bbb;
   font-weight: normal;
   font-size: 13px;
   opacity:  1;
 }
-.eco-param::-moz-placeholder { /* Mozilla Firefox 19+ */
+.eco-param::-moz-placeholder,
+.eco-param2::-moz-placeholder { /* Mozilla Firefox 19+ */
   color:    #bbb;
   font-size: 13px;
   font-weight: normal;
   opacity:  1;
 }
-.eco-param:-ms-input-placeholder { /* Internet Explorer 10+ */
+.eco-param:-ms-input-placeholder,
+.eco-param2:-ms-input-placeholder { /* Internet Explorer 10+ */
   color:    #bbb;
   font-weight: normal;
   font-size: 13px;
@@ -530,12 +535,11 @@ h3 {
       <option></option>
     </select>
     </p>
+    <div id="advanced-search-pane"></div>
     <p>
       <div class="search-btn">Search</div>
     </p>
       
-    <p><strong>Everything below is <em>not yet functional</em>.</strong></p>
-    <div id="advanced-search-pane"></div>
   </p>
   <a href="#" class="hide-btn">Hide</a>
 </div>
@@ -618,6 +622,8 @@ var mapData = [];
 var photoData = [];
 var sensorData = [];
 
+var activeAdvancedFields = {};
+
 var fields = [
   "record",
   "scientific_name",
@@ -690,10 +696,19 @@ rows.append("td")
 rows.append("td")
   .append("input")
   .attr("type", "text")
-  .attr("class", "eco-param")
+  .attr("class", "eco-param2")
   .attr("placeholder", function(d) {
     return "placeholder" in d ? d.placeholder : null;
+  })
+  .on("change", function(d) {
+    console.log(d);
+    activeAdvancedFields[d.field] = this.value;
   });
+
+d3.select(".search-btn").on("click", function() {
+  query();
+  hideflydowns();
+});
 
 
 d3.select("#advanced-search-btn").on("click", function() {
@@ -933,7 +948,6 @@ ECO.map = function() {
     }).addTo(map); 
 
     poly.on('mouseover', function() {
-      console.log(layer);
       d3.select("#detail-type").text("Reserve ");
       ECO.detailview(layer.properties);
     });
@@ -1326,9 +1340,13 @@ d3.json(ECO.base.api.reserves, function(error, data) {
     d3.select("#reserve-list")
       .append("option")
       .attr("value", JSON.stringify(d.geometry))
-      .text(d.properties.name);
+      .text(d.properties.name)
     map.addPoly(d, "#fb5");
   });
+  d3.select("#reserve-list")
+    .on("change", function() {
+      activeAdvancedFields["g"] = this.value;
+    });
 });
 
 d3.json(ECO.base.api.jepson, function(error, data) {
@@ -1339,6 +1357,10 @@ d3.json(ECO.base.api.jepson, function(error, data) {
       .attr("value", JSON.stringify(d.geometry))
       .text(d.properties.name);
   });
+  d3.select("#reserve-list")
+    .on("change", function() {
+      activeAdvancedFields["g"] = this.value;
+    });
 });
 
 
@@ -1424,10 +1446,20 @@ function query() {
     return (d.value == "-" ? "-" : "") + d.key;
   }).join(",");
 
-  var querystring = ECO.base.api.observations + "?ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
+  var advancedString = "";
+  for (var key in activeAdvancedFields) {
+    advancedString += "&";
+    advancedString += key;
+    advancedString += "=";
+    advancedString += activeAdvancedFields[key];
+  }
+  console.log(advancedString);
+
+  var querystring = ECO.base.api.observations + "?ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page + advancedString;
   var searchquerystring = ECO.base.api.search + "?ordering=" + sortstring + facetstring + "&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&facets_limit=50";
   var photoquerystring = ECO.base.api.photos+ "?ordering=" + sortstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=28&page=1";
-  console.log(searchquerystring);
+
+  console.log(querystring);
 
   // export links
   d3.select("#export-csv")

@@ -39,6 +39,7 @@ ECO.advancedSearch = [
       },
     ]
   },
+  /*
   {
     'section': 'Time',
     'fields': [
@@ -54,6 +55,7 @@ ECO.advancedSearch = [
       }
     ]
   },
+  */
   {
     'section': 'Geologic Strata',
     'fields': [
@@ -121,6 +123,7 @@ ECO.advancedSearch = [
       }
     ]
   },
+  /*
   {
     'section': 'Metadata',
     'fields': [
@@ -131,6 +134,7 @@ ECO.advancedSearch = [
       }
     ]
   }
+  */
 ];
 
 ECO.iconColors = {
