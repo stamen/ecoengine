@@ -1460,7 +1460,7 @@ function query() {
 
   var querystring = ECO.base.api.observations + "?ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + advancedString + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
   var searchquerystring = ECO.base.api.search + "?ordering=" + sortstring + facetstring + "&format=json&q=" + term + advancedString + "&min_date=" + minyear + "&max_date=" + maxyear + "&facets_limit=50";
-  var photoquerystring = ECO.base.api.photos+ "?ordering=" + sortstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=28&page=1";
+  var photoquerystring = ECO.base.api.photos+ "?ordering=" + sortstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=20page=1";
 
   console.log(querystring);
 
@@ -1571,6 +1571,45 @@ function query() {
 
     photos.append("img")
       .attr("src", function(d) { return d.properties.media_url; });
+
+    if (data.next) {
+      d3.select("#photos .inner-photos").append("span")
+        .text("Load more [+]")
+        .datum(data.next)
+        .on("click", loadMorePhotos);
+    }
+
+    function loadMorePhotos(url) {
+      d3.select(this).remove();
+
+      d3.json(url, function(error, data) {
+        photoData.concat(dataFilterCoordinates(data || []));
+        map.draw();
+
+        var existingPhotos = d3.select("#photos .inner-photos").selectAll("a").data();
+
+        var photos = d3.select("#photos .inner-photos")
+          .selectAll("a")
+          .data(existingPhotos.concat(data.features))
+          .enter().append("a")
+          .attr("href", function(d) { return d.properties.url; })
+          .on("mouseover", function(d) {
+            d3.select("#detail-type").text("Photo");
+            ECO.detailview(d.properties);
+          });
+
+        photos.append("img")
+          .attr("src", function(d) { return d.properties.media_url; });
+
+
+        if (data.next) {
+          d3.select("#photos .inner-photos").append("span")
+            .text("Load more [+]")
+            .datum(data.next)
+            .on("click", loadMorePhotos);
+        }
+      });
+    };
   });
 };
 
