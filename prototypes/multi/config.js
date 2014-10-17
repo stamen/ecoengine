@@ -60,23 +60,19 @@ ECO.advancedSearch = [
     'section': 'Geologic Strata',
     'fields': [
       {
-        'field': 'epoch',
+        'field': 'earliest_period_or_lowest_system',
         'type': 'text'
       },
       {
-        'field': 'era_eon',
+        'field': 'latest_period_or_highest_system',
         'type': 'text'
       },
       {
-        'field': 'period',
+        'field': 'maximum_depth_in_meters',
         'type': 'text'
       },
       {
-        'field': 'min_depth',
-        'type': 'text'
-      },
-      {
-        'field': 'max_depth',
+        'field': 'minimum_depth_in_meters',
         'type': 'text'
       }
     ]

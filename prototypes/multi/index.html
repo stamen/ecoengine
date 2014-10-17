@@ -136,7 +136,7 @@ h4 {
 
 #minyear,
 #maxyear {
-  width: 48px;
+  width: 90px;
   text-align: center;
 }
 
@@ -518,9 +518,9 @@ h3 {
 <body>
 <div class="header">
   Search <input type="text" value="CalPhotos" id="searchterm" class="eco-param" placeholder="Observations/photos"></input>
-  &nbsp; Date Range <input type="text" value="1920" id="minyear" class="eco-param"></input>
+  &nbsp; Date Range <input type="text" value="1920-01-01" id="minyear" class="eco-param"></input>
   <span id="time-slider"></span>
-  <input type="text" value="2014" id="maxyear" class="eco-param"></input>
+  <input type="text" value="2014-12-31" id="maxyear" class="eco-param"></input>
   &nbsp; <a href="#" id="advanced-search-btn">Advanced</a> |
   <a href="#" id="export-btn">Export</a>
 </div>
@@ -667,6 +667,7 @@ var sortOrder = {
 };
 
 var dateformat = d3.time.format("%Y %b %e");
+var compactdateformat = d3.time.format("%Y-%m-%e");
 
 
 
@@ -1421,8 +1422,8 @@ d3.selectAll(".eco-param")
 
   function brushed() {
     var extent = timebrush.extent();
-    d3.select("#minyear").node().value = extent[0].getFullYear();
-    d3.select("#maxyear").node().value = extent[1].getFullYear();
+    d3.select("#minyear").node().value = compactdateformat(extent[0]);
+    d3.select("#maxyear").node().value = compactdateformat(extent[1]);
   }
 })();
 
