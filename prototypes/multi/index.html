@@ -605,7 +605,7 @@ h3 {
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="config.js"></script>
 <script>
-var limit = 50;
+var limit = 500;
 var page = 1;
 var facets = {
   kingdom: false,
@@ -819,7 +819,7 @@ ECO.map = function() {
   var baseLayer = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '',
     subdomains: 'abc',
-    minZoom: 2,
+    minZoom: 1,
     transparent: true,
     maxZoom: 16
   }).addTo(map);
@@ -1460,7 +1460,7 @@ function query() {
   console.log(advancedString);
 
   var querystring = ECO.base.api.observations + "?ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + advancedString + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
-  var searchquerystring = ECO.base.api.search + "?ordering=" + sortstring + facetstring + "&format=json&q=" + term + advancedString + "&min_date=" + minyear + "&max_date=" + maxyear + "&facets_limit=50";
+  var searchquerystring = ECO.base.api.search + "?ordering=" + sortstring + facetstring + "&format=json&q=" + term + advancedString + "&min_date=" + minyear + "&max_date=" + maxyear + "&facets_limit=100";
   var photoquerystring = ECO.base.api.photos+ "?ordering=" + sortstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=20page=1";
 
   console.log(querystring);
