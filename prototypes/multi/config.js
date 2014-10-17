@@ -5,7 +5,7 @@ ECO.advancedSearch = [
     'section': 'Unique Identifier (Observations)',
     'fields': [
       {
-        'field': 'catalog_number',
+        'field': 'catalog_number__exact',
         'type': 'text'
       },
       {
