@@ -1508,11 +1508,22 @@ function query() {
         .text("(more data available)");
     }
 
-    pagination.append("p")
-      .attr("class", "page-size")
+    var pagesize = pagination.append("p")
+      .append("div")
+      .attr("class", "pagination")
+      .text("Page size ");
 
-    pagination.append("span")
-      .text("Page size (todo)");
+    pagesize.selectAll(".page-size")
+      .data([20,50,100,500,1000,2000])
+      .enter().append("span")
+      .text(String)
+      .attr("class", "page-size")
+      .classed("active", function(d) { return d == limit; })
+      .on("click", function(d) {
+        limit = d;
+        d3.selectAll(".page-size").classed("active", function(d) { return d == limit; })
+        query();
+      });
 
     d3.select(".pagination").append("div")
       .style("clear", "both");
