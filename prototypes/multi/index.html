@@ -1398,7 +1398,10 @@ d3.selectAll(".eco-param")
   timebrush.x(x)
       .on("brush", brushed)
       .on("brushend", brushend)
-      .extent([new Date(minyear),new Date(maxyear)]);
+
+  if (minyear.length > 0 && maxyear.length >0){
+    timebrush.extent([new Date(minyear),new Date(maxyear)]);
+  }
 
   var context = d3.select("#time-slider")
       .append("svg")
