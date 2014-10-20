@@ -165,7 +165,7 @@ h4 {
 
 /* Time Slider */
 svg {
-  font-size: 10px;
+  font-size: 8px;
   fill: #fff;
 }
 
@@ -1384,20 +1384,20 @@ d3.selectAll(".eco-param")
 (function() {
   var margin = {top: 2, right: 14, bottom: 26, left: 14};
   var height = 1;
-  var width = 320;
+  var width = 250;
 
   var minyear = d3.select("#minyear").node().value;
   var maxyear = d3.select("#maxyear").node().value;
 
   var x = d3.time.scale()
     .range([0, width])
-    .domain([new Date("1900"), new Date()]).nice();
+    .domain([new Date("Jan 1 1900"), new Date()]).nice();
 //    .domain([new Date(minyear), new Date(maxyear)]).nice();
 
   var xAxis = d3.svg.axis().scale(x).orient("bottom");
   timebrush.x(x)
       .on("brush", brushed)
-      .on("brushend", query)
+      .on("brushend", brushend)
       .extent([new Date(minyear),new Date(maxyear)]);
 
   var context = d3.select("#time-slider")
@@ -1423,9 +1423,21 @@ d3.selectAll(".eco-param")
 
   function brushed() {
     var extent = timebrush.extent();
+
     d3.select("#minyear").node().value = compactdateformat(extent[0]);
     d3.select("#maxyear").node().value = compactdateformat(extent[1]);
   }
+
+  function brushend() {
+    var extent = timebrush.extent();
+    if (compactdateformat(extent[0]) == compactdateformat(extent[1])) {
+      // reset brushes
+      d3.select("#minyear").node().value = "";
+      d3.select("#maxyear").node().value = "";
+    }
+    query();
+  }
+
 })();
 
 query();
@@ -1459,19 +1471,27 @@ function query() {
   }
   console.log(advancedString);
 
-  var querystring = ECO.base.api.observations + "?ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + advancedString + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
-  var searchquerystring = ECO.base.api.search + "?ordering=" + sortstring + facetstring + "&format=json&q=" + term + advancedString + "&min_date=" + minyear + "&max_date=" + maxyear + "&facets_limit=100";
-  var photoquerystring = ECO.base.api.photos+ "?ordering=" + sortstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=20page=1";
+  var dateString = "";
+  if (minyear) {
+    dateString += "&min_date=" + minyear;
+  }
+  if (maxyear) {
+    dateString += "&max_date=" + maxyear;
+  }
+
+  var querystring = ECO.base.api.observations + "?ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + advancedString + dateString + "&page_size=" + limit + "&page=" + page;
+  var searchquerystring = ECO.base.api.search + "?ordering=" + sortstring + facetstring + "&format=json&q=" + term + advancedString + dateString + "&facets_limit=100";
+  var photoquerystring = ECO.base.api.photos+ "?ordering=" + sortstring + "&format=geojson&q=" + term + dateString + "&page_size=20page=1";
 
   console.log(querystring);
 
   // export links
   d3.select("#export-csv")
-    .attr("href", ECO.base.api.observations + "?fields=&ordering=" + sortstring + facetstring + "&format=csv&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + "?fields=&ordering=" + sortstring + facetstring + "&format=csv&q=" + term + dateString + "&page_size=" + limit + "&page=" + page);
   d3.select("#export-json")
-    .attr("href", ECO.base.api.observations + "?fields=&ordering=" + sortstring + facetstring + "&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + "?fields=&ordering=" + sortstring + facetstring + "&format=json&q=" + term + dateString + "&page_size=" + limit + "&page=" + page);
   d3.select("#export-geojson")
-    .attr("href", ECO.base.api.observations + "?fields=&ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + "?fields=&ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + dateString + "&page_size=" + limit + "&page=" + page);
 
   d3.json(querystring, function(error, data) {
     d3.select("#results").html("").style("color", null);
