@@ -518,10 +518,10 @@ h3 {
 </style>
 <body>
 <div class="header">
-  Search <input type="text" value="CalPhotos" id="searchterm" class="eco-param" placeholder="Observations/photos"></input>
-  &nbsp; Date Range <input type="text" value="1920-01-01" id="minyear" class="eco-param"></input>
+  Search <input type="text" value="" id="searchterm" class="eco-param" placeholder="Observations/photos"></input>
+  &nbsp; Date Range <input type="text" value="" id="minyear" class="eco-param" placeholder="1900-01-01"></input>
   <span id="time-slider"></span>
-  <input type="text" value="2014-12-31" id="maxyear" class="eco-param"></input>
+  <input type="text" value="" id="maxyear" class="eco-param" placeholder="2018-12-31"></input>
   &nbsp; <a href="#" id="advanced-search-btn">Advanced</a> |
   <a href="#" id="export-btn">Export</a>
 </div>
@@ -1445,7 +1445,7 @@ query();
 function query() {
   d3.select("#results").style("color", "#bbb");
 
-  var term = d3.select("#searchterm").node().value || '""';
+  var term = d3.select("#searchterm").node().value;
   var minyear = d3.select("#minyear").node().value;
   var maxyear = d3.select("#maxyear").node().value;
 
@@ -1460,6 +1460,10 @@ function query() {
   var sortstring = sortlist.map(function(d) {
     return (d.value == "-" ? "-" : "") + d.key;
   }).join(",");
+
+  var orderString = "";
+  orderString += "?ordering=" + sortstring;
+
 
   var advancedString = "";
   for (var key in activeAdvancedFields) {
@@ -1479,19 +1483,26 @@ function query() {
     dateString += "&max_date=" + maxyear;
   }
 
-  var querystring = ECO.base.api.observations + "?ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + advancedString + dateString + "&page_size=" + limit + "&page=" + page;
-  var searchquerystring = ECO.base.api.search + "?ordering=" + sortstring + facetstring + "&format=json&q=" + term + advancedString + dateString + "&facets_limit=100";
-  var photoquerystring = ECO.base.api.photos+ "?ordering=" + sortstring + "&format=geojson&q=" + term + dateString + "&page_size=20page=1";
+  var qString = "";
+  var qStringSimple = "";
+  if (term.length > 0 || advancedString.length > 0) {
+    qString += "&q=" + term + advancedString;
+    qStringSimple += "&q=" + term;
+  }
+
+  var querystring = ECO.base.api.observations + orderString + facetstring + "&format=geojson" + qString + dateString + "&page_size=" + limit + "&page=" + page;
+  var searchquerystring = ECO.base.api.search + orderString + facetstring + "&format=json" + qString + dateString + "&facets_limit=100";
+  var photoquerystring = ECO.base.api.photos+ orderString + "&format=geojson" + qStringSimple + dateString + "&page_size=20page=1";
 
   console.log(querystring);
 
   // export links
   d3.select("#export-csv")
-    .attr("href", ECO.base.api.observations + "?fields=&ordering=" + sortstring + facetstring + "&format=csv&q=" + term + dateString + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + orderString + sortstring + facetstring + "&format=csv" + qString + dateString + "&page_size=" + limit + "&page=" + page);
   d3.select("#export-json")
-    .attr("href", ECO.base.api.observations + "?fields=&ordering=" + sortstring + facetstring + "&format=json&q=" + term + dateString + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + orderString + sortstring + facetstring + "&format=json" + qString + dateString + "&page_size=" + limit + "&page=" + page);
   d3.select("#export-geojson")
-    .attr("href", ECO.base.api.observations + "?fields=&ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + dateString + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + orderString + sortstring + facetstring + "&format=geojson" + qString + dateString + "&page_size=" + limit + "&page=" + page);
 
   d3.json(querystring, function(error, data) {
     d3.select("#results").html("").style("color", null);
