@@ -612,35 +612,43 @@ h3 {
 <script src="config.js"></script>
 <script>
 
-function logHash(hash) {            
-    if (hash.parameters) {              
-        console.log("There are parameters.");
-        var parameters = hash.parameters;
-        for (var name in parameters) {
-            console.log("The value of " + name + " is " + parameters[name]);
-        }
-    } else {
-        console.log("There are no parameters.");
-        console.log(hash.raw);
-    }       
-}
-
-initHashNav(logHash);
-
 
 var queryObj = {
-  limit: 200,
-  page: 1,
+  page_size: 200,   //
+  page: 1,          //
   facets: {},
   sortFields: {},
   advanced: {},
-  q: null,
+  q: null,          //
   min_date: null,
   max_date: null
 };
 
-var limit = 500;
-var page = 1;
+function logHash(hash) {            
+  if (hash.parameters) {              
+    console.log("There are parameters.");
+    var parameters = hash.parameters;
+    for (var name in parameters) {
+      queryObj[name] = parameters[name];
+    }
+  } else {
+    console.log("There are no parameters.");
+    console.log(hash.raw);
+  }       
+}
+
+initHashNav(logHash);
+
+if (queryObj.q) {
+  d3.select("#searchterm").node().value = queryObj.q;
+}
+if (queryObj.min_date) {
+  d3.select("#minyear").node().value = queryObj.min_date; 
+}
+if (queryObj.max_date) {
+  d3.select("#maxyear").node().value = queryObj.max_date;
+}
+
 var facets = {
   kingdom: false,
   phylum: false,
@@ -1215,7 +1223,7 @@ ECO.list = function() {
           });
         })
         .on("click", function(d,i,g) {
-          page = 1;
+          queryObj.page = 1;
           if (facets[searchfields[g]] == d[0]) {
             facets[searchfields[g]] = false;
           } else {
@@ -1404,12 +1412,12 @@ d3.json(ECO.base.api.jepson, function(error, data) {
 // text boxes
 d3.selectAll(".eco-param")
   .on("change", function() {
-    var minyear = d3.select("#minyear").node().value;
-    var maxyear = d3.select("#maxyear").node().value;
-    timebrush.extent([new Date(minyear), new Date(maxyear)]);
+    queryObj.min_date = d3.select("#minyear").node().value;
+    queryObj.max_date = d3.select("#maxyear").node().value;
+    timebrush.extent([new Date(queryObj.min_date), new Date(queryObj.max_date)]);
     d3.select("#time-slider .brush").call(timebrush)
 
-    page = 1;
+    queryObj.page = 1;
     query();
   });
 
@@ -1420,8 +1428,8 @@ d3.selectAll(".eco-param")
   var height = 1;
   var width = 250;
 
-  var minyear = d3.select("#minyear").node().value;
-  var maxyear = d3.select("#maxyear").node().value;
+  queryObj.min_date = d3.select("#minyear").node().value;
+  queryObj.max_date = d3.select("#maxyear").node().value;
 
   var x = d3.time.scale()
     .range([0, width])
@@ -1433,8 +1441,8 @@ d3.selectAll(".eco-param")
       .on("brush", brushed)
       .on("brushend", brushend)
 
-  if (minyear.length > 0 && maxyear.length >0){
-    timebrush.extent([new Date(minyear),new Date(maxyear)]);
+  if (queryObj.min_date.length > 0 && queryObj.max_date.length >0){
+    timebrush.extent([new Date(queryObj.min_date),new Date(queryObj.max_date)]);
   }
 
   var context = d3.select("#time-slider")
@@ -1461,8 +1469,8 @@ d3.selectAll(".eco-param")
   function brushed() {
     var extent = timebrush.extent();
 
-    d3.select("#minyear").node().value = compactdateformat(extent[0]);
-    d3.select("#maxyear").node().value = compactdateformat(extent[1]);
+    queryObj.min_date = d3.select("#minyear").node().value = compactdateformat(extent[0]);
+    queryObj.max_date = d3.select("#maxyear").node().value = compactdateformat(extent[1]);
   }
 
   function brushend() {
@@ -1471,6 +1479,8 @@ d3.selectAll(".eco-param")
       // reset brushes
       d3.select("#minyear").node().value = "";
       d3.select("#maxyear").node().value = "";
+      queryObj.min_date = null;
+      queryObj.max_date = null;
     }
     query();
   }
@@ -1483,8 +1493,6 @@ function query() {
   d3.select("#results").style("color", "#bbb");
 
   var term = d3.select("#searchterm").node().value;
-  var minyear = d3.select("#minyear").node().value;
-  var maxyear = d3.select("#maxyear").node().value;
 
   var facetlist = d3.entries(facets)
     .filter(function(d) { return d.value; });
@@ -1513,11 +1521,11 @@ function query() {
   console.log(advancedString);
 
   var dateString = "";
-  if (minyear) {
-    dateString += "&min_date=" + minyear;
+  if (queryObj.min_date) {
+    dateString += "&min_date=" + queryObj.min_date;
   }
-  if (maxyear) {
-    dateString += "&max_date=" + maxyear;
+  if (queryObj.max_date) {
+    dateString += "&max_date=" + queryObj.max_date;
   }
 
   var qString = "";
@@ -1527,7 +1535,7 @@ function query() {
     qStringSimple += "&q=" + term;
   }
 
-  var querystring = ECO.base.api.observations + orderString + facetstring + "&format=geojson" + qString + dateString + "&page_size=" + limit + "&page=" + page;
+  var querystring = ECO.base.api.observations + orderString + facetstring + "&format=geojson" + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page;
   var searchquerystring = ECO.base.api.search + orderString + facetstring + "&format=json" + qString + dateString + "&facets_limit=100";
   var photoquerystring = ECO.base.api.photos+ orderString + "&format=geojson" + qStringSimple + dateString + "&page_size=20page=1";
 
@@ -1535,14 +1543,14 @@ function query() {
 
   // export links
   d3.select("#export-csv")
-    .attr("href", ECO.base.api.observations + orderString + sortstring + facetstring + "&format=csv" + qString + dateString + "&page_size=" + limit + "&page=" + page)
-    .text(ECO.base.api.observations + orderString + sortstring + facetstring + "&format=csv" + qString + dateString + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + orderString + sortstring + facetstring + "&format=csv" + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
+    .text(ECO.base.api.observations + orderString + sortstring + facetstring + "&format=csv" + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
   d3.select("#export-json")
-    .attr("href", ECO.base.api.observations + orderString + sortstring + facetstring + "&format=json" + qString + dateString + "&page_size=" + limit + "&page=" + page)
-    .text( ECO.base.api.observations + orderString + sortstring + facetstring + "&format=json" + qString + dateString + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + orderString + sortstring + facetstring + "&format=json" + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
+    .text( ECO.base.api.observations + orderString + sortstring + facetstring + "&format=json" + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
   d3.select("#export-geojson")
-    .attr("href", ECO.base.api.observations + orderString + sortstring + facetstring + "&format=geojson" + qString + dateString + "&page_size=" + limit + "&page=" + page)
-    .text(ECO.base.api.observations + orderString + sortstring + facetstring + "&format=geojson" + qString + dateString + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + orderString + sortstring + facetstring + "&format=geojson" + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
+    .text(ECO.base.api.observations + orderString + sortstring + facetstring + "&format=geojson" + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
 
   d3.json(querystring, function(error, data) {
     d3.select("#results").html("").style("color", null);
@@ -1553,24 +1561,24 @@ function query() {
     }
 
     // Paging
-    var startitem = limit*(page-1);
-    var enditem = Math.min(limit*(page),data.count);
+    var startitem = queryObj.page_size*(queryObj.page-1);
+    var enditem = Math.min(queryObj.page_size*(queryObj.page),data.count);
     var pagination = d3.select("#results").append("p")
       .attr("class", "paging");
 
     pagination.append("span").text("Results " + (startitem+1) + " to " + enditem + " of " + data.count + " - ");
 
-    var pagecount = Math.ceil(data.count/limit);
+    var pagecount = Math.ceil(data.count/queryObj.page_size);
     pagination.append("span")
       .attr("class", "pagination")
       .selectAll("span")
       .data(d3.range(1, pagecount+1).slice(0,20))
       .enter().append("span")
-      .classed("active", function(d) { return d == page;})
+      .classed("active", function(d) { return d == queryObj.page;})
       .text(String)
       .on("click", function(d) {
-        if (d == page) return;
-        page = d;
+        if (d == queryObj.page) return;
+        queryObj.page = d;
         query();
       });
 
@@ -1590,10 +1598,10 @@ function query() {
       .enter().append("span")
       .text(String)
       .attr("class", "page-size")
-      .classed("active", function(d) { return d == limit; })
+      .classed("active", function(d) { return d == queryObj.page_size; })
       .on("click", function(d) {
-        limit = d;
-        d3.selectAll(".page-size").classed("active", function(d) { return d == limit; })
+        queryObj.page_size = d;
+        d3.selectAll(".page-size").classed("active", function(d) { return d == queryObj.page_size; })
         query();
       });
 
@@ -1608,7 +1616,7 @@ function query() {
 
     /*
     d3.range(2,Math.min(10,pagecount)).forEach(function(nextpage) {
-      var nextquerystring = ECO.base.api.observations + "?ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + nextpage;
+      var nextquerystring = ECO.base.api.observations + "?ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + queryObj.page_size + "&page=" + nextpage;
       d3.json(nextquerystring, function(error, data) {
       console.log(data);
         mapData.concat(dataFilterCoordinates(data || []));
