@@ -619,9 +619,9 @@ var queryObj = {
   facets: {},
   sortFields: {},
   advanced: {},
-  q: null,          //
-  min_date: null,
-  max_date: null
+  q: "",          
+  min_date: "",   //
+  max_date: ""//
 };
 
 function logHash(hash) {            
@@ -1412,6 +1412,7 @@ d3.json(ECO.base.api.jepson, function(error, data) {
 // text boxes
 d3.selectAll(".eco-param")
   .on("change", function() {
+    queryObj.q = d3.select("#searchterm").node().value;
     queryObj.min_date = d3.select("#minyear").node().value;
     queryObj.max_date = d3.select("#maxyear").node().value;
     timebrush.extent([new Date(queryObj.min_date), new Date(queryObj.max_date)]);
@@ -1479,8 +1480,6 @@ d3.selectAll(".eco-param")
       // reset brushes
       d3.select("#minyear").node().value = "";
       d3.select("#maxyear").node().value = "";
-      queryObj.min_date = null;
-      queryObj.max_date = null;
     }
     query();
   }
@@ -1491,8 +1490,6 @@ query();
 
 function query() {
   d3.select("#results").style("color", "#bbb");
-
-  var term = d3.select("#searchterm").node().value;
 
   var facetlist = d3.entries(facets)
     .filter(function(d) { return d.value; });
@@ -1507,7 +1504,7 @@ function query() {
   }).join(",");
 
   var orderString = "";
-  orderString += "?ordering=" + sortstring;
+  orderString += "&ordering=" + sortstring;
 
 
   var advancedString = "";
@@ -1530,27 +1527,29 @@ function query() {
 
   var qString = "";
   var qStringSimple = "";
-  if (term.length > 0 || advancedString.length > 0) {
-    qString += "&q=" + term + advancedString;
-    qStringSimple += "&q=" + term;
+  if (queryObj.q.length > 0 || advancedString.length > 0) {
+    qString += "&q=" + queryObj.q + advancedString;
+    qStringSimple += "&q=" + queryObj.q;
   }
 
-  var querystring = ECO.base.api.observations + orderString + facetstring + "&format=geojson" + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page;
-  var searchquerystring = ECO.base.api.search + orderString + facetstring + "&format=json" + qString + dateString + "&facets_limit=100";
-  var photoquerystring = ECO.base.api.photos+ orderString + "&format=geojson" + qStringSimple + dateString + "&page_size=20page=1";
+  //var hashString = 
+
+  var querystring = ECO.base.api.observations + "?format=geojson" + orderString + facetstring + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page;
+  var searchquerystring = ECO.base.api.search + "?format=json" + orderString + facetstring+ qString + dateString + "&facets_limit=100";
+  var photoquerystring = ECO.base.api.photos  + "?format=geojson" + orderString+ qStringSimple + dateString + "&page_size=20page=1";
 
   console.log(querystring);
 
   // export links
   d3.select("#export-csv")
-    .attr("href", ECO.base.api.observations + orderString + sortstring + facetstring + "&format=csv" + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
-    .text(ECO.base.api.observations + orderString + sortstring + facetstring + "&format=csv" + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
+    .attr("href", ECO.base.api.observations + "?format=csv" + orderString + sortstring + facetstring + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
+    .text(ECO.base.api.observations + "?format=csv" + orderString + sortstring + facetstring + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
   d3.select("#export-json")
-    .attr("href", ECO.base.api.observations + orderString + sortstring + facetstring + "&format=json" + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
-    .text( ECO.base.api.observations + orderString + sortstring + facetstring + "&format=json" + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
+    .attr("href", ECO.base.api.observations + "?format=json" + orderString + sortstring + facetstring + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
+    .text( ECO.base.api.observations + "?format=json" + orderString + sortstring + facetstring + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
   d3.select("#export-geojson")
-    .attr("href", ECO.base.api.observations + orderString + sortstring + facetstring + "&format=geojson" + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
-    .text(ECO.base.api.observations + orderString + sortstring + facetstring + "&format=geojson" + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
+    .attr("href", ECO.base.api.observations + "?format=geojson" + orderString + sortstring + facetstring + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
+    .text(ECO.base.api.observations + "?format=geojson" + orderString + sortstring + facetstring + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
 
   d3.json(querystring, function(error, data) {
     d3.select("#results").html("").style("color", null);
@@ -1616,7 +1615,7 @@ function query() {
 
     /*
     d3.range(2,Math.min(10,pagecount)).forEach(function(nextpage) {
-      var nextquerystring = ECO.base.api.observations + "?ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + queryObj.page_size + "&page=" + nextpage;
+      var nextquerystring = ECO.base.api.observations + "?ordering=" + sortstring + facetstring + "&format=geojson&q=" + queryObj.q + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + queryObj.page_size + "&page=" + nextpage;
       d3.json(nextquerystring, function(error, data) {
       console.log(data);
         mapData.concat(dataFilterCoordinates(data || []));
