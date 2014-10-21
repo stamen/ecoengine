@@ -551,11 +551,16 @@ h3 {
   <h4>Observations</h4>
   <p>
     <span class="export-buttons">
-      <a href="#" id="export-csv" target="_blank">CSV</a> |
-      <a href="#" id="export-json" target="_blank">JSON</a> |
-      <a href="#" id="export-geojson" target="_blank">GeoJSON</a>
+      CSV <a href="#" id="export-csv" target="_blank"></a><br/>
+      JSON <a href="#" id="export-json" target="_blank"></a><br/>
+      GeoJSON <a href="#" id="export-geojson" target="_blank"></a><br/>
     <span>
   </p>
+  <h4>Search</h4>
+  <h4>Photos</h4>
+  <h4>Sensors</h4>
+  <h4>Raster Layers</h4>
+  <h4>Footprints</h4>
   <a href="#" class="hide-btn">Hide</a>
 </div>
 
@@ -603,8 +608,37 @@ h3 {
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="../lib/hashnav.js"></script>
 <script src="config.js"></script>
 <script>
+
+function logHash(hash) {            
+    if (hash.parameters) {              
+        console.log("There are parameters.");
+        var parameters = hash.parameters;
+        for (var name in parameters) {
+            console.log("The value of " + name + " is " + parameters[name]);
+        }
+    } else {
+        console.log("There are no parameters.");
+        console.log(hash.raw);
+    }       
+}
+
+initHashNav(logHash);
+
+
+var queryObj = {
+  limit: 200,
+  page: 1,
+  facets: {},
+  sortFields: {},
+  advanced: {},
+  q: null,
+  min_date: null,
+  max_date: null
+};
+
 var limit = 500;
 var page = 1;
 var facets = {
@@ -1501,11 +1535,14 @@ function query() {
 
   // export links
   d3.select("#export-csv")
-    .attr("href", ECO.base.api.observations + orderString + sortstring + facetstring + "&format=csv" + qString + dateString + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + orderString + sortstring + facetstring + "&format=csv" + qString + dateString + "&page_size=" + limit + "&page=" + page)
+    .text(ECO.base.api.observations + orderString + sortstring + facetstring + "&format=csv" + qString + dateString + "&page_size=" + limit + "&page=" + page);
   d3.select("#export-json")
-    .attr("href", ECO.base.api.observations + orderString + sortstring + facetstring + "&format=json" + qString + dateString + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + orderString + sortstring + facetstring + "&format=json" + qString + dateString + "&page_size=" + limit + "&page=" + page)
+    .text( ECO.base.api.observations + orderString + sortstring + facetstring + "&format=json" + qString + dateString + "&page_size=" + limit + "&page=" + page);
   d3.select("#export-geojson")
-    .attr("href", ECO.base.api.observations + orderString + sortstring + facetstring + "&format=geojson" + qString + dateString + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + orderString + sortstring + facetstring + "&format=geojson" + qString + dateString + "&page_size=" + limit + "&page=" + page)
+    .text(ECO.base.api.observations + orderString + sortstring + facetstring + "&format=geojson" + qString + dateString + "&page_size=" + limit + "&page=" + page);
 
   d3.json(querystring, function(error, data) {
     d3.select("#results").html("").style("color", null);
