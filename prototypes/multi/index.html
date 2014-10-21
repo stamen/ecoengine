@@ -1504,7 +1504,9 @@ function query() {
   }).join(",");
 
   var orderString = "";
-  orderString += "&ordering=" + sortstring;
+  if (sortstring.length > 0) {
+    orderString += "&ordering=" + sortstring;
+  }
 
 
   var advancedString = "";
