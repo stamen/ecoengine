@@ -1532,9 +1532,11 @@ function query() {
     qStringSimple += "&q=" + queryObj.q;
   }
 
-  //var hashString = 
+  var hashString = orderString + facetstring + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page;
 
-  var querystring = ECO.base.api.observations + "?format=geojson" + orderString + facetstring + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page;
+  window.location.hash = hashString;
+
+  var querystring = ECO.base.api.observations + "?format=geojson" + hashString;
   var searchquerystring = ECO.base.api.search + "?format=json" + orderString + facetstring+ qString + dateString + "&facets_limit=100";
   var photoquerystring = ECO.base.api.photos  + "?format=geojson" + orderString+ qStringSimple + dateString + "&page_size=20page=1";
 
