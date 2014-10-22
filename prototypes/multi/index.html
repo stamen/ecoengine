@@ -280,6 +280,18 @@ svg {
   width: 100%;
 }
 
+#bbox-select {
+  position: absolute;
+  bottom: 20px;
+  right: 0px;
+  text-align: right;
+  z-index: 100;
+  background: #fff;
+  padding: 2px 12px;
+  background: rgba(255,255,255,0.8);
+  cursor: pointer;
+}
+
 .map-info {
   position: absolute;
   display: none;
@@ -602,6 +614,9 @@ h3 {
         <option value="http://{s}.tile.stamen.com/terrain-background/{z}/{x}/{y}.jpg">Stamen Terrain</option>
       </select>
     </div>
+    <div id="bbox-select">
+      Click to show only results on the map.
+    </div>
   </div>
   <div class="map-info">
       <button class="map-info-close">x</button>
@@ -655,6 +670,7 @@ var queryObj = {
     'state_province': false,
     resource: false
   },
+  bbox: "",
   sortFields: {},
   advanced: {},
   q: "",          
@@ -1460,6 +1476,14 @@ d3.json(ECO.base.api.jepson, function(error, data) {
     });
 });
 
+// filter by bounding box
+d3.select("#bbox-select")
+  .on("click", function() {
+    var bds = map.map.getBounds();
+    var bbox = [bds._northEast.lng, bds._northEast.lat, bds._southWest.lng, bds._southWest.lat].join(",");
+    queryObj.bbox = bbox;
+    query();
+  });
 
 // text boxes
 d3.selectAll(".eco-param")
@@ -1560,6 +1584,10 @@ function query() {
     orderString += "&ordering=" + sortstring;
   }
 
+  var bboxString = "";
+  if (queryObj.bbox) {
+    bboxString = "&bbox=" + queryObj.bbox;
+  }
 
   var advancedString = "";
   for (var key in queryObj.advanced) {
@@ -1586,26 +1614,26 @@ function query() {
     qStringSimple += "&q=" + queryObj.q;
   }
 
-  var hashString = orderString + facetstring + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page;
+  var hashString = orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page;
 
   window.location.hash = hashString;
 
   var querystring = ECO.base.api.observations + "?format=geojson" + hashString;
   var searchquerystring = ECO.base.api.search + "?format=json" + orderString + facetstring+ qString + dateString + "&facets_limit=100";
-  var photoquerystring = ECO.base.api.photos  + "?format=geojson" + orderString+ qStringSimple + dateString + "&page_size=20page=1";
+  var photoquerystring = ECO.base.api.photos  + "?format=geojson" + orderString+ qStringSimple + bboxString + dateString + "&page_size=20page=1";
 
   console.log(querystring);
 
   // export links
   d3.select("#export-csv")
-    .attr("href", ECO.base.api.observations + "?format=csv" + orderString + sortstring + facetstring + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
-    .text(ECO.base.api.observations + "?format=csv" + orderString + sortstring + facetstring + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
+    .attr("href", ECO.base.api.observations + "?format=csv" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
+    .text(ECO.base.api.observations + "?format=csv" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
   d3.select("#export-json")
-    .attr("href", ECO.base.api.observations + "?format=json" + orderString + sortstring + facetstring + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
-    .text( ECO.base.api.observations + "?format=json" + orderString + sortstring + facetstring + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
+    .attr("href", ECO.base.api.observations + "?format=json" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
+    .text( ECO.base.api.observations + "?format=json" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
   d3.select("#export-geojson")
-    .attr("href", ECO.base.api.observations + "?format=geojson" + orderString + sortstring + facetstring + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
-    .text(ECO.base.api.observations + "?format=geojson" + orderString + sortstring + facetstring + qString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
+    .attr("href", ECO.base.api.observations + "?format=geojson" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
+    .text(ECO.base.api.observations + "?format=geojson" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
 
   d3.json(querystring, function(error, data) {
     d3.select("#results").html("").style("color", null);
