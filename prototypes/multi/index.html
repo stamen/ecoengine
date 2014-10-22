@@ -624,7 +624,16 @@ h3 {
 <script src="../lib/hashnav.js"></script>
 <script src="config.js"></script>
 <script>
-
+var fields = [
+  "record",
+  "scientific_name",
+  "country",
+  "state_province",
+  "begin_date",
+  "end_date",
+  "geojson",
+  "observation_type"
+];
 
 var queryObj = {
   page_size: 200,   //
@@ -637,12 +646,23 @@ var queryObj = {
   max_date: ""//
 };
 
+fields.forEach(function(d) { queryObj.sortFields[d] = false; });
+
 function logHash(hash) {            
   if (hash.parameters) {              
-    console.log("There are parameters.");
     var parameters = hash.parameters;
     for (var name in parameters) {
-      queryObj[name] = parameters[name];
+      var value = parameters[name];
+      console.log(name,value);
+      if (name == "ordering") {
+        var fields = value.split(",")
+        fields.forEach(function(d) {
+          var field = d.replace("-","");
+          queryObj.sortFields[field] = d[0] == "-" ? "-" : "+";
+        });
+      } else {
+        queryObj[name] = value;
+      }
     }
   } else {
     console.log("There are no parameters.");
@@ -679,20 +699,6 @@ var photoData = [];
 var sensorData = [];
 
 var activeAdvancedFields = {};
-
-var fields = [
-  "record",
-  "scientific_name",
-  "country",
-  "state_province",
-  "begin_date",
-  "end_date",
-  "geojson",
-  "observation_type"
-];
-
-var sortFields = {};
-fields.forEach(function(d) { sortFields[d] = false; });
 
 var ECO = ECO || {};
 ECO.base = {
@@ -1325,20 +1331,20 @@ ECO.datatable = function() {
       .enter().append("th")
       .text(String)
       .style("color", function(d) {
-        if (sortFields[d] == "+") { 
+        if (queryObj.sortFields[d] == "+") { 
           return "#0a0";
         }
-        if (sortFields[d] == "-") { 
+        if (queryObj.sortFields[d] == "-") { 
           return "#b00";
         }
       })
       .on("click", function(d) {
-        if (sortFields[d] == false) { 
-          sortFields[d] = "+";
-        } else if (sortFields[d] == "+") { 
-          sortFields[d] = "-";
-        } else if (sortFields[d] == "-") { 
-          sortFields[d] = "+";
+        if (queryObj.sortFields[d] == false) { 
+          queryObj.sortFields[d] = "+";
+        } else if (queryObj.sortFields[d] == "+") { 
+          queryObj.sortFields[d] = "-";
+        } else if (queryObj.sortFields[d] == "-") { 
+          queryObj.sortFields[d] = "+";
         }
         query();
       });
@@ -1525,7 +1531,7 @@ function query() {
     return "&selected_facets=" + d.key + "_exact%3A%22" + d.value + "%22";
   }).join("&");
 
-  var sortlist = d3.entries(sortFields)
+  var sortlist = d3.entries(queryObj.sortFields)
     .filter(function(d) { return d.value; });
   var sortstring = sortlist.map(function(d) {
     return (d.value == "-" ? "-" : "") + d.key;
