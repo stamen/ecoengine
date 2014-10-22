@@ -109,7 +109,7 @@ h2.app-title {
 h4 {
   font-size: 16px;
   font-weight: bold;
-  margin: 0;
+  margin: 12px 0 0;
 }
 
 .search-btn {
@@ -557,10 +557,17 @@ h3 {
     <span>
   </p>
   <h4>Search</h4>
+      Data <a href="#" id="export-search" target="_blank"></a><br/>
   <h4>Photos</h4>
+      Data <a href="#" id="export-photos" target="_blank"></a><br/>
   <h4>Sensors</h4>
+      Data <a href="#" id="export-sensors" target="_blank"></a><br/>
   <h4>Raster Layers</h4>
+      Layers <a href="#" id="export-layers" target="_blank"></a><br/>
+      Rasters <a href="#" id="export-rasters" target="_blank"></a><br/>
   <h4>Footprints</h4>
+      Jepsen Regions <a href="#" id="export-jepson" target="_blank"></a><br/>
+      Reserves <a href="#" id="export-reserves" target="_blank"></a><br/>
   <a href="#" class="hide-btn">Hide</a>
 </div>
 
@@ -801,6 +808,9 @@ function hideflydowns() {
     .style("display", null)
 };
 
+d3.select("#export-sensors")
+  .attr("href", ECO.base.api.sensors)
+  .text(ECO.base.api.sensors);
 d3.json(ECO.base.api.sensors, function(error, data) {
   map.clear();
   sensorData = data.features;
@@ -875,6 +885,12 @@ ECO.map = function() {
   }).addTo(map);
 
 
+  d3.select("#export-layers")
+    .attr("href", ECO.base.api.layers)
+    .text(ECO.base.api.layers);
+  d3.select("#export-rasters")
+    .attr("href", ECO.base.api.rasters)
+    .text(ECO.base.api.rasters);
   // Layer select box
   d3.json(ECO.base.api.layers, function(error, layers) {
     d3.json(ECO.base.api.rasters, function(error, rasters) {
@@ -1379,6 +1395,9 @@ var datatable = new ECO.datatable();
 var map = new ECO.map().subscribe(datatable.mapEvents);
 var timebrush = d3.svg.brush()
 
+d3.select("#export-reserves")
+  .attr("href", ECO.base.api.reserves)
+  .text(ECO.base.api.reserves);
 d3.json(ECO.base.api.reserves, function(error, data) {
   if (!data) return;
   data.results.forEach(function(d) {
@@ -1394,6 +1413,9 @@ d3.json(ECO.base.api.reserves, function(error, data) {
     });
 });
 
+d3.select("#export-jepson")
+  .attr("href", ECO.base.api.jepson)
+  .text(ECO.base.api.jepson);
 d3.json(ECO.base.api.jepson, function(error, data) {
   if (!data) return;
   data.results.forEach(function(d) {
@@ -1632,10 +1654,16 @@ function query() {
 
 
   d3.selectAll(".field-plot a").style("color", "#bbb");
+  d3.select("#export-search")
+    .attr("href", searchquerystring)
+    .text(searchquerystring);
   d3.json(searchquerystring, function(error, data) {
     fieldlist.draw(data);
   });
 
+  d3.select("#export-photos")
+    .attr("href", photoquerystring)
+    .text(photoquerystring);
   d3.json(photoquerystring, function(error, data) {
     photoData = dataFilterCoordinates(data || []);
 
