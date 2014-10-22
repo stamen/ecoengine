@@ -520,6 +520,9 @@ h3 {
   line-height: 1em;
   margin: 10px 0 4px 0;
 }
+.cursor {
+  cursor: pointer;
+}
 
 </style>
 <body>
@@ -529,20 +532,22 @@ h3 {
   <span id="time-slider"></span>
   <input type="text" value="" id="maxyear" class="eco-param" placeholder="2018-12-31"></input>
   &nbsp; <div class="search-btn">Search</div>
-  &nbsp; <a href="#" id="advanced-search-btn">Advanced</a> |
-  <a href="#" id="export-btn">Export</a>
+  &nbsp; <span class="cursor" id="advanced-search-btn">Advanced</span> |
+  <span class="cursor" id="export-btn">Export</span>
 </div>
 <div id="advanced-search" class="flydown">
   <h4>Advanced Search</h4>
   <p>
-    <strong>Footprint</strong><br/>
-    <p>
-    Footprint <select id="reserve-list">
-      <option></option>
-    </select><select id="jepson-list">
-      <option></option>
-    </select>
-    </p>
+    <div style="display:none;">
+      <strong>Footprint</strong><br/>
+      <p>
+      Footprint <select id="reserve-list">
+        <option></option>
+      </select><select id="jepson-list">
+        <option></option>
+      </select>
+      </p>
+    </div>
     <div id="advanced-search-pane"></div>
     <p>
       <div class="search-btn">Search</div>
@@ -666,7 +671,14 @@ function logHash(hash) {
     for (var name in parameters) {
       var value = parameters[name];
       console.log(name,value);
-      if (name == "ordering") {
+      if (name == "q") {
+        var fields = value.replace(/"/g, "").split(",")
+        queryObj.q = fields[0];
+        fields.slice(1).forEach(function(d) {
+          var pair = d.split(":");
+          queryObj.advanced[pair[0]] = pair[1];
+        });
+      } else if (name == "ordering") {
         var fields = value.split(",")
         fields.forEach(function(d) {
           var field = d.replace("-","");
@@ -674,8 +686,8 @@ function logHash(hash) {
         });
       } else if (name == "selected_facets") {
         var items = value.replace(/"/g, "").split(",")
-        items.forEach(function(item) {
-          var pair = item.split(":");
+        items.forEach(function(d) {
+          var pair = d.split(":");
           queryObj.facets[pair[0].replace(/_exact/g, "")] = pair[1];
         });
       } else {
@@ -704,8 +716,6 @@ if (queryObj.max_date) {
 var mapData = [];
 var photoData = [];
 var sensorData = [];
-
-var activeAdvancedFields = {};
 
 var ECO = ECO || {};
 ECO.base = {
@@ -771,9 +781,11 @@ rows.append("td")
   .attr("placeholder", function(d) {
     return "placeholder" in d ? d.placeholder : null;
   })
+  .attr("value", function(d) {
+    return d.field in queryObj.advanced ? queryObj.advanced[d.field] : null;
+  })
   .on("change", function(d) {
-    console.log(d);
-    activeAdvancedFields[d.field] = this.value;
+    queryObj.advanced[d.field] = this.value;
   });
 
 d3.selectAll(".search-btn").on("click", function() {
@@ -1427,7 +1439,7 @@ d3.json(ECO.base.api.reserves, function(error, data) {
   });
   d3.select("#reserve-list")
     .on("change", function() {
-      activeAdvancedFields["g"] = this.value;
+      queryObj.advanced["g"] = this.value;
     });
 });
 
@@ -1444,7 +1456,7 @@ d3.json(ECO.base.api.jepson, function(error, data) {
   });
   d3.select("#reserve-list")
     .on("change", function() {
-      activeAdvancedFields["g"] = this.value;
+      queryObj.advanced["g"] = this.value;
     });
 });
 
@@ -1550,11 +1562,11 @@ function query() {
 
 
   var advancedString = "";
-  for (var key in activeAdvancedFields) {
+  for (var key in queryObj.advanced) {
     advancedString += ",";
     advancedString += key;
     advancedString += ':"';
-    advancedString += activeAdvancedFields[key];
+    advancedString += queryObj.advanced[key];
     advancedString += '"';
   }
   console.log(advancedString);
@@ -1570,7 +1582,7 @@ function query() {
   var qString = "";
   var qStringSimple = "";
   if (queryObj.q.length > 0 || advancedString.length > 0) {
-    qString += "&q=" + queryObj.q + advancedString;
+    qString += '&q="' + queryObj.q + '"' + advancedString;
     qStringSimple += "&q=" + queryObj.q;
   }
 
