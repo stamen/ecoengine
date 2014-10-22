@@ -96,6 +96,10 @@ function chopHash(hash) {
 function parametersFromString(paramString) {
 
 	if (!paramString.length) return null;
+
+  // Ecoengine replacement for && subfields
+  paramString = paramString.replace(/&&selected_facets=/g, ",");
+  console.log(paramString);
 	
 	var paramPairs = paramString.split("&");
 

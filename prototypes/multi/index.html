@@ -471,20 +471,21 @@ table .active {
   background: #feb;
 }
 
-a:hover .bar {
+.bar:hover {
   background: #ee4e32;
+  cursor: pointer;
 }
 .field-plot {
   line-height: 14px;
 }
-.field-plot a {
+.field-plot span {
   text-decoration: none;
   padding-right: 4px;
 }
-.field-plot a {
+.field-plot span {
   color: #222;
 }
-.field-plot a.active {
+.field-plot .active {
   background: #feb;
   font-weight: bold;
 }
@@ -493,7 +494,7 @@ a:hover .bar {
   color: #ee4e32;
   font-weight: bold;
 }
-.field-plot a.active:hover .x {
+.field-plot .active:hover .x {
   display: inline;
 }
 .field-plot .show-more {
@@ -636,19 +637,30 @@ var fields = [
 ];
 
 var queryObj = {
-  page_size: 200,   //
-  page: 1,          //
-  facets: {},
+  page_size: 200,
+  page: 1,
+  facets: {
+    kingdom: false,
+    phylum: false,
+    clss: false,
+    order: false,
+    family: false,
+    genus: false,
+    'scientific_name': false,
+    'state_province': false,
+    resource: false
+  },
   sortFields: {},
   advanced: {},
   q: "",          
-  min_date: "",   //
-  max_date: ""//
+  min_date: "",
+  max_date: ""
 };
 
 fields.forEach(function(d) { queryObj.sortFields[d] = false; });
 
 function logHash(hash) {            
+  console.log(hash);
   if (hash.parameters) {              
     var parameters = hash.parameters;
     for (var name in parameters) {
@@ -659,6 +671,12 @@ function logHash(hash) {
         fields.forEach(function(d) {
           var field = d.replace("-","");
           queryObj.sortFields[field] = d[0] == "-" ? "-" : "+";
+        });
+      } else if (name == "selected_facets") {
+        var items = value.replace(/"/g, "").split(",")
+        items.forEach(function(item) {
+          var pair = item.split(":");
+          queryObj.facets[pair[0].replace(/_exact/g, "")] = pair[1];
         });
       } else {
         queryObj[name] = value;
@@ -682,17 +700,6 @@ if (queryObj.max_date) {
   d3.select("#maxyear").node().value = queryObj.max_date;
 }
 
-var facets = {
-  kingdom: false,
-  phylum: false,
-  clss: false,
-  order: false,
-  family: false,
-  genus: false,
-  'scientific_name': false,
-  'state_province': false,
-  resource: false
-};
 
 var mapData = [];
 var photoData = [];
@@ -1235,11 +1242,10 @@ ECO.list = function() {
         .data(function(d) { return d.values; })
         .enter().append("div")
         .attr("class", "bars")
-        .append("a")
+        .append("div")
         .style("display", function(d,i) { return i > 9 ? "none" : null})
-        .attr("href", function(d) { return "#"; })
         .classed("active", function(d,i,g) {
-          return facets[searchfields[g]] == d[0];
+          return queryObj.facets[searchfields[g]] == d[0];
         })
         .on("mouseover", function(d,i,g) {
           d3.select("#detail-type").text("Search");
@@ -1252,10 +1258,10 @@ ECO.list = function() {
         })
         .on("click", function(d,i,g) {
           queryObj.page = 1;
-          if (facets[searchfields[g]] == d[0]) {
-            facets[searchfields[g]] = false;
+          if (queryObj.facets[searchfields[g]] == d[0]) {
+            queryObj.facets[searchfields[g]] = false;
           } else {
-            facets[searchfields[g]] = d[0];
+            queryObj.facets[searchfields[g]] = d[0];
           }
           query();
         });
@@ -1525,7 +1531,7 @@ query();
 function query() {
   d3.select("#results").style("color", "#bbb");
 
-  var facetlist = d3.entries(facets)
+  var facetlist = d3.entries(queryObj.facets)
     .filter(function(d) { return d.value; });
   var facetstring = facetlist.map(function(d) {
     return "&selected_facets=" + d.key + "_exact%3A%22" + d.value + "%22";
