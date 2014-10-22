@@ -122,6 +122,11 @@ h4 {
   display: inline-block;
 }
 
+.header .search-btn {
+  color: #317eac;
+  background: #fff;
+}
+
 .flydown h4 {
   margin-bottom: 8px;
 }
@@ -522,6 +527,7 @@ h3 {
   &nbsp; Date Range <input type="text" value="" id="minyear" class="eco-param" placeholder="1900-01-01"></input>
   <span id="time-slider"></span>
   <input type="text" value="" id="maxyear" class="eco-param" placeholder="2018-12-31"></input>
+  &nbsp; <div class="search-btn">Search</div>
   &nbsp; <a href="#" id="advanced-search-btn">Advanced</a> |
   <a href="#" id="export-btn">Export</a>
 </div>
@@ -757,7 +763,7 @@ rows.append("td")
     activeAdvancedFields[d.field] = this.value;
   });
 
-d3.select(".search-btn").on("click", function() {
+d3.selectAll(".search-btn").on("click", function() {
   query();
   hideflydowns();
 });
