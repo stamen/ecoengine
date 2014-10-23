@@ -252,8 +252,18 @@ svg {
   overflow-x: hidden;
 }
 
+#loading-view {
+  margin-top: 8px;
+}
 #detail-view {
   margin-top: 8px;
+}
+
+#loading-view span {
+  padding-left: 8px;
+}
+#loading-view span.loaded {
+  color: #0a0;
 }
 
 #detail-view img {
@@ -597,10 +607,9 @@ h3 {
 
 <div class="panel left map-detail">
   <h4><span id="detail-type"></span> Details</h4>
+  <p id="loading-view">
+  </p>
   <p id="detail-view">
-    <strong>Todo</strong><br/>
-    Display active search parameters<br/>
-    Display loading status of APIs<br/>
   </p>
 </div>
 <div class="panel right map-detail">
@@ -765,6 +774,18 @@ var dateformat = d3.time.format("%Y %b %e");
 var compactdateformat = d3.time.format("%Y-%m-%d");
 
 
+var loadingView = d3.select("#loading-view")
+  .selectAll("div")
+  .data(d3.keys(ECO.base.api))
+  .enter().append("div");
+
+loadingView.append("strong")
+  .text(function(d) {
+    return capitaliseFirstLetter(d);
+  });
+
+loadingView.append("span")
+  .attr("class", String);
 
 var advancedSearchSections = d3.select("#advanced-search-pane")
   .selectAll("div.section")
@@ -858,7 +879,14 @@ function hideflydowns() {
 d3.select("#export-sensors")
   .attr("href", ECO.base.api.sensors)
   .text(ECO.base.api.sensors);
+d3.select("#loading-view .sensors")
+  .classed("loaded", false)
+  .text("Loading...");
 d3.json(ECO.base.api.sensors, function(error, data) {
+  d3.select("#loading-view .sensors")
+    .classed("loaded", true)
+    .text("Loaded");
+
   map.clear();
   sensorData = data.features;
 
@@ -866,9 +894,11 @@ d3.json(ECO.base.api.sensors, function(error, data) {
 });
 
 ECO.detailview = function(row) {
-  // TODO Move to detail view
   var container = d3.select("#detail-view")
+    .style("display", null)
     .html("");
+
+  d3.select("#loading-view").style("display", "none");
 
   if ("media_url" in row && row.media_url) {
     container.append("a")
@@ -939,9 +969,24 @@ ECO.map = function() {
     .attr("href", ECO.base.api.rasters)
     .text(ECO.base.api.rasters);
   // Layer select box
+
+  d3.select("#loading-view .layers")
+    .classed("loaded", false)
+    .text("Loading...");
   d3.json(ECO.base.api.layers, function(error, layers) {
+    d3.select("#loading-view .layers")
+      .classed("loaded", true)
+      .text("Loaded");
+
+    d3.select("#loading-view .rasters")
+      .classed("loaded", false)
+      .text("Loading...");
     d3.json(ECO.base.api.rasters, function(error, rasters) {
       if (!rasters) return;
+
+      d3.select("#loading-view .rasters")
+        .classed("loaded", true)
+        .text("Loaded");
       rasters.results.forEach(function(d) {
         if (d.tags.indexOf("boundaries") > -1) { 
           d3.select("#overlay-select")
@@ -1444,7 +1489,14 @@ var timebrush = d3.svg.brush()
 d3.select("#export-reserves")
   .attr("href", ECO.base.api.reserves)
   .text(ECO.base.api.reserves);
+
+d3.select("#loading-view .reserves")
+  .classed("loaded", false)
+  .text("Loading...");
 d3.json(ECO.base.api.reserves, function(error, data) {
+  d3.select("#loading-view .reserves")
+    .classed("loaded", true)
+    .text("Loaded");
   if (!data) return;
   data.results.forEach(function(d) {
     d3.select("#reserve-list")
@@ -1462,7 +1514,14 @@ d3.json(ECO.base.api.reserves, function(error, data) {
 d3.select("#export-jepson")
   .attr("href", ECO.base.api.jepson)
   .text(ECO.base.api.jepson);
+
+d3.select("#loading-view .jepson")
+  .classed("loaded", false)
+  .text("Loading...");
 d3.json(ECO.base.api.jepson, function(error, data) {
+  d3.select("#loading-view .jepson")
+    .classed("loaded", true)
+    .text("Loaded");
   if (!data) return;
   data.results.forEach(function(d) {
     d3.select("#jepson-list")
@@ -1565,6 +1624,8 @@ d3.selectAll(".eco-param")
 query();
 
 function query() {
+  d3.select("#loading-view").style("display", null);
+  d3.select("#detail-view").style("display", "none");
   d3.select("#results").style("color", "#bbb");
 
   var facetlist = d3.entries(queryObj.facets)
@@ -1635,8 +1696,14 @@ function query() {
     .attr("href", ECO.base.api.observations + "?format=geojson" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
     .text(ECO.base.api.observations + "?format=geojson" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
 
+  d3.select("#loading-view .observations")
+    .classed("loaded", false)
+    .text("Loading...");
   d3.json(querystring, function(error, data) {
     d3.select("#results").html("").style("color", null);
+    d3.select("#loading-view .observations")
+      .classed("loaded", true)
+      .text("Loaded");
 
     if (error) {
       d3.select("#results").append("div").html(error.responseText).style("color", "red");
@@ -1715,14 +1782,27 @@ function query() {
   d3.select("#export-search")
     .attr("href", searchquerystring)
     .text(searchquerystring);
+
+  d3.select("#loading-view .search")
+    .classed("loaded", false)
+    .text("Loading...");
   d3.json(searchquerystring, function(error, data) {
+    d3.select("#loading-view .search")
+      .classed("loaded", true)
+      .text("Loaded");
     fieldlist.draw(data);
   });
 
   d3.select("#export-photos")
     .attr("href", photoquerystring)
     .text(photoquerystring);
+  d3.select("#loading-view .photos")
+    .classed("loaded", false)
+    .text("Loading...");
   d3.json(photoquerystring, function(error, data) {
+    d3.select("#loading-view .photos")
+      .classed("loaded", true)
+      .text("Loaded");
     photoData = dataFilterCoordinates(data || []);
 
     map.draw();
@@ -1751,7 +1831,16 @@ function query() {
     function loadMorePhotos(url) {
       d3.select(this).remove();
 
+      d3.select("#loading-view .photos")
+        .classed("loaded", false)
+        .text("Loading...");
+
+      d3.select("#loading-view").style("display", null);
+      d3.select("#detail-view").style("display", "none");
       d3.json(url, function(error, data) {
+        d3.select("#loading-view .photos")
+          .classed("loaded", true)
+          .text("Loaded");
         photoData.concat(dataFilterCoordinates(data || []));
         map.draw();
 
