@@ -1077,6 +1077,7 @@ ECO.map = function() {
 
   function onMarkerOut(evt) {
     hideTooltip();
+    showLoadingView();
     subscribers.forEach(function(s){
       if (s.out) s.out(evt);
     });
@@ -1103,6 +1104,9 @@ ECO.map = function() {
     poly.on('mouseover', function() {
       d3.select("#detail-type").text("Reserve ");
       ECO.detailview(layer.properties);
+    })
+    .on("mouseout", function() {
+      showLoadingView();
     });
   };
 
@@ -1329,6 +1333,9 @@ ECO.list = function() {
             "url": d[2]
           });
         })
+        .on("mouseout", function() {
+          showLoadingView();
+        })
         .on("click", function(d,i,g) {
           queryObj.page = 1;
           if (queryObj.facets[searchfields[g]] == d[0]) {
@@ -1437,6 +1444,9 @@ ECO.datatable = function() {
       .on("mouseover", function(d) {
         d3.select("#detail-type").html("<span class='eco-basic-icon " + d.properties.observation_type + "'></span> Observation")
         ECO.detailview(d.properties);
+      })
+      .on("mouseout", function() {
+        showLoadingView();
       })
       .each(function(d) {
         var entry = d3.select(this)
@@ -1623,9 +1633,13 @@ d3.selectAll(".eco-param")
 
 query();
 
-function query() {
+function showLoadingView() {
   d3.select("#loading-view").style("display", null);
   d3.select("#detail-view").style("display", "none");
+};
+
+function query() {
+  showLoadingView();
   d3.select("#results").style("color", "#bbb");
 
   var facetlist = d3.entries(queryObj.facets)
@@ -1816,6 +1830,9 @@ function query() {
       .on("mouseover", function(d) {
         d3.select("#detail-type").text("Photo");
         ECO.detailview(d.properties);
+      })
+      .on("mouseout", function() {
+        showLoadingView();
       });
 
     photos.append("img")
@@ -1823,7 +1840,7 @@ function query() {
 
     if (data.next) {
       d3.select("#photos .inner-photos").append("span")
-        .text("Load more [+]")
+        .text(" Load more [+]")
         .datum(data.next)
         .on("click", loadMorePhotos);
     }
@@ -1854,6 +1871,9 @@ function query() {
           .on("mouseover", function(d) {
             d3.select("#detail-type").text("Photo");
             ECO.detailview(d.properties);
+          })
+          .on("mouseout", function() {
+            showLoadingView();
           });
 
         photos.append("img")
