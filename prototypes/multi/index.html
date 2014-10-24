@@ -11,6 +11,7 @@ body {
   background: #fff;
   margin: 0;
   min-width: 960px;
+  line-height: 1.3em;
 }
 
 a {
@@ -20,6 +21,10 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+p {
+  margin: 12px 0;
 }
 
 #map {
@@ -109,7 +114,11 @@ h2.app-title {
 h4 {
   font-size: 16px;
   font-weight: bold;
-  margin: 12px 0 0;
+  margin: 0;
+}
+
+#export-pane h4 {
+  margin-top: 8px;
 }
 
 .search-btn {
@@ -117,14 +126,20 @@ h4 {
   color: #fff;
   font-weight: bold;
   padding: 2px 6px;
-  border-radius: 3px;
+  border-radius: 2px;
   cursor: pointer;
   display: inline-block;
+  font-size: 13px;
 }
 
 .header .search-btn {
   color: #317eac;
   background: #fff;
+}
+
+.search-btn:hover {
+  color: #fff;
+  background: #0a0;
 }
 
 .flydown h4 {
@@ -216,7 +231,7 @@ svg {
 .pagination span.active {
   background: #317eac;
   color: #fff;
-  border-radius: 3px;
+  border-radius: 2px;
   padding: 1px 6px;
   cursor: default;
 }
@@ -300,6 +315,12 @@ svg {
   padding: 2px 12px;
   background: rgba(255,255,255,0.8);
   cursor: pointer;
+  border-radius: 2px;
+}
+
+#bbox-select:hover {
+  color: #fff;
+  background: #0a0;
 }
 
 .map-info {
@@ -423,7 +444,7 @@ svg {
 .eco-photo-icon {
     width: 10px;
     height: 10px;
-    border-radius: 3px;
+    border-radius: 2px;
     background: rgba(255,0,0,0.3);
 }
 
@@ -450,7 +471,7 @@ svg {
   width: 100%;
   color: #fff;
   background: #111;
-  min-height: 24px;
+  min-height: 38px;
   padding: 1px;
 }
 #photos img {
@@ -466,7 +487,7 @@ svg {
 #photos h4 {
   pointer-events: none;
   position: absolute;
-  top: 4px;
+  top: -4px;
   left: 8px;
   background: rgba(0,0,0,0.5);
 }
@@ -493,12 +514,10 @@ table .active {
   background: #feb;
 }
 
-.bar:hover {
-  background: #ee4e32;
-  cursor: pointer;
-}
 .field-plot {
   line-height: 14px;
+  cursor: pointer;
+  margin-right: 8px;
 }
 .field-plot span {
   text-decoration: none;
@@ -508,8 +527,11 @@ table .active {
   color: #222;
 }
 .field-plot .active {
-  background: #feb;
   font-weight: bold;
+  background: #eee;
+}
+.field-plot .active .bar {
+  background: #0a0;
 }
 .field-plot .x {
   display: none;
@@ -624,7 +646,7 @@ h3 {
       </select>
     </div>
     <div id="bbox-select">
-      Click to show only results on the map.
+      Constrain Search to Map
     </div>
   </div>
   <div class="map-info">
@@ -640,6 +662,7 @@ h3 {
 <div class="wrap">
   <div class="panel left">
     <h4>Search Results</h4>
+    <p>Click one or more of the bars below to filter observations</p>
     <div id="search-bars"></div>
   </div>
   <div class="panel right">
@@ -666,7 +689,7 @@ var fields = [
 ];
 
 var queryObj = {
-  page_size: 200,
+  page_size: 100,
   page: 1,
   facets: {
     kingdom: false,
