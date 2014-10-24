@@ -1657,6 +1657,7 @@ d3.selectAll(".eco-param")
 query();
 
 function showLoadingView() {
+  d3.select("#detail-type").text("Loading ");
   d3.select("#loading-view").style("display", null);
   d3.select("#detail-view").style("display", "none");
 };
