@@ -1706,11 +1706,11 @@ function query() {
     dateString += "&max_date=" + queryObj.max_date;
   }
 
-  var qString = "";
-  var qStringSimple = "";
+  var qString = "&q=";
+  var qStringSimple = "&q=";
   if (queryObj.q.length > 0 || advancedString.length > 0) {
-    qString += '&q="' + queryObj.q + '"' + advancedString;
-    qStringSimple += "&q=" + queryObj.q;
+    qString += queryObj.q + '"' + advancedString;
+    qStringSimple += queryObj.q;
   }
 
   var hashString = orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page;
