@@ -1706,8 +1706,8 @@ function query() {
     dateString += "&max_date=" + queryObj.max_date;
   }
 
-  var qString = "&q=";
-  var qStringSimple = "&q=";
+  var qString = "&q=\"";
+  var qStringSimple = "&q=\"";
   if (queryObj.q.length > 0 || advancedString.length > 0) {
     qString += queryObj.q + '"' + advancedString;
     qStringSimple += queryObj.q;
