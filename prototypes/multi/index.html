@@ -280,6 +280,10 @@ svg {
 #loading-view span.loaded {
   color: #0a0;
 }
+#loading-view span.error {
+  font-weight: bold;
+  color: #c00;
+}
 
 #detail-view img {
   max-width: 260px;
@@ -768,9 +772,9 @@ var sensorData = [];
 var ECO = ECO || {};
 ECO.base = {
   api: {
-    search: 'https://dev-ecoengine.berkeley.edu/api/search/',
-    observations: 'https://dev-ecoengine.berkeley.edu/api/observations/',
-    photos: 'https://dev-ecoengine.berkeley.edu/api/photos/',
+    search: 'https://ecoengine.berkeley.edu/api/search/',
+    observations: 'https://ecoengine.berkeley.edu/api/observations/',
+    photos: 'https://ecoengine.berkeley.edu/api/photos/',
     sensors: 'https://dev-ecoengine.berkeley.edu/api/sensors/?page_size=5000&format=geojson',
     layers: 'https://dev-ecoengine.berkeley.edu/api/layers/',
     rasters: '../tiles/rstore.json',
@@ -997,6 +1001,12 @@ ECO.map = function() {
     .classed("loaded", false)
     .text("Loading...");
   d3.json(ECO.base.api.layers, function(error, layers) {
+    if (error) {
+      d3.select("#loading-view .layers")
+        .classed("error", true)
+        .text(error.status + " Error");
+      return;
+    }
     d3.select("#loading-view .layers")
       .classed("loaded", true)
       .text("Loaded");
@@ -1005,6 +1015,12 @@ ECO.map = function() {
       .classed("loaded", false)
       .text("Loading...");
     d3.json(ECO.base.api.rasters, function(error, rasters) {
+      if (error) {
+        d3.select("#loading-view .rasters")
+          .classed("error", true)
+          .text(error.status + " Error");
+        return;
+      }
       if (!rasters) return;
 
       d3.select("#loading-view .rasters")
@@ -1527,11 +1543,17 @@ d3.select("#loading-view .reserves")
   .classed("loaded", false)
   .text("Loading...");
 d3.json(ECO.base.api.reserves, function(error, data) {
+  if (error) {
+    d3.select("#loading-view .reserves")
+      .classed("error", true)
+      .text(error.status + " Error");
+    return;
+  };
   d3.select("#loading-view .reserves")
     .classed("loaded", true)
     .text("Loaded");
   if (!data) return;
-  data.results.forEach(function(d) {
+  data.features.forEach(function(d) {
     d3.select("#reserve-list")
       .append("option")
       .attr("value", JSON.stringify(d.geometry))
@@ -1552,6 +1574,12 @@ d3.select("#loading-view .jepson")
   .classed("loaded", false)
   .text("Loading...");
 d3.json(ECO.base.api.jepson, function(error, data) {
+  if (error) {
+    d3.select("#loading-view .jepson")
+      .classed("error", true)
+      .text(error.status + " Error");
+    return;
+  };
   d3.select("#loading-view .jepson")
     .classed("loaded", true)
     .text("Loaded");
@@ -1711,6 +1739,8 @@ function query() {
   if (queryObj.q.length > 0 || advancedString.length > 0) {
     qString += queryObj.q + '"' + advancedString;
     qStringSimple += queryObj.q;
+  } else {
+    qString += '"';
   }
 
   var hashString = orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page;
@@ -1738,6 +1768,12 @@ function query() {
     .classed("loaded", false)
     .text("Loading...");
   d3.json(querystring, function(error, data) {
+    if (error) {
+      d3.select("#loading-view .observations")
+        .classed("error", true)
+        .text(error.status + " Error");
+      return;
+    }
     d3.select("#results").html("").style("color", null);
     d3.select("#loading-view .observations")
       .classed("loaded", true)
@@ -1825,6 +1861,12 @@ function query() {
     .classed("loaded", false)
     .text("Loading...");
   d3.json(searchquerystring, function(error, data) {
+    if (error) {
+      d3.select("#loading-view .search")
+        .classed("error", true)
+        .text(error.status + " Error");
+      return;
+    }
     d3.select("#loading-view .search")
       .classed("loaded", true)
       .text("Loaded");
@@ -1838,6 +1880,12 @@ function query() {
     .classed("loaded", false)
     .text("Loading...");
   d3.json(photoquerystring, function(error, data) {
+    if (error) {
+      d3.select("#loading-view .photos")
+        .classed("error", true)
+        .text(error.status + " Error");
+      return;
+    }
     d3.select("#loading-view .photos")
       .classed("loaded", true)
       .text("Loaded");
@@ -1879,6 +1927,12 @@ function query() {
       d3.select("#loading-view").style("display", null);
       d3.select("#detail-view").style("display", "none");
       d3.json(url, function(error, data) {
+        if (error) {
+          d3.select("#loading-view .photos")
+            .classed("error", true)
+            .text(error.status + " Error");
+          return;
+        }
         d3.select("#loading-view .photos")
           .classed("loaded", true)
           .text("Loaded");
