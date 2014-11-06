@@ -975,6 +975,7 @@ ECO.map = function() {
 
   map = __.map = L.map('map').setView(defaultCenter, defaultZoom);
 
+  map.scrollWheelZoom.disable();
 
   var baseLayer = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '',
