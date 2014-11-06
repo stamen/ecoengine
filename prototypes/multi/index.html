@@ -908,10 +908,12 @@ d3.select("#export-sensors")
   .text(ECO.base.api.sensors);
 d3.select("#loading-view .sensors")
   .classed("loaded", false)
+  .classed("error", false)
   .text("Loading...");
 d3.json(ECO.base.api.sensors, function(error, data) {
   d3.select("#loading-view .sensors")
     .classed("loaded", true)
+    .classed("error", false)
     .text("Loaded");
 
   map.clear();
@@ -999,6 +1001,7 @@ ECO.map = function() {
 
   d3.select("#loading-view .layers")
     .classed("loaded", false)
+    .classed("error", false)
     .text("Loading...");
   d3.json(ECO.base.api.layers, function(error, layers) {
     if (error) {
@@ -1008,11 +1011,13 @@ ECO.map = function() {
       return;
     }
     d3.select("#loading-view .layers")
+      .classed("error", false)
       .classed("loaded", true)
       .text("Loaded");
 
     d3.select("#loading-view .rasters")
       .classed("loaded", false)
+      .classed("error", false)
       .text("Loading...");
     d3.json(ECO.base.api.rasters, function(error, rasters) {
       if (error) {
@@ -1025,6 +1030,7 @@ ECO.map = function() {
 
       d3.select("#loading-view .rasters")
         .classed("loaded", true)
+        .classed("error", false)
         .text("Loaded");
       rasters.results.forEach(function(d) {
         if (d.tags.indexOf("boundaries") > -1) { 
@@ -1541,6 +1547,7 @@ d3.select("#export-reserves")
 
 d3.select("#loading-view .reserves")
   .classed("loaded", false)
+  .classed("error", false)
   .text("Loading...");
 d3.json(ECO.base.api.reserves, function(error, data) {
   if (error) {
@@ -1551,6 +1558,7 @@ d3.json(ECO.base.api.reserves, function(error, data) {
   };
   d3.select("#loading-view .reserves")
     .classed("loaded", true)
+    .classed("error", false)
     .text("Loaded");
   if (!data) return;
   data.features.forEach(function(d) {
@@ -1572,6 +1580,7 @@ d3.select("#export-jepson")
 
 d3.select("#loading-view .jepson")
   .classed("loaded", false)
+  .classed("error", false)
   .text("Loading...");
 d3.json(ECO.base.api.jepson, function(error, data) {
   if (error) {
@@ -1582,6 +1591,7 @@ d3.json(ECO.base.api.jepson, function(error, data) {
   };
   d3.select("#loading-view .jepson")
     .classed("loaded", true)
+    .classed("error", false)
     .text("Loaded");
   if (!data) return;
   data.results.forEach(function(d) {
@@ -1766,6 +1776,7 @@ function query() {
 
   d3.select("#loading-view .observations")
     .classed("loaded", false)
+    .classed("error", false)
     .text("Loading...");
   d3.json(querystring, function(error, data) {
     if (error) {
@@ -1777,6 +1788,7 @@ function query() {
     d3.select("#results").html("").style("color", null);
     d3.select("#loading-view .observations")
       .classed("loaded", true)
+      .classed("error", false)
       .text("Loaded");
 
     if (error) {
@@ -1859,6 +1871,7 @@ function query() {
 
   d3.select("#loading-view .search")
     .classed("loaded", false)
+    .classed("error", false)
     .text("Loading...");
   d3.json(searchquerystring, function(error, data) {
     if (error) {
@@ -1869,6 +1882,7 @@ function query() {
     }
     d3.select("#loading-view .search")
       .classed("loaded", true)
+      .classed("error", false)
       .text("Loaded");
     fieldlist.draw(data);
   });
@@ -1878,6 +1892,7 @@ function query() {
     .text(photoquerystring);
   d3.select("#loading-view .photos")
     .classed("loaded", false)
+    .classed("error", false)
     .text("Loading...");
   d3.json(photoquerystring, function(error, data) {
     if (error) {
@@ -1888,6 +1903,7 @@ function query() {
     }
     d3.select("#loading-view .photos")
       .classed("loaded", true)
+      .classed("error", false)
       .text("Loaded");
     photoData = dataFilterCoordinates(data || []);
 
@@ -1922,6 +1938,7 @@ function query() {
 
       d3.select("#loading-view .photos")
         .classed("loaded", false)
+        .classed("error", false)
         .text("Loading...");
 
       d3.select("#loading-view").style("display", null);
@@ -1935,6 +1952,7 @@ function query() {
         }
         d3.select("#loading-view .photos")
           .classed("loaded", true)
+          .classed("error", false)
           .text("Loaded");
         photoData.concat(dataFilterCoordinates(data || []));
         map.draw();
