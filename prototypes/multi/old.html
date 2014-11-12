@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <meta charset="utf-8">
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
@@ -6,11 +5,13 @@
 <style>
 body {
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   width: 100%;
+  height: 100%;
   background: #fff;
   margin: 0;
   min-width: 960px;
+  line-height: 1.3em;
 }
 
 a {
@@ -20,6 +21,10 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+p {
+  margin: 12px 0;
 }
 
 #map {
@@ -44,8 +49,7 @@ a:hover {
   overflow: hidden;
 }
 
-.header a,
-.flydown a {
+.header a {
   color: #fff;
   text-decoration: none;
 }
@@ -61,14 +65,50 @@ h2.app-title {
   font-weight: bold;
 }
 
-.eco-param {
-  font-size: 15px;
+.header .eco-param {
+  text-align: center;
+}
+
+.eco-param,
+.eco-param2 {
   line-height: 15px;
+  height: 22px;
   font-weight: bold;
-  padding: 1px 2px 2px;
+  padding: 2px;
   color: #303030;
   border: 1px solid #666;
   border-radius: 2px;
+}
+
+#searchterm { 
+  width: 120px;
+}
+
+.eco-param::-webkit-input-placeholder,
+.eco-param::-webkit-input-placeholder { /* WebKit browsers */
+  color:    #bbb;
+  font-weight: normal;
+  font-size: 13px;
+}
+.eco-param:-moz-placeholder,
+.eco-param2:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  color:    #bbb;
+  font-weight: normal;
+  font-size: 13px;
+  opacity:  1;
+}
+.eco-param::-moz-placeholder,
+.eco-param2::-moz-placeholder { /* Mozilla Firefox 19+ */
+  color:    #bbb;
+  font-size: 13px;
+  font-weight: normal;
+  opacity:  1;
+}
+.eco-param:-ms-input-placeholder,
+.eco-param2:-ms-input-placeholder { /* Internet Explorer 10+ */
+  color:    #bbb;
+  font-weight: normal;
+  font-size: 13px;
 }
 
 h4 {
@@ -77,20 +117,46 @@ h4 {
   margin: 0;
 }
 
+#export-pane h4 {
+  margin-top: 8px;
+}
+
+.search-btn {
+  background: #317eac;
+  color: #fff;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 2px;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 13px;
+}
+
+.header .search-btn {
+  color: #317eac;
+  background: #fff;
+}
+
+.search-btn:hover {
+  color: #fff;
+  background: #0a0;
+}
+
 .flydown h4 {
   margin-bottom: 8px;
 }
 
 .hide-btn {
   font-weight: bold;
-  position: absolute;
-  top: 8px;
-  right: 8px;
+  font-size: 15px;
+  position: fixed;
+  top: 46px;
+  right: 24px;
 }
 
 #minyear,
 #maxyear {
-  width: 48px;
+  width: 90px;
   text-align: center;
 }
 
@@ -98,23 +164,28 @@ h4 {
 }
 
 .flydown {
-  color: #fff;
-  background: #317eac;
+  background: #fff;
   border-bottom: 1px solid #114e7c;
   position: fixed;
-  top: 38px; 
+  top: 0; 
   bottom: 0;
-  height: 0px;
+  height: 100%; 
   width: 100%;
   z-index:2000;
   padding: 8px;
-  overflow: hidden;
+  overflow: auto;
   display: none;
+  margin-top: 38px;
 }
+
+.flydown .field td {
+  padding: 4px 8px;
+}
+
 
 /* Time Slider */
 svg {
-  font-size: 12px;
+  font-size: 8px;
   fill: #fff;
 }
 
@@ -160,7 +231,7 @@ svg {
 .pagination span.active {
   background: #317eac;
   color: #fff;
-  border-radius: 3px;
+  border-radius: 2px;
   padding: 1px 6px;
   cursor: default;
 }
@@ -187,6 +258,7 @@ svg {
 /* MAP */
 .map-detail {
   height: 360px;
+  line-height: 1.3em;
 }
 
 .map-detail.left {
@@ -195,13 +267,29 @@ svg {
   overflow-x: hidden;
 }
 
+#loading-view {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.35em;
+}
 #detail-view {
   margin-top: 8px;
 }
 
+#loading-view span {
+  padding-left: 8px;
+}
+#loading-view span.loaded {
+  color: #0a0;
+}
+#loading-view span.error {
+  font-weight: bold;
+  color: #c00;
+}
+
 #detail-view img {
   max-width: 260px;
-  max-height: 320px;
+  max-height: 220px;
   margin-bottom: 8px;
 }
 
@@ -214,12 +302,31 @@ svg {
   pointer-events: none;
 }
 
-#layer-select {
+.layer-selection {
   position: absolute;
   top: 10px;
   right: 10px;
+  text-align: right;
   z-index: 100;
-  width: 180px;
+  width: 100%;
+}
+
+#bbox-select {
+  position: absolute;
+  bottom: 20px;
+  right: 0px;
+  text-align: right;
+  z-index: 100;
+  background: #fff;
+  padding: 2px 12px;
+  background: rgba(255,255,255,0.8);
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+#bbox-select:hover {
+  color: #fff;
+  background: #0a0;
 }
 
 .map-info {
@@ -261,13 +368,68 @@ svg {
 }
 
 .eco-basic-icon {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: #317eac;
-    background: rgba(49,126,172,1);
-    border: 1px solid #fff;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #317eac;
+  background: rgba(49,126,172,1);
+  border: 1px solid #fff;
 }
+
+#detail-type .eco-basic-icon {
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+  display: inline-block;
+  position: relative;
+  top: 2px;
+}
+
+.table .eco-basic-icon {
+  display: inline-block;
+  position: relative;
+  margin-right: 4px;
+  top: 2px;
+}
+
+.eco-basic-icon.sensor {
+  border-radius: 0px;
+  background: #d95f02;
+}
+
+.eco-basic-icon.vtm-vegetation-feature {
+  background: #1b9e77;
+}
+
+.eco-basic-icon.plot-survey {
+  background: #7570b3;
+}
+
+.eco-basic-icon.photo {
+  background: #a6cee3;
+}
+
+.eco-basic-icon.media-photo {
+  border-radius: 1px;
+  background: #a6cee3;
+}
+
+.eco-basic-icon.specimen {
+  background: #e6ab02;
+}
+
+.eco-basic-icon.fossil {
+  background: #a7871d;
+}
+
+.eco-basic-icon.observation {
+  background: #1f78b4;
+}
+
+.eco-basic-icon.checklist {
+  background: #666666;
+}
+
 
 /*
 .eco-basic-icon:before {
@@ -288,7 +450,7 @@ svg {
 .eco-photo-icon {
     width: 10px;
     height: 10px;
-    border-radius: 3px;
+    border-radius: 2px;
     background: rgba(255,0,0,0.3);
 }
 
@@ -315,10 +477,11 @@ svg {
   width: 100%;
   color: #fff;
   background: #111;
-  min-height: 24px;
+  min-height: 32px;
+  padding: 1px;
 }
 #photos img {
-  height: 40px;
+  height: 64px;
   display: inline-block;
   padding: 1px;
 }
@@ -330,7 +493,7 @@ svg {
 #photos h4 {
   pointer-events: none;
   position: absolute;
-  top: 4px;
+  top: 8px;
   left: 8px;
   background: rgba(0,0,0,0.5);
 }
@@ -357,30 +520,44 @@ table .active {
   background: #feb;
 }
 
-a:hover .bar {
-  background: #ee4e32;
-}
 .field-plot {
   line-height: 14px;
+  cursor: pointer;
+  margin-right: 8px;
 }
-.field-plot a {
+.field-plot span {
   text-decoration: none;
   padding-right: 4px;
 }
-.field-plot a {
+.field-plot span {
   color: #222;
 }
-.field-plot a.active {
-  background: #feb;
+.field-plot .active {
   font-weight: bold;
+  background: #eee;
+}
+.field-plot .active .bar {
+  background: #0a0;
 }
 .field-plot .x {
   display: none;
   color: #ee4e32;
   font-weight: bold;
 }
-.field-plot a.active:hover .x {
+.field-plot .active:hover .x {
   display: inline;
+}
+.field-plot .show-more {
+  color: #bbb;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 15px;
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+.field-plot .show-more:hover {
+  color: #333;
 }
 .bar {
   display: inline-block;
@@ -393,28 +570,39 @@ h3 {
   line-height: 1em;
   margin: 10px 0 4px 0;
 }
+.cursor {
+  cursor: pointer;
+}
 
 </style>
 <body>
 <div class="header">
-  Full Text Search <input type="text" value="Dendromecon" id="searchterm" class="eco-param"></input>
-  &nbsp; Date Range <input type="text" value="1920" id="minyear" class="eco-param"></input>
+  Search <input type="text" value="" id="searchterm" class="eco-param" placeholder="Observations/photos"></input>
+  &nbsp; Date Range <input type="text" value="" id="minyear" class="eco-param" placeholder="1900-01-01"></input>
   <span id="time-slider"></span>
-  <input type="text" value="2014" id="maxyear" class="eco-param"></input>
-  &nbsp; <a href="#" id="advanced-search-btn">Advanced Search</a> |
-  <a href="#" id="export-btn">Export</a>
+  <input type="text" value="" id="maxyear" class="eco-param" placeholder="2018-12-31"></input>
+  &nbsp; <div class="search-btn">Search</div>
+  &nbsp; <span class="cursor" id="advanced-search-btn">Advanced</span> |
+  <span class="cursor" id="export-btn">Export</span>
 </div>
 <div id="advanced-search" class="flydown">
   <h4>Advanced Search</h4>
-  <p>This flyout is intended to provide configuration of advanced query parameters.</p>
   <p>
-    <strong>Todo (nonfunctional):</strong><br/>
-    Footprint <select id="reserve-list">
+    <div style="display:none;">
+      <strong>Footprint</strong><br/>
+      <p>
+      Footprint <select id="reserve-list">
+        <option></option>
+      </select><select id="jepson-list">
+        <option></option>
+      </select>
+      </p>
+    </div>
+    <div id="advanced-search-pane"></div>
+    <p>
+      <div class="search-btn">Search</div>
+    </p>
       
-    </select><select id="jepson-list">
-      
-    </select><br/>
-    Search By Field<br/>
   </p>
   <a href="#" class="hide-btn">Hide</a>
 </div>
@@ -425,28 +613,47 @@ h3 {
   <h4>Observations</h4>
   <p>
     <span class="export-buttons">
-      <a href="#" id="export-csv" target="_blank">CSV</a> |
-      <a href="#" id="export-json" target="_blank">JSON</a> |
-      <a href="#" id="export-geojson" target="_blank">GeoJSON</a>
+      CSV <a href="#" id="export-csv" target="_blank"></a><br/>
+      JSON <a href="#" id="export-json" target="_blank"></a><br/>
+      GeoJSON <a href="#" id="export-geojson" target="_blank"></a><br/>
     <span>
   </p>
+  <h4>Search</h4>
+      Data <a href="#" id="export-search" target="_blank"></a><br/>
+  <h4>Photos</h4>
+      Data <a href="#" id="export-photos" target="_blank"></a><br/>
+  <h4>Sensors</h4>
+      Data <a href="#" id="export-sensors" target="_blank"></a><br/>
+  <h4>Raster Layers</h4>
+      Layers <a href="#" id="export-layers" target="_blank"></a><br/>
+      Rasters <a href="#" id="export-rasters" target="_blank"></a><br/>
+  <h4>Footprints</h4>
+      Jepsen Regions <a href="#" id="export-jepson" target="_blank"></a><br/>
+      Reserves <a href="#" id="export-reserves" target="_blank"></a><br/>
   <a href="#" class="hide-btn">Hide</a>
 </div>
 
 <div class="panel left map-detail">
   <h4><span id="detail-type"></span> Details</h4>
+  <p id="loading-view">
+  </p>
   <p id="detail-view">
-    <strong>Todo</strong><br/>
-    Display active search parameters<br/>
-    Display loading status of APIs<br/>
   </p>
 </div>
 <div class="panel right map-detail">
   <div id="map">
-    <select id="layer-select">
-      <option value="http://{s}.tile.stamen.com/terrain-background/{z}/{x}/{y}.jpg">Stamen Terrain</option>
-      <option value="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png">OpenStreetMap</option>
-    </select>
+    <div class="layer-selection">
+      <select id="overlay-select">
+        <option value="https://dev-ecoengine.berkeley.edu/tiles/vtmveg/{z}/{x}/{y}.png">VTM Vegetation Features</option>
+      </select>
+      <select id="layer-select">
+        <option value="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png">OpenStreetMap</option>
+        <option value="http://{s}.tile.stamen.com/terrain-background/{z}/{x}/{y}.jpg">Stamen Terrain</option>
+      </select>
+    </div>
+    <div id="bbox-select">
+      Constrain Search to Map
+    </div>
   </div>
   <div class="map-info">
       <button class="map-info-close">x</button>
@@ -461,6 +668,7 @@ h3 {
 <div class="wrap">
   <div class="panel left">
     <h4>Search Results</h4>
+    <p>Click one or more of the bars below to filter observations</p>
     <div id="search-bars"></div>
   </div>
   <div class="panel right">
@@ -472,21 +680,9 @@ h3 {
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="../lib/hashnav.js"></script>
+<script src="config.js"></script>
 <script>
-var limit = 50;
-var page = 1;
-var facets = {
-  kingdom: false,
-  phylum: false,
-  clss: false,
-  order: false,
-  family: false,
-  genus: false,
-  'scientific_name': false,
-  'state_province': false,
-  resource: false
-};
-
 var fields = [
   "record",
   "scientific_name",
@@ -498,15 +694,90 @@ var fields = [
   "observation_type"
 ];
 
-var sortFields = {};
-fields.forEach(function(d) { sortFields[d] = false; });
+var queryObj = {
+  page_size: 100,
+  page: 1,
+  facets: {
+    kingdom: false,
+    phylum: false,
+    clss: false,
+    order: false,
+    family: false,
+    genus: false,
+    'scientific_name': false,
+    'state_province': false,
+    resource: false
+  },
+  bbox: "",
+  sortFields: {},
+  advanced: {},
+  q: "",          
+  min_date: "",
+  max_date: ""
+};
 
-var ECO = {};
+fields.forEach(function(d) { queryObj.sortFields[d] = false; });
+
+function logHash(hash) {            
+  console.log(hash);
+  if (hash.parameters) {              
+    var parameters = hash.parameters;
+    for (var name in parameters) {
+      var value = parameters[name];
+      console.log(name,value);
+      if (name == "q") {
+        var fields = value.replace(/"/g, "").split(",")
+        queryObj.q = fields[0];
+        fields.slice(1).forEach(function(d) {
+          var pair = d.split(":");
+          queryObj.advanced[pair[0]] = pair[1];
+        });
+      } else if (name == "ordering") {
+        var fields = value.split(",")
+        fields.forEach(function(d) {
+          var field = d.replace("-","");
+          queryObj.sortFields[field] = d[0] == "-" ? "-" : "+";
+        });
+      } else if (name == "selected_facets") {
+        var items = value.replace(/"/g, "").split(",")
+        items.forEach(function(d) {
+          var pair = d.split(":");
+          queryObj.facets[pair[0].replace(/_exact/g, "")] = pair[1];
+        });
+      } else {
+        queryObj[name] = value;
+      }
+    }
+  } else {
+    console.log("There are no parameters.");
+    console.log(hash.raw);
+  }       
+}
+
+initHashNav(logHash);
+
+if (queryObj.q) {
+  d3.select("#searchterm").node().value = queryObj.q;
+}
+if (queryObj.min_date) {
+  d3.select("#minyear").node().value = queryObj.min_date; 
+}
+if (queryObj.max_date) {
+  d3.select("#maxyear").node().value = queryObj.max_date;
+}
+
+
+var mapData = [];
+var photoData = [];
+var sensorData = [];
+
+var ECO = ECO || {};
 ECO.base = {
   api: {
-    search: 'https://dev-ecoengine.berkeley.edu/api/search/',
-    observations: 'https://dev-ecoengine.berkeley.edu/api/observations/',
-    photos: 'https://dev-ecoengine.berkeley.edu/api/photos/',
+    search: 'https://ecoengine.berkeley.edu/api/search/',
+    observations: 'https://ecoengine.berkeley.edu/api/observations/',
+    photos: 'https://ecoengine.berkeley.edu/api/photos/',
+    sensors: 'https://dev-ecoengine.berkeley.edu/api/sensors/?page_size=5000&format=geojson',
     layers: 'https://dev-ecoengine.berkeley.edu/api/layers/',
     rasters: '../tiles/rstore.json',
     reserves: 'https://dev-ecoengine.berkeley.edu/api/layers/reserves/features/?page_size=500',
@@ -516,6 +787,7 @@ ECO.base = {
 
 var sortOrder = {
   georeferenced: 1,
+  country: 2,
   'state_province': 3,
   kingdom: 5,
   phylum: 7,
@@ -527,9 +799,66 @@ var sortOrder = {
   'observation_type': 19
 };
 
-
-
 var dateformat = d3.time.format("%Y %b %e");
+var compactdateformat = d3.time.format("%Y-%m-%d");
+
+
+var loadingView = d3.select("#loading-view")
+  .selectAll("div")
+  .data(d3.keys(ECO.base.api))
+  .enter().append("div");
+
+loadingView.append("strong")
+  .text(function(d) {
+    return capitaliseFirstLetter(d);
+  });
+
+loadingView.append("span")
+  .attr("class", String);
+
+var advancedSearchSections = d3.select("#advanced-search-pane")
+  .selectAll("div.section")
+  .data(ECO.advancedSearch)
+  .enter().append("div")
+  .attr("class", "section");
+
+advancedSearchSections.append("h3")
+  .text(function(d) { return d.section; });
+
+var table = advancedSearchSections
+  .append("table")
+
+var rows = table
+  .selectAll("tr.field")
+  .data(function(d) { return d.fields; })
+  .enter().append("tr")
+  .attr("class", "field");
+
+rows.append("td")
+  .text(function(d) { return capitaliseFirstLetter(d.field
+          .replace(/_/g, " ")
+          .replace("clss", "class")
+        ); });
+
+rows.append("td")
+  .append("input")
+  .attr("type", "text")
+  .attr("class", "eco-param2")
+  .attr("placeholder", function(d) {
+    return "placeholder" in d ? d.placeholder : null;
+  })
+  .attr("value", function(d) {
+    return d.field in queryObj.advanced ? queryObj.advanced[d.field] : null;
+  })
+  .on("change", function(d) {
+    queryObj.advanced[d.field] = this.value;
+  });
+
+d3.selectAll(".search-btn").on("click", function() {
+  query();
+  hideflydowns();
+});
+
 
 d3.select("#advanced-search-btn").on("click", function() {
   if (d3.select("#advanced-search").style("display") == "block") {
@@ -543,7 +872,7 @@ d3.select("#advanced-search-btn").on("click", function() {
   d3.select("#advanced-search")
     .style("display", "block")
     .transition()
-    .style("height", "360px")
+    .style("height", (window.innerHeight-38) + "px")
     .style("opacity", 1);
 });
 
@@ -559,7 +888,7 @@ d3.select("#export-btn").on("click", function() {
   d3.select("#export-pane")
     .style("display", "block")
     .transition()
-    .style("height", "360px")
+    .style("height", (window.innerHeight-38) + "px")
     .style("opacity", 1);
 });
 
@@ -576,30 +905,31 @@ function hideflydowns() {
     .style("display", null)
 };
 
-d3.json(ECO.base.api.reserves, function(error, data) {
-  if (!data) return;
-  data.results.forEach(function(d) {
-    d3.select("#reserve-list")
-      .append("option")
-      .attr("value", JSON.stringify(d.geometry))
-      .text(d.properties.name);
-  });
-});
+d3.select("#export-sensors")
+  .attr("href", ECO.base.api.sensors)
+  .text(ECO.base.api.sensors);
+d3.select("#loading-view .sensors")
+  .classed("loaded", false)
+  .classed("error", false)
+  .text("Loading...");
+d3.json(ECO.base.api.sensors, function(error, data) {
+  d3.select("#loading-view .sensors")
+    .classed("loaded", true)
+    .classed("error", false)
+    .text("Loaded");
 
-d3.json(ECO.base.api.jepson, function(error, data) {
-  if (!data) return;
-  data.results.forEach(function(d) {
-    d3.select("#jepson-list")
-      .append("option")
-      .attr("value", JSON.stringify(d.geometry))
-      .text(d.properties.name);
-  });
+  map.clear();
+  sensorData = data.features;
+
+  map.draw();
 });
 
 ECO.detailview = function(row) {
-  // TODO Move to detail view
   var container = d3.select("#detail-view")
+    .style("display", null)
     .html("");
+
+  d3.select("#loading-view").style("display", "none");
 
   if ("media_url" in row && row.media_url) {
     container.append("a")
@@ -645,31 +975,94 @@ ECO.map = function() {
 
   map = __.map = L.map('map').setView(defaultCenter, defaultZoom);
 
-  var baseLayer = L.tileLayer('http://{s}.tile.stamen.com/terrain-background/{z}/{x}/{y}.jpg', {
+  map.scrollWheelZoom.disable();
+
+  var baseLayer = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '',
     subdomains: 'abc',
-    minZoom: 2,
+    minZoom: 1,
+    transparent: true,
     maxZoom: 16
   }).addTo(map);
 
+  var overlayLayer = L.tileLayer('https://dev-ecoengine.berkeley.edu/tiles/vtmveg/{z}/{x}/{y}.png', {
+    attribution: '',
+    subdomains: 'abc',
+    minZoom: 2,
+    transparent: true,
+    maxZoom: 16
+  }).addTo(map);
+
+
+  d3.select("#export-layers")
+    .attr("href", ECO.base.api.layers)
+    .text(ECO.base.api.layers);
+  d3.select("#export-rasters")
+    .attr("href", ECO.base.api.rasters)
+    .text(ECO.base.api.rasters);
   // Layer select box
+
+  d3.select("#loading-view .layers")
+    .classed("loaded", false)
+    .classed("error", false)
+    .text("Loading...");
   d3.json(ECO.base.api.layers, function(error, layers) {
+    if (error) {
+      d3.select("#loading-view .layers")
+        .classed("error", true)
+        .text(error.status + " Error");
+      return;
+    }
+    d3.select("#loading-view .layers")
+      .classed("error", false)
+      .classed("loaded", true)
+      .text("Loaded");
+
+    d3.select("#loading-view .rasters")
+      .classed("loaded", false)
+      .classed("error", false)
+      .text("Loading...");
     d3.json(ECO.base.api.rasters, function(error, rasters) {
+      if (error) {
+        d3.select("#loading-view .rasters")
+          .classed("error", true)
+          .text(error.status + " Error");
+        return;
+      }
       if (!rasters) return;
+
+      d3.select("#loading-view .rasters")
+        .classed("loaded", true)
+        .classed("error", false)
+        .text("Loaded");
       rasters.results.forEach(function(d) {
-        d3.select("#layer-select")
-          .append("option")
-          .attr("value", d.tile_template)
-          .text(d.name);
+        if (d.tags.indexOf("boundaries") > -1) { 
+          d3.select("#overlay-select")
+            .append("option")
+            .attr("value", d.tile_template)
+            .text(d.name);
+        } else {
+          d3.select("#layer-select")
+            .append("option")
+            .attr("value", d.tile_template)
+            .text(d.name);
+        }
       });
     });
 
     if (!layers) return;
     layers.results.forEach(function(d) {
-      d3.select("#layer-select")
-        .append("option")
-        .attr("value", d.tile_template)
-        .text(d.name);
+        if (d.tags.indexOf("boundaries") > -1) { 
+          d3.select("#overlay-select")
+            .append("option")
+            .attr("value", d.tile_template)
+            .text(d.name);
+        } else {
+          d3.select("#layer-select")
+            .append("option")
+            .attr("value", d.tile_template)
+            .text(d.name);
+        }
     });
   });
 
@@ -677,7 +1070,10 @@ ECO.map = function() {
     .on("change", function() {
       baseLayer.setUrl(this.value);
     });
-
+  d3.select("#overlay-select")
+    .on("change", function() {
+      overlayLayer.setUrl(this.value);
+    });
 
   /*
   var apiLayer = L.tileLayer(ECO.base.api.tiles, {
@@ -703,7 +1099,24 @@ ECO.map = function() {
 
   function onMarkerOver(evt) {
     showTooltip(evt);
-    d3.select("#detail-type").text("Observation");
+    var type = '';
+    if ('observation_type' in evt.target.data_) {
+      type = 'Observation';
+    } else if ('media_url' in evt.target.data_) {
+      type = 'Photo';
+    } else {
+      type = 'Sensor';
+    }
+
+    if (type == 'Observation') {
+      d3.select("#detail-type").html("<span class='eco-basic-icon " + evt.target.data_.observation_type + "'></span> Observation")
+    }
+    if (type == 'Photo') {
+      d3.select("#detail-type").html("<span class='eco-basic-icon media-photo'></span> Photo")
+    }
+    if (type == 'Sensor') {
+      d3.select("#detail-type").html("<span class='eco-basic-icon sensor'></span> Sensor")
+    }
     ECO.detailview(evt.target.data_);
     subscribers.forEach(function(s){
       if (s.over) s.over(evt);
@@ -712,6 +1125,7 @@ ECO.map = function() {
 
   function onMarkerOut(evt) {
     hideTooltip();
+    showLoadingView();
     subscribers.forEach(function(s){
       if (s.out) s.out(evt);
     });
@@ -724,11 +1138,61 @@ ECO.map = function() {
     });
   }
 
-  function addMarkers(data, icon) {
+  function addPoly(layer, color) {
+    var poly = L.geoJson(layer.geometry, {
+      style: {
+        color: color,
+        weight: 1,
+        opacity: 0.9,
+        fillOpacity: 0.8
+
+      }
+    }).addTo(map); 
+
+    poly.on('mouseover', function() {
+      d3.select("#detail-type").text("Reserve ");
+      ECO.detailview(layer.properties);
+    })
+    .on("mouseout", function() {
+      showLoadingView();
+    });
+  };
+
+  function addMarkers(data) {
+    //console.log('markers', data)
     var bds = null;
 
     data.forEach(function(d){
-      var markerIcon = d.icon || icon || new L.Icon.Default();
+      var type = '';
+      if ('observation_type' in d.properties) {
+        type = 'observation';
+      } else if ('media_url' in d.properties) {
+        type = 'photo';
+      } else {
+        type = 'sensor';
+      }      
+
+      if (type == 'observation') {
+        var markerIcon= L.divIcon({
+          className: 'eco-basic-icon ' + d.properties.observation_type.replace(/ /g,"-"),
+          iconSize: new L.Point(12,12)
+        });
+      }
+
+      if (type == 'photo') {
+        var markerIcon= L.divIcon({
+          className: 'eco-basic-icon media-photo',
+          iconSize: new L.Point(12,12)
+        });
+      }
+
+      if (type == 'sensor') {
+        var markerIcon= L.divIcon({
+          className: 'eco-basic-icon sensor',
+          iconSize: new L.Point(12,12)
+        });
+      }
+
       var ll = new L.LatLng(d.geometry.coordinates[1], d.geometry.coordinates[0])
       var m = L.marker(ll, {riseOnHover: true, icon: markerIcon}).addTo(map);
       m.data_ = d.properties;
@@ -764,9 +1228,33 @@ ECO.map = function() {
 
   function showTooltip(evt) {
       if (!evt.target.data_) return;
+      var type = ''
+      if ('observation_type' in evt.target.data_) {
+        type = 'Observation';
+      } else if ('media_url' in evt.target.data_) {
+        type = 'Photo';
+      } else {
+        type = 'Sensor';
+      }
+
+      if (type == 'Observation') {
+        var content = "<strong>" + type + " (" + evt.target.data_.observation_type + ")</strong><br/>";
+      } else {
+        var content = "<strong>" + type + "</strong><br/>";
+      }
+      
+      if (type == 'Observation') {
+        content += evt.target.data_['scientific_name'] + "<br/>" + evt.target.data_['record'];
+      }
+      if (type == 'Photo') {
+        content += evt.target.data_['authors'] + "<br/>" + evt.target.data_['record'];
+      }
+      if (type == 'Sensor') {
+        content += evt.target.data_['station_name'] + "<br/>" + evt.target.data_['record'];
+      }
       popup
           .setLatLng(evt.target._latlng)
-          .setContent(evt.target.data_['scientific_name'] || 'n/a')
+          .setContent(content)
           .openOn(map);
   }
 
@@ -774,14 +1262,6 @@ ECO.map = function() {
       popup._close();
   }
 
-  function dataFilterCoordinates(data) {
-    if (!data || !data.hasOwnProperty('features')) return [];
-    if (!data.features.length) return [];
-
-    return data.features.filter(function(d){
-      return d.geometry && d.geometry.coordinates.length === 2;
-    });
-  }
 
   /**
    * Add listener objects for markers
@@ -794,43 +1274,24 @@ ECO.map = function() {
     return __;
   }
 
-  __.draw = function(data){
-    clearMarkers();
+  __.clear = clearMarkers;
 
-    data = dataFilterCoordinates(data || []);
-
+  __.draw = function() {
+    /*
     if (!data.length) {
       ECO.mapAlert.set('No map data available.');
       return;
     }
+    */
 
     ECO.mapAlert.hide();
 
-
-    // set an icon for a marker, you can either
-    // create an icon object for use with the whole data Array
-    // or create an icon object for each element in the data Array.
-    // addMarker will look for an icon in the element first then default
-    // to the general icon.  Must set one or the other.
-
-    // method 1
-    var icon = L.divIcon({
-      className: 'eco-basic-icon',
-      iconSize: new L.Point(10,10)
-    });
-
-    /*
-    // method 2
-    data.forEach(function(d){
-      d.icon = L.divIcon({
-        className: 'eco-photo-icon',
-        iconSize: new L.Point(10,10)
-      });
-    });
-    */
-
-    addMarkers(data, icon);
+    if (mapData.length) addMarkers(mapData);
+    if (sensorData.length) addMarkers(sensorData);
+    if (photoData.length) addMarkers(photoData);
   }
+
+  __.addPoly = addPoly;
 
   return __;
 };
@@ -898,7 +1359,7 @@ ECO.list = function() {
     fieldplot.append("h3")
       .text(function(d) {
         return capitaliseFirstLetter(d.field
-          .replace("_", " ")
+          .replace(/_/g, " ")
           .replace("clss", "class")
         )});
 
@@ -906,10 +1367,10 @@ ECO.list = function() {
         .data(function(d) { return d.values; })
         .enter().append("div")
         .attr("class", "bars")
-        .append("a")
-        .attr("href", function(d) { return "#"; })
+        .append("div")
+        .style("display", function(d,i) { return i > 9 ? "none" : null})
         .classed("active", function(d,i,g) {
-          return facets[searchfields[g]] == d[0];
+          return queryObj.facets[searchfields[g]] == d[0];
         })
         .on("mouseover", function(d,i,g) {
           d3.select("#detail-type").text("Search");
@@ -920,12 +1381,15 @@ ECO.list = function() {
             "url": d[2]
           });
         })
+        .on("mouseout", function() {
+          showLoadingView();
+        })
         .on("click", function(d,i,g) {
-          page = 1;
-          if (facets[searchfields[g]] == d[0]) {
-            facets[searchfields[g]] = false;
+          queryObj.page = 1;
+          if (queryObj.facets[searchfields[g]] == d[0]) {
+            queryObj.facets[searchfields[g]] = false;
           } else {
-            facets[searchfields[g]] = d[0];
+            queryObj.facets[searchfields[g]] = d[0];
           }
           query();
         });
@@ -945,6 +1409,20 @@ ECO.list = function() {
     bars.append("span")
       .attr("class", "x")
       .text(" x");
+
+    fieldplot
+      .filter(function(d) { return d.values.length > 9; })
+      .append("span")
+      .attr("class", "show-more")
+      .text("[+] Show more")
+      .on("click", function(d) {
+        bars.filter(function(p,i,g) { 
+          return searchfields[g] == d.field;
+        })
+        .style("display", "block");
+
+        d3.select(this).remove();
+      });
   }
   return __;
 };
@@ -987,20 +1465,20 @@ ECO.datatable = function() {
       .enter().append("th")
       .text(String)
       .style("color", function(d) {
-        if (sortFields[d] == "+") { 
+        if (queryObj.sortFields[d] == "+") { 
           return "#0a0";
         }
-        if (sortFields[d] == "-") { 
+        if (queryObj.sortFields[d] == "-") { 
           return "#b00";
         }
       })
       .on("click", function(d) {
-        if (sortFields[d] == false) { 
-          sortFields[d] = "+";
-        } else if (sortFields[d] == "+") { 
-          sortFields[d] = "-";
-        } else if (sortFields[d] == "-") { 
-          sortFields[d] = "+";
+        if (queryObj.sortFields[d] == false) { 
+          queryObj.sortFields[d] = "+";
+        } else if (queryObj.sortFields[d] == "+") { 
+          queryObj.sortFields[d] = "-";
+        } else if (queryObj.sortFields[d] == "-") { 
+          queryObj.sortFields[d] = "+";
         }
         query();
       });
@@ -1012,8 +1490,11 @@ ECO.datatable = function() {
       .attr("class", "listing")
       .classed("zebra", function(d,i) { return i % 2 == 0;})
       .on("mouseover", function(d) {
-        d3.select("#detail-type").text("Observation");
+        d3.select("#detail-type").html("<span class='eco-basic-icon " + d.properties.observation_type + "'></span> Observation")
         ECO.detailview(d.properties);
+      })
+      .on("mouseout", function() {
+        showLoadingView();
       })
       .each(function(d) {
         var entry = d3.select(this)
@@ -1041,6 +1522,9 @@ ECO.datatable = function() {
               if (key == "end_date") {
                 return dateformat(new Date(props[key]));
               }
+              if (key == "observation_type") {
+                return "<span class='eco-basic-icon " + props[key].replace(/ /g,"-") + "'></span>" + props[key];
+              }
               return props[key]
             }
             if (key == "geojson") {
@@ -1060,15 +1544,90 @@ var datatable = new ECO.datatable();
 var map = new ECO.map().subscribe(datatable.mapEvents);
 var timebrush = d3.svg.brush()
 
+d3.select("#export-reserves")
+  .attr("href", ECO.base.api.reserves)
+  .text(ECO.base.api.reserves);
+
+d3.select("#loading-view .reserves")
+  .classed("loaded", false)
+  .classed("error", false)
+  .text("Loading...");
+d3.json(ECO.base.api.reserves, function(error, data) {
+  if (error) {
+    d3.select("#loading-view .reserves")
+      .classed("error", true)
+      .text(error.status + " Error");
+    return;
+  };
+  d3.select("#loading-view .reserves")
+    .classed("loaded", true)
+    .classed("error", false)
+    .text("Loaded");
+  if (!data) return;
+  data.features.forEach(function(d) {
+    d3.select("#reserve-list")
+      .append("option")
+      .attr("value", JSON.stringify(d.geometry))
+      .text(d.properties.name)
+    map.addPoly(d, "#fb5");
+  });
+  d3.select("#reserve-list")
+    .on("change", function() {
+      queryObj.advanced["g"] = this.value;
+    });
+});
+
+d3.select("#export-jepson")
+  .attr("href", ECO.base.api.jepson)
+  .text(ECO.base.api.jepson);
+
+d3.select("#loading-view .jepson")
+  .classed("loaded", false)
+  .classed("error", false)
+  .text("Loading...");
+d3.json(ECO.base.api.jepson, function(error, data) {
+  if (error) {
+    d3.select("#loading-view .jepson")
+      .classed("error", true)
+      .text(error.status + " Error");
+    return;
+  };
+  d3.select("#loading-view .jepson")
+    .classed("loaded", true)
+    .classed("error", false)
+    .text("Loaded");
+  if (!data) return;
+  data.results.forEach(function(d) {
+    d3.select("#jepson-list")
+      .append("option")
+      .attr("value", JSON.stringify(d.geometry))
+      .text(d.properties.name);
+  });
+  d3.select("#reserve-list")
+    .on("change", function() {
+      queryObj.advanced["g"] = this.value;
+    });
+});
+
+// filter by bounding box
+d3.select("#bbox-select")
+  .on("click", function() {
+    var bds = map.map.getBounds();
+    var bbox = [bds._northEast.lng, bds._northEast.lat, bds._southWest.lng, bds._southWest.lat].join(",");
+    queryObj.bbox = bbox;
+    query();
+  });
+
 // text boxes
 d3.selectAll(".eco-param")
   .on("change", function() {
-    var minyear = d3.select("#minyear").node().value;
-    var maxyear = d3.select("#maxyear").node().value;
-    timebrush.extent([new Date(minyear), new Date(maxyear)]);
+    queryObj.q = d3.select("#searchterm").node().value;
+    queryObj.min_date = d3.select("#minyear").node().value;
+    queryObj.max_date = d3.select("#maxyear").node().value;
+    timebrush.extent([new Date(queryObj.min_date), new Date(queryObj.max_date)]);
     d3.select("#time-slider .brush").call(timebrush)
 
-    page = 1;
+    queryObj.page = 1;
     query();
   });
 
@@ -1077,21 +1636,24 @@ d3.selectAll(".eco-param")
 (function() {
   var margin = {top: 2, right: 14, bottom: 26, left: 14};
   var height = 1;
-  var width = 420;
+  var width = 250;
 
-  var minyear = d3.select("#minyear").node().value;
-  var maxyear = d3.select("#maxyear").node().value;
+  queryObj.min_date = d3.select("#minyear").node().value;
+  queryObj.max_date = d3.select("#maxyear").node().value;
 
   var x = d3.time.scale()
     .range([0, width])
-    .domain([new Date("1900"), new Date()]).nice();
+    .domain([new Date("Jan 1 1900"), new Date()]).nice();
 //    .domain([new Date(minyear), new Date(maxyear)]).nice();
 
   var xAxis = d3.svg.axis().scale(x).orient("bottom");
   timebrush.x(x)
       .on("brush", brushed)
-      .on("brushend", query)
-      .extent([new Date(minyear),new Date(maxyear)]);
+      .on("brushend", brushend)
+
+  if (queryObj.min_date.length > 0 && queryObj.max_date.length >0){
+    timebrush.extent([new Date(queryObj.min_date),new Date(queryObj.max_date)]);
+  }
 
   var context = d3.select("#time-slider")
       .append("svg")
@@ -1116,46 +1678,121 @@ d3.selectAll(".eco-param")
 
   function brushed() {
     var extent = timebrush.extent();
-    d3.select("#minyear").node().value = extent[0].getFullYear();
-    d3.select("#maxyear").node().value = extent[1].getFullYear();
+
+    queryObj.min_date = d3.select("#minyear").node().value = compactdateformat(extent[0]);
+    queryObj.max_date = d3.select("#maxyear").node().value = compactdateformat(extent[1]);
   }
+
+  function brushend() {
+    var extent = timebrush.extent();
+    if (compactdateformat(extent[0]) == compactdateformat(extent[1])) {
+      // reset brushes
+      d3.select("#minyear").node().value = "";
+      d3.select("#maxyear").node().value = "";
+    }
+    query();
+  }
+
 })();
 
 query();
 
-function query() {
-  d3.select("#results").style("color", "#bbb");
-  var term = d3.select("#searchterm").node().value;
-  var minyear = d3.select("#minyear").node().value;
-  var maxyear = d3.select("#maxyear").node().value;
+function showLoadingView() {
+  d3.select("#detail-type").text("Loading ");
+  d3.select("#loading-view").style("display", null);
+  d3.select("#detail-view").style("display", "none");
+};
 
-  var facetlist = d3.entries(facets)
+function query() {
+  showLoadingView();
+  d3.select("#results").style("color", "#bbb");
+
+  var facetlist = d3.entries(queryObj.facets)
     .filter(function(d) { return d.value; });
   var facetstring = facetlist.map(function(d) {
     return "&selected_facets=" + d.key + "_exact%3A%22" + d.value + "%22";
   }).join("&");
 
-  var sortlist = d3.entries(sortFields)
+  var sortlist = d3.entries(queryObj.sortFields)
     .filter(function(d) { return d.value; });
   var sortstring = sortlist.map(function(d) {
     return (d.value == "-" ? "-" : "") + d.key;
   }).join(",");
 
-  var querystring = ECO.base.api.observations + "?extra=record&ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
-  var searchquerystring = ECO.base.api.search + "?extra=record&ordering=" + sortstring + facetstring + "&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear;
-  var photoquerystring = ECO.base.api.photos+ "?extra=record&ordering=" + sortstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
-  console.log(searchquerystring);
+  var orderString = "";
+  if (sortstring.length > 0) {
+    orderString += "&ordering=" + sortstring;
+  }
+
+  var bboxString = "";
+  if (queryObj.bbox) {
+    bboxString = "&bbox=" + queryObj.bbox;
+  }
+
+  var advancedString = "";
+  for (var key in queryObj.advanced) {
+    advancedString += ",";
+    advancedString += key;
+    advancedString += ':"';
+    advancedString += queryObj.advanced[key];
+    advancedString += '"';
+  }
+  console.log(advancedString);
+
+  var dateString = "";
+  if (queryObj.min_date) {
+    dateString += "&min_date=" + queryObj.min_date;
+  }
+  if (queryObj.max_date) {
+    dateString += "&max_date=" + queryObj.max_date;
+  }
+
+  var qString = "&q=\"";
+  var qStringSimple = "&q=\"";
+  if (queryObj.q.length > 0 || advancedString.length > 0) {
+    qString += queryObj.q + '"' + advancedString;
+    qStringSimple += queryObj.q;
+  } else {
+    qString += '"';
+  }
+
+  var hashString = orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page;
+
+  window.location.hash = hashString;
+
+  var querystring = ECO.base.api.observations + "?format=geojson" + hashString;
+  var searchquerystring = ECO.base.api.search + "?format=json" + orderString + facetstring+ qString + dateString + "&facets_limit=100";
+  var photoquerystring = ECO.base.api.photos  + "?format=geojson" + orderString+ qStringSimple + bboxString + dateString + "&page_size=20page=1";
+
+  console.log(querystring);
 
   // export links
   d3.select("#export-csv")
-    .attr("href", ECO.base.api.observations + "?fields=&ordering=" + sortstring + facetstring + "&format=csv&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + "?format=csv" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
+    .text(ECO.base.api.observations + "?format=csv" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
   d3.select("#export-json")
-    .attr("href", ECO.base.api.observations + "?fields=&ordering=" + sortstring + facetstring + "&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + "?format=json" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
+    .text( ECO.base.api.observations + "?format=json" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
   d3.select("#export-geojson")
-    .attr("href", ECO.base.api.observations + "?fields=&ordering=" + sortstring + facetstring + "&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+    .attr("href", ECO.base.api.observations + "?format=geojson" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
+    .text(ECO.base.api.observations + "?format=geojson" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
 
+  d3.select("#loading-view .observations")
+    .classed("loaded", false)
+    .classed("error", false)
+    .text("Loading...");
   d3.json(querystring, function(error, data) {
+    if (error) {
+      d3.select("#loading-view .observations")
+        .classed("error", true)
+        .text(error.status + " Error");
+      return;
+    }
     d3.select("#results").html("").style("color", null);
+    d3.select("#loading-view .observations")
+      .classed("loaded", true)
+      .classed("error", false)
+      .text("Loaded");
 
     if (error) {
       d3.select("#results").append("div").html(error.responseText).style("color", "red");
@@ -1163,24 +1800,24 @@ function query() {
     }
 
     // Paging
-    var startitem = limit*(page-1);
-    var enditem = Math.min(limit*(page),data.count);
+    var startitem = queryObj.page_size*(queryObj.page-1);
+    var enditem = Math.min(queryObj.page_size*(queryObj.page),data.count);
     var pagination = d3.select("#results").append("p")
       .attr("class", "paging");
 
     pagination.append("span").text("Results " + (startitem+1) + " to " + enditem + " of " + data.count + " - ");
 
-    var pagecount = Math.ceil(data.count/limit);
+    var pagecount = Math.ceil(data.count/queryObj.page_size);
     pagination.append("span")
       .attr("class", "pagination")
       .selectAll("span")
       .data(d3.range(1, pagecount+1).slice(0,20))
       .enter().append("span")
-      .classed("active", function(d) { return d == page;})
+      .classed("active", function(d) { return d == queryObj.page;})
       .text(String)
       .on("click", function(d) {
-        if (d == page) return;
-        page = d;
+        if (d == queryObj.page) return;
+        queryObj.page = d;
         query();
       });
 
@@ -1190,20 +1827,91 @@ function query() {
         .text("(more data available)");
     }
 
+    var pagesize = pagination.append("p")
+      .append("div")
+      .attr("class", "pagination")
+      .text("Page size ");
+
+    pagesize.selectAll(".page-size")
+      .data([20,50,100,500,1000,2000])
+      .enter().append("span")
+      .text(String)
+      .attr("class", "page-size")
+      .classed("active", function(d) { return d == queryObj.page_size; })
+      .on("click", function(d) {
+        queryObj.page_size = d;
+        d3.selectAll(".page-size").classed("active", function(d) { return d == queryObj.page_size; })
+        query();
+      });
+
     d3.select(".pagination").append("div")
       .style("clear", "both");
 
     datatable.draw(data);
-    map.draw(data);
+
+    mapData = dataFilterCoordinates(data || []);
+    map.clear();
+    map.draw();
+
+    /*
+    d3.range(2,Math.min(10,pagecount)).forEach(function(nextpage) {
+      var nextquerystring = ECO.base.api.observations + "?ordering=" + sortstring + facetstring + "&format=geojson&q=" + queryObj.q + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + queryObj.page_size + "&page=" + nextpage;
+      d3.json(nextquerystring, function(error, data) {
+      console.log(data);
+        mapData.concat(dataFilterCoordinates(data || []));
+        map.draw(mapData);
+      });
+    });
+    */
+
   });
 
 
   d3.selectAll(".field-plot a").style("color", "#bbb");
+  d3.select("#export-search")
+    .attr("href", searchquerystring)
+    .text(searchquerystring);
+
+  d3.select("#loading-view .search")
+    .classed("loaded", false)
+    .classed("error", false)
+    .text("Loading...");
   d3.json(searchquerystring, function(error, data) {
+    if (error) {
+      d3.select("#loading-view .search")
+        .classed("error", true)
+        .text(error.status + " Error");
+      return;
+    }
+    d3.select("#loading-view .search")
+      .classed("loaded", true)
+      .classed("error", false)
+      .text("Loaded");
     fieldlist.draw(data);
   });
 
+  d3.select("#export-photos")
+    .attr("href", photoquerystring)
+    .text(photoquerystring);
+  d3.select("#loading-view .photos")
+    .classed("loaded", false)
+    .classed("error", false)
+    .text("Loading...");
   d3.json(photoquerystring, function(error, data) {
+    if (error) {
+      d3.select("#loading-view .photos")
+        .classed("error", true)
+        .text(error.status + " Error");
+      return;
+    }
+    d3.select("#loading-view .photos")
+      .classed("loaded", true)
+      .classed("error", false)
+      .text("Loaded");
+    photoData = dataFilterCoordinates(data || []);
+
+    map.draw();
+
     var photos = d3.select("#photos .inner-photos")
       .html("")
       .selectAll("a")
@@ -1213,15 +1921,85 @@ function query() {
       .on("mouseover", function(d) {
         d3.select("#detail-type").text("Photo");
         ECO.detailview(d.properties);
+      })
+      .on("mouseout", function() {
+        showLoadingView();
       });
 
     photos.append("img")
       .attr("src", function(d) { return d.properties.media_url; });
+
+    if (data.next) {
+      d3.select("#photos .inner-photos").append("span")
+        .text(" Load more [+]")
+        .datum(data.next)
+        .on("click", loadMorePhotos);
+    }
+
+    function loadMorePhotos(url) {
+      d3.select(this).remove();
+
+      d3.select("#loading-view .photos")
+        .classed("loaded", false)
+        .classed("error", false)
+        .text("Loading...");
+
+      d3.select("#loading-view").style("display", null);
+      d3.select("#detail-view").style("display", "none");
+      d3.json(url, function(error, data) {
+        if (error) {
+          d3.select("#loading-view .photos")
+            .classed("error", true)
+            .text(error.status + " Error");
+          return;
+        }
+        d3.select("#loading-view .photos")
+          .classed("loaded", true)
+          .classed("error", false)
+          .text("Loaded");
+        photoData.concat(dataFilterCoordinates(data || []));
+        map.draw();
+
+        var existingPhotos = d3.select("#photos .inner-photos").selectAll("a").data();
+
+        var photos = d3.select("#photos .inner-photos")
+          .selectAll("a")
+          .data(existingPhotos.concat(data.features))
+          .enter().append("a")
+          .attr("href", function(d) { return d.properties.url; })
+          .on("mouseover", function(d) {
+            d3.select("#detail-type").text("Photo");
+            ECO.detailview(d.properties);
+          })
+          .on("mouseout", function() {
+            showLoadingView();
+          });
+
+        photos.append("img")
+          .attr("src", function(d) { return d.properties.media_url; });
+
+
+        if (data.next) {
+          d3.select("#photos .inner-photos").append("span")
+            .text("Load more [+]")
+            .datum(data.next)
+            .on("click", loadMorePhotos);
+        }
+      });
+    };
   });
 };
 
 function capitaliseFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
-</script>
 
+function dataFilterCoordinates(data) {
+  if (!data || !data.hasOwnProperty('features')) return [];
+  if (!data.features.length) return [];
+
+  return data.features.filter(function(d){
+    return d.geometry && d.geometry.coordinates.length === 2;
+  });
+}
+</script>

@@ -41,7 +41,7 @@ p {
   background: #317eac;
   border-bottom: 1px solid #114e7c;
   padding: 8px;
-  position: fixed;
+  position: absolute;
   top: 0;
   height: 38px;
   width: 100%;
@@ -149,8 +149,8 @@ h4 {
 .hide-btn {
   font-weight: bold;
   font-size: 15px;
-  position: fixed;
-  top: 46px;
+  position: absolute;
+  top: 12px;
   right: 24px;
 }
 
@@ -166,12 +166,12 @@ h4 {
 .flydown {
   background: #fff;
   border-bottom: 1px solid #114e7c;
-  position: fixed;
+  position: absolute;
   top: 0; 
   bottom: 0;
   height: 100%; 
   width: 100%;
-  z-index:2000;
+  z-index: 2000;
   padding: 8px;
   overflow: auto;
   display: none;
@@ -256,15 +256,25 @@ svg {
 }
 
 /* MAP */
-.map-detail {
+.map-area {
   height: 360px;
   line-height: 1.3em;
 }
 
-.map-detail.left {
-  padding: 8px 0 0 8px;
-  overflow-y: auto;
+#details {
+  pointer-events: none;
+  height: auto;
+  max-width: 50%;
+  max-height: 580px;
+  margin: 8px 0 0 48px;
+  padding: 8px;
+  border-radius: 2px;
   overflow-x: hidden;
+  position: absolute;
+  background: #222;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  z-index: 5; 
 }
 
 #loading-view {
@@ -275,21 +285,24 @@ svg {
 #detail-view {
   margin-top: 8px;
 }
+#detail-view .key {
+  color: #666;
+}
 
 #loading-view span {
   padding-left: 8px;
 }
 #loading-view span.loaded {
-  color: #0a0;
+  color: #4d4;
 }
 #loading-view span.error {
   font-weight: bold;
-  color: #c00;
+  color: #d44;
 }
 
 #detail-view img {
-  max-width: 260px;
-  max-height: 220px;
+  max-width: 360px;
+  max-height: 160px;
   margin-bottom: 8px;
 }
 
@@ -472,32 +485,6 @@ svg {
   display: block;
 }
 
-
-#photos {
-  width: 100%;
-  color: #fff;
-  background: #111;
-  min-height: 32px;
-  padding: 1px;
-}
-#photos img {
-  height: 64px;
-  display: inline-block;
-  padding: 1px;
-}
-
-#photos {
-  position: relative;
-}
-
-#photos h4 {
-  pointer-events: none;
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  background: rgba(0,0,0,0.5);
-}
-
 #results table {
   font-size: 12px;
 }
@@ -577,7 +564,7 @@ h3 {
 </style>
 <body>
 <div class="header">
-  Search <input type="text" value="" id="searchterm" class="eco-param" placeholder="Observations/photos"></input>
+  Search <input type="text" value="" id="searchterm" class="eco-param" placeholder="Observations"></input>
   &nbsp; Date Range <input type="text" value="" id="minyear" class="eco-param" placeholder="1900-01-01"></input>
   <span id="time-slider"></span>
   <input type="text" value="" id="maxyear" class="eco-param" placeholder="2018-12-31"></input>
@@ -633,14 +620,14 @@ h3 {
   <a href="#" class="hide-btn">Hide</a>
 </div>
 
-<div class="panel left map-detail">
+<div class="map-area left" id="details">
   <h4><span id="detail-type"></span> Details</h4>
   <p id="loading-view">
   </p>
   <p id="detail-view">
   </p>
 </div>
-<div class="panel right map-detail">
+<div class="map-area">
   <div id="map">
     <div class="layer-selection">
       <select id="overlay-select">
@@ -658,11 +645,6 @@ h3 {
   <div class="map-info">
       <button class="map-info-close">x</button>
       <p class="map-info-content"></p>
-  </div>
-</div>
-<div id="photos" class="photos">
-  <h4>Photos</h4>
-  <div class="inner-photos">
   </div>
 </div>
 <div class="wrap">
@@ -808,7 +790,7 @@ var loadingView = d3.select("#loading-view")
   .data(d3.keys(ECO.base.api))
   .enter().append("div");
 
-loadingView.append("strong")
+loadingView.append("span")
   .text(function(d) {
     return capitaliseFirstLetter(d);
   });
@@ -925,6 +907,8 @@ d3.json(ECO.base.api.sensors, function(error, data) {
 });
 
 ECO.detailview = function(row) {
+  d3.select("#details").style("display", null);
+
   var container = d3.select("#detail-view")
     .style("display", null)
     .html("");
@@ -942,7 +926,7 @@ ECO.detailview = function(row) {
     .data(d3.entries(row))
     .enter().append("div")
 
-  divs.append("strong")
+  divs.append("span.key")
     .html(function(d) { return d.key + " &nbsp; "; });
 
   divs.append("span")
@@ -1125,7 +1109,7 @@ ECO.map = function() {
 
   function onMarkerOut(evt) {
     hideTooltip();
-    showLoadingView();
+    hideDetailView();
     subscribers.forEach(function(s){
       if (s.out) s.out(evt);
     });
@@ -1154,7 +1138,7 @@ ECO.map = function() {
       ECO.detailview(layer.properties);
     })
     .on("mouseout", function() {
-      showLoadingView();
+      hideDetailView();
     });
   };
 
@@ -1382,7 +1366,7 @@ ECO.list = function() {
           });
         })
         .on("mouseout", function() {
-          showLoadingView();
+          hideDetailView();
         })
         .on("click", function(d,i,g) {
           queryObj.page = 1;
@@ -1494,7 +1478,7 @@ ECO.datatable = function() {
         ECO.detailview(d.properties);
       })
       .on("mouseout", function() {
-        showLoadingView();
+        hideDetailView();
       })
       .each(function(d) {
         var entry = d3.select(this)
@@ -1698,9 +1682,14 @@ d3.selectAll(".eco-param")
 query();
 
 function showLoadingView() {
+  d3.select("#details").style("display", null);
   d3.select("#detail-type").text("Loading ");
   d3.select("#loading-view").style("display", null);
   d3.select("#detail-view").style("display", "none");
+};
+
+function hideDetailView() {
+  d3.select("#details").style("display", "none");
 };
 
 function query() {
@@ -1912,81 +1901,6 @@ function query() {
 
     map.draw();
 
-    var photos = d3.select("#photos .inner-photos")
-      .html("")
-      .selectAll("a")
-      .data(data.features)
-      .enter().append("a")
-      .attr("href", function(d) { return d.properties.url; })
-      .on("mouseover", function(d) {
-        d3.select("#detail-type").text("Photo");
-        ECO.detailview(d.properties);
-      })
-      .on("mouseout", function() {
-        showLoadingView();
-      });
-
-    photos.append("img")
-      .attr("src", function(d) { return d.properties.media_url; });
-
-    if (data.next) {
-      d3.select("#photos .inner-photos").append("span")
-        .text(" Load more [+]")
-        .datum(data.next)
-        .on("click", loadMorePhotos);
-    }
-
-    function loadMorePhotos(url) {
-      d3.select(this).remove();
-
-      d3.select("#loading-view .photos")
-        .classed("loaded", false)
-        .classed("error", false)
-        .text("Loading...");
-
-      d3.select("#loading-view").style("display", null);
-      d3.select("#detail-view").style("display", "none");
-      d3.json(url, function(error, data) {
-        if (error) {
-          d3.select("#loading-view .photos")
-            .classed("error", true)
-            .text(error.status + " Error");
-          return;
-        }
-        d3.select("#loading-view .photos")
-          .classed("loaded", true)
-          .classed("error", false)
-          .text("Loaded");
-        photoData.concat(dataFilterCoordinates(data || []));
-        map.draw();
-
-        var existingPhotos = d3.select("#photos .inner-photos").selectAll("a").data();
-
-        var photos = d3.select("#photos .inner-photos")
-          .selectAll("a")
-          .data(existingPhotos.concat(data.features))
-          .enter().append("a")
-          .attr("href", function(d) { return d.properties.url; })
-          .on("mouseover", function(d) {
-            d3.select("#detail-type").text("Photo");
-            ECO.detailview(d.properties);
-          })
-          .on("mouseout", function() {
-            showLoadingView();
-          });
-
-        photos.append("img")
-          .attr("src", function(d) { return d.properties.media_url; });
-
-
-        if (data.next) {
-          d3.select("#photos .inner-photos").append("span")
-            .text("Load more [+]")
-            .datum(data.next)
-            .on("click", loadMorePhotos);
-        }
-      });
-    };
   });
 };
 
