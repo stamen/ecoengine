@@ -262,6 +262,7 @@ svg {
 }
 
 #details {
+  display: none;
   pointer-events: none;
   height: auto;
   max-width: 50%;
@@ -907,7 +908,7 @@ d3.json(ECO.base.api.sensors, function(error, data) {
 });
 
 ECO.detailview = function(row) {
-  d3.select("#details").style("display", null);
+  d3.select("#details").style("display", "block");
 
   var container = d3.select("#detail-view")
     .style("display", null)
@@ -1682,7 +1683,7 @@ d3.selectAll(".eco-param")
 query();
 
 function showLoadingView() {
-  d3.select("#details").style("display", null);
+  d3.select("#details").style("display", "block");
   d3.select("#detail-type").text("Loading ");
   d3.select("#loading-view").style("display", null);
   d3.select("#detail-view").style("display", "none");
