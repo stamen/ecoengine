@@ -1598,7 +1598,8 @@ d3.json(ECO.base.api.jepson, function(error, data) {
 d3.select("#bbox-select")
   .on("click", function() {
     var bds = map.map.getBounds();
-    var bbox = [bds._northEast.lng, bds._northEast.lat, bds._southWest.lng, bds._southWest.lat].join(",");
+    // needs to be bottom left, upper right
+    var bbox = [bds._northEast.lng, bds._southWest.lat, bds._southWest.lng, bds._northEast.lat].join(",");
     queryObj.bbox = bbox;
     query();
   });
