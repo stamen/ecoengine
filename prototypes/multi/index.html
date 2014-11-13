@@ -1736,13 +1736,11 @@ function query() {
     dateString += "&max_date=" + queryObj.max_date;
   }
 
-  var qString = "&q=\"";
-  var qStringSimple = "&q=\"";
+  var qString = "&q=";
+  var qStringSimple = "&q=";
   if (queryObj.q.length > 0 || advancedString.length > 0) {
-    qString += queryObj.q + '"' + advancedString;
+    qString += queryObj.q + advancedString;
     qStringSimple += queryObj.q;
-  } else {
-    qString += '"';
   }
 
   var hashString = orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page;
