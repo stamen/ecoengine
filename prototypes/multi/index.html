@@ -1193,31 +1193,36 @@ ECO.map = function() {
         .on('mouseout', onMarkerOut)
         .on('click', onMarkerClick);
 
-    if (!bds) {
-      bds = new L.latLngBounds([ll]);
-    } else {
-      bds.extend(ll);
-    }
+      if (type == 'observation') {
+        if (!bds) {
+          bds = new L.latLngBounds([ll]);
+        } else {
+          bds.extend(ll);
+        }
+      }
+
       markers.push(m);
     });
 
     if (queryObj.bbox.length == 0) {
-      bds.pad(0.1);
+      if (bds) {
+        bds.pad(0.15);
 
-      setTimeout(function(){
-        // basic method to determine if bounds is big enough to set
-        var tr = map.latLngToLayerPoint(bds.getNorthEast()),
-            bl = map.latLngToLayerPoint(bds.getSouthWest()),
-            xDiff = Math.abs(tr.x - bl.x),
-            yDiff = Math.abs(tr.y - bl.y);
+        setTimeout(function(){
+          // basic method to determine if bounds is big enough to set
+          var tr = map.latLngToLayerPoint(bds.getNorthEast()),
+              bl = map.latLngToLayerPoint(bds.getSouthWest()),
+              xDiff = Math.abs(tr.x - bl.x),
+              yDiff = Math.abs(tr.y - bl.y);
 
-        if (xDiff < 200 || yDiff < 200) {
-          map.setView(bds.getCenter(), 5);
-        } else {
-          map.fitBounds(bds);
-        }
+          if (xDiff < 200 || yDiff < 200) {
+            map.setView(bds.getCenter(), 5);
+          } else {
+            map.fitBounds(bds);
+          }
 
-      },1);
+        },200);
+      }
     } else {
       var bbox = queryObj.bbox.split(",");
       // TODO fix this
