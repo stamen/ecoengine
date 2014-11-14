@@ -290,7 +290,7 @@ svg {
 }
 
 #loading-view {
-  margin-top: 8px;
+  margin: 20px auto;
   font-size: 14px;
   line-height: 1.35em;
 }
@@ -309,13 +309,13 @@ svg {
   display: block;
 }
 
-#loading-view span {
-  padding-left: 8px;
+#loading-view td {
+  width: 50%;
 }
-#loading-view span.loaded {
+#loading-view td.loaded {
   color: #4d4;
 }
-#loading-view span.error {
+#loading-view td.error {
   font-weight: bold;
   color: #d44;
 }
@@ -672,8 +672,8 @@ h3 {
 
 <div class="map-area left dark" id="details">
   <h4><span id="detail-type"></span> Details</h4>
-  <p id="loading-view">
-  </p>
+  <table id="loading-view">
+  </table>
   <p id="detail-view">
   </p>
 </div>
@@ -839,16 +839,17 @@ var compactdateformat = d3.time.format("%Y-%m-%d");
 
 
 var loadingView = d3.select("#loading-view")
-  .selectAll("div")
+  .selectAll("tr")
   .data(d3.keys(ECO.base.api))
-  .enter().append("div");
+  .enter().append("tr");
 
-loadingView.append("span")
+loadingView.append("td")
+  .attr("class", "key")
   .text(function(d) {
     return capitaliseFirstLetter(d);
   });
 
-loadingView.append("span")
+loadingView.append("td")
   .attr("class", String);
 
 var advancedSearchSections = d3.select("#advanced-search-pane")
