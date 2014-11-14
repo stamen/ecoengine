@@ -19,6 +19,10 @@ a {
   text-decoration: none;
 }
 
+.dark a {
+  color: #82badb;
+}
+
 a:hover {
   text-decoration: underline;
 }
@@ -43,10 +47,11 @@ p {
   padding: 8px;
   position: absolute;
   top: 0;
-  height: 38px;
+  min-height: 38px;
+  min-width: 960px;
   width: 100%;
   z-index: 2000;
-  overflow: hidden;
+  line-height: 24px;
 }
 
 .header a {
@@ -88,19 +93,19 @@ h2.app-title {
 .eco-param::-webkit-input-placeholder { /* WebKit browsers */
   color:    #bbb;
   font-weight: normal;
-  font-size: 13px;
+  font-size: 11px;
 }
 .eco-param:-moz-placeholder,
 .eco-param2:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
   color:    #bbb;
   font-weight: normal;
-  font-size: 13px;
+  font-size: 11px;
   opacity:  1;
 }
 .eco-param::-moz-placeholder,
 .eco-param2::-moz-placeholder { /* Mozilla Firefox 19+ */
   color:    #bbb;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: normal;
   opacity:  1;
 }
@@ -108,7 +113,7 @@ h2.app-title {
 .eco-param2:-ms-input-placeholder { /* Internet Explorer 10+ */
   color:    #bbb;
   font-weight: normal;
-  font-size: 13px;
+  font-size: 11px;
 }
 
 h4 {
@@ -198,8 +203,13 @@ svg {
 .brush .extent {
   stroke: none;
   fill: #fff;
-  fill-opacity: .5;
+  fill-opacity: .2;
   shape-rendering: crispEdges;
+}
+
+.brush .resize rect {
+  fill: #fff;
+  fill-opacity: 0.85;
 }
 
 #time-slider {
@@ -257,25 +267,26 @@ svg {
 
 /* MAP */
 .map-area {
-  height: 360px;
+  height: 420px;
   line-height: 1.3em;
 }
 
 #details {
   display: none;
-  pointer-events: none;
   height: auto;
-  max-width: 50%;
-  max-height: 580px;
-  margin: 8px 0 0 48px;
-  padding: 8px;
-  border-radius: 2px;
+  width: 30%;
+  min-width: 278px;
+  height: 420px;
+  margin: 0;
+  padding: 12px 6px;
   overflow-x: hidden;
   position: absolute;
   background: #222;
   background: rgba(0,0,0,0.6);
+  box-shadow: 0 1px 5px rgba(0,0,0,0.65);
   color: #fff;
   z-index: 5; 
+  text-align: center;
 }
 
 #loading-view {
@@ -286,8 +297,16 @@ svg {
 #detail-view {
   margin-top: 8px;
 }
-#detail-view .key {
-  color: #666;
+#details td {
+  width: 50%;
+}
+#details .key {
+  color: #bbb;
+  text-align: right;
+}
+#details .photo {
+  margin: 0 auto;
+  display: block;
 }
 
 #loading-view span {
@@ -301,15 +320,28 @@ svg {
   color: #d44;
 }
 
+#detail-view {
+  width: 100%;
+}
+
 #detail-view img {
-  max-width: 360px;
-  max-height: 160px;
+  max-width: 100%;
+  max-height: 240px;
   margin-bottom: 8px;
+}
+
+#detail-view .photo {
+  margin: 0 auto;
+  text-align: center;
 }
 
 #map {
   width: 100%;
-  height: 360px;
+  height: 420px;
+}
+
+.leaflet-left {
+  margin-left: 30%;
 }
 
 .leaflet-popup-pane {
@@ -318,14 +350,19 @@ svg {
 
 .layer-selection {
   position: absolute;
-  top: 10px;
+  top: 0px;
   right: 10px;
   text-align: right;
   z-index: 100;
   width: 100%;
 }
 
+.layer-selection select {
+  max-width: 160px;
+}
+
 #bbox-select {
+  display: none;
   position: absolute;
   bottom: 20px;
   right: 0px;
@@ -521,6 +558,10 @@ table .active {
   cursor: pointer;
   margin-right: 8px;
 }
+.bar-group {
+  max-height: 140px;
+  overflow-y: auto;
+}
 .field-plot span {
   text-decoration: none;
   padding-right: 4px;
@@ -573,13 +614,15 @@ h3 {
 </style>
 <body>
 <div class="header">
-  Search <input type="text" value="" id="searchterm" class="eco-param" placeholder="Observations"></input>
-  &nbsp; Date Range <input type="text" value="" id="minyear" class="eco-param" placeholder="1900-01-01"></input>
+  Search <input type="text" value="" id="searchterm" class="eco-param" placeholder="Species or Location"></input>
+  &nbsp; Begin Date <input type="text" value="" id="minyear" class="eco-param" placeholder="1900-01-01"></input>
   <span id="time-slider"></span>
-  <input type="text" value="" id="maxyear" class="eco-param" placeholder="2018-12-31"></input>
-  &nbsp; <div class="search-btn">Search</div>
-  &nbsp; <span class="cursor" id="advanced-search-btn">Advanced</span> |
-  <span class="cursor" id="export-btn">Export</span>
+  <input type="text" value="" id="maxyear" class="eco-param" placeholder="2018-12-31"></input> End Date
+  <!-- &nbsp; <div class="search-btn">Search</div> -->
+  <div style="float: right;">
+    <a class="cursor" id="advanced-search-btn">Advanced</a>
+    &nbsp; <a class="cursor" id="export-btn">Queries</a>
+  </div>
 </div>
 <div id="advanced-search" class="flydown">
   <h4>Advanced Search</h4>
@@ -609,17 +652,15 @@ h3 {
   <h4>Observations</h4>
   <p>
     <span class="export-buttons">
-      CSV <a href="#" id="export-csv" target="_blank"></a><br/>
-      JSON <a href="#" id="export-json" target="_blank"></a><br/>
-      GeoJSON <a href="#" id="export-geojson" target="_blank"></a><br/>
+      <a href="#" id="export-geojson" target="_blank"></a><br/>
     <span>
   </p>
   <h4>Search</h4>
-      Data <a href="#" id="export-search" target="_blank"></a><br/>
+      <a href="#" id="export-search" target="_blank"></a><br/>
   <h4>Photos</h4>
-      Data <a href="#" id="export-photos" target="_blank"></a><br/>
+      <a href="#" id="export-photos" target="_blank"></a><br/>
   <h4>Sensors</h4>
-      Data <a href="#" id="export-sensors" target="_blank"></a><br/>
+      <a href="#" id="export-sensors" target="_blank"></a><br/>
   <h4>Raster Layers</h4>
       Layers <a href="#" id="export-layers" target="_blank"></a><br/>
       Rasters <a href="#" id="export-rasters" target="_blank"></a><br/>
@@ -629,7 +670,7 @@ h3 {
   <a href="#" class="hide-btn">Hide</a>
 </div>
 
-<div class="map-area left" id="details">
+<div class="map-area left dark" id="details">
   <h4><span id="detail-type"></span> Details</h4>
   <p id="loading-view">
   </p>
@@ -639,9 +680,11 @@ h3 {
 <div class="map-area">
   <div id="map">
     <div class="layer-selection">
+      <h3>Overlay</h3>
       <select id="overlay-select">
         <option value="https://dev-ecoengine.berkeley.edu/tiles/vtmveg/{z}/{x}/{y}.png">VTM Vegetation Features</option>
-      </select>
+      </select><br/>
+      <h3>Basemap</h3>
       <select id="layer-select">
         <option value="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png">OpenStreetMap</option>
         <option value="http://{s}.tile.stamen.com/terrain-background/{z}/{x}/{y}.jpg">Stamen Terrain</option>
@@ -658,8 +701,8 @@ h3 {
 </div>
 <div class="wrap">
   <div class="panel left">
-    <h4>Search Results</h4>
-    <p>Click one or more of the bars below to filter observations</p>
+    <h4>Facets</h4>
+    <p>Click a name below to filter by facet</p>
     <div id="search-bars"></div>
   </div>
   <div class="panel right">
@@ -777,6 +820,8 @@ ECO.base = {
 }
 
 var sortOrder = {
+  'resource': -3,
+  'observation_type': -1,
   georeferenced: 1,
   country: 2,
   'state_province': 3,
@@ -786,8 +831,7 @@ var sortOrder = {
   order: 11,
   family: 13,
   genus: 15,
-  'scientific_name': 17,
-  'observation_type': 19
+  'scientific_name': 17
 };
 
 var dateformat = d3.time.format("%Y %b %e");
@@ -915,8 +959,25 @@ d3.json(ECO.base.api.sensors, function(error, data) {
   map.draw();
 });
 
+
+// this drag behavior is just to suppress click events
+var clicksuppress = d3.behavior.drag();
+d3.select("#details")
+  .call(clicksuppress)
+  .on("click", function() {
+    if (d3.event.defaultPrevented) return;
+    setTimeout(hideDetailview, 100);
+  });
+
 ECO.detailview = function(row) {
-  d3.select("#details").style("display", "block");
+  d3.select(".leaflet-left")
+    .style("margin-left", "30%");
+    
+  var excluded = ["url", "remote_resource", "media_url", "observations", "source"];
+
+  d3.select("#details")
+    .style("margin-left", 0)
+    .style("display", "block");
 
   var container = d3.select("#detail-view")
     .style("display", null)
@@ -926,24 +987,37 @@ ECO.detailview = function(row) {
 
   if ("media_url" in row && row.media_url) {
     container.append("a")
+      .attr("class", "photo")
       .attr("href", row.media_url)
     .append("img")
       .attr("src", row.media_url);
   }
 
-  var divs = container.selectAll("div")
-    .data(d3.entries(row))
-    .enter().append("div")
+  var table = container.append("table")
 
-  divs.append("span.key")
+  var divs = container.selectAll("tr")
+    .data(d3.entries(row).filter(function(d) {
+      if (excluded.indexOf(d.key) > -1) return false;
+      if (d.value == null) return false;
+      return true;
+    }))
+    .enter().append("tr")
+
+  divs.append("td")
+    .attr("class", "key")
     .html(function(d) { return d.key + " &nbsp; "; });
 
-  divs.append("span")
+  divs.append("td")
     .html(function(d) {
 
       if (typeof d.value == "string") {
         if (d.value.slice(0,4) == "http") {
           return "<a href='" + d.value + "'>" + d.value + "</a>";
+        }
+        if (d.key == "record") {
+          if (row["remote_resource"] !== "") {
+            return "<a href='" + row["remote_resource"] + "'>" + d.value + "</a>";
+          }
         }
         return d.value;
       }
@@ -1118,7 +1192,7 @@ ECO.map = function() {
 
   function onMarkerOut(evt) {
     hideTooltip();
-    hideDetailView();
+    //hideDetailview();
     subscribers.forEach(function(s){
       if (s.out) s.out(evt);
     });
@@ -1147,7 +1221,7 @@ ECO.map = function() {
       ECO.detailview(layer.properties);
     })
     .on("mouseout", function() {
-      hideDetailView();
+      //hideDetailview();
     });
   };
 
@@ -1370,26 +1444,18 @@ ECO.list = function() {
           .replace("clss", "class")
         )});
 
-    var bars = fieldplot.selectAll("div.bars")
+    var bars = fieldplot.append("div")
+        .attr("class", "bar-group")
+        .selectAll("div.bars")
         .data(function(d) { return d.values; })
         .enter().append("div")
         .attr("class", "bars")
         .append("div")
-        .style("display", function(d,i) { return i > 9 ? "none" : null})
         .classed("active", function(d,i,g) {
           return queryObj.facets[searchfields[g]] == d[0];
         })
-        .on("mouseover", function(d,i,g) {
-          d3.select("#detail-type").text("Search");
-          ECO.detailview({
-            "field": searchfields[g],
-            "value": d[0],
-            "count": d[1],
-            "url": d[2]
-          });
-        })
         .on("mouseout", function() {
-          hideDetailView();
+          //hideDetailview();
         })
         .on("click", function(d,i,g) {
           queryObj.page = 1;
@@ -1416,20 +1482,6 @@ ECO.list = function() {
     bars.append("span")
       .attr("class", "x")
       .text(" x");
-
-    fieldplot
-      .filter(function(d) { return d.values.length > 9; })
-      .append("span")
-      .attr("class", "show-more")
-      .text("[+] Show more")
-      .on("click", function(d) {
-        bars.filter(function(p,i,g) { 
-          return searchfields[g] == d.field;
-        })
-        .style("display", "block");
-
-        d3.select(this).remove();
-      });
   }
   return __;
 };
@@ -1445,19 +1497,19 @@ ECO.datatable = function() {
           .classed("active", function(d) {
             return props.record == d.properties.record;
           });
-        console.log("Datatable: Marker mouseover: ", props.record);
+        //console.log("Datatable: Marker mouseover: ", props.record);
       },
       out: function(evt) {
         if (!evt.target.data_) return;
         var props = evt.target.data_;
         __.table.selectAll("tr.listing")
           .classed("active", false);
-        console.log("Datatable: Marker mouseout: ", props.record);
+        //console.log("Datatable: Marker mouseout: ", props.record);
       },
       click: function(evt) {
         if (!evt.target.data_) return;
         var props = evt.target.data_;
-        console.log("Datatable: Marker click: ", props.record);
+        //console.log("Datatable: Marker click: ", props.record);
       }
   };
 
@@ -1497,11 +1549,15 @@ ECO.datatable = function() {
       .attr("class", "listing")
       .classed("zebra", function(d,i) { return i % 2 == 0;})
       .on("mouseover", function(d) {
+        //disabled
+        return;
+
+
         d3.select("#detail-type").html("<span class='eco-basic-icon " + d.properties.observation_type + "'></span> Observation")
         ECO.detailview(d.properties);
       })
       .on("mouseout", function() {
-        hideDetailView();
+        //hideDetailview();
       })
       .each(function(d) {
         var entry = d3.select(this)
@@ -1633,7 +1689,7 @@ d3.selectAll(".eco-param")
     queryObj.min_date = d3.select("#minyear").node().value;
     queryObj.max_date = d3.select("#maxyear").node().value;
     timebrush.extent([new Date(queryObj.min_date), new Date(queryObj.max_date)]);
-    d3.select("#time-slider .brush").call(timebrush)
+    d3.select("#time-slider .brush").call(timebrush);
 
     queryObj.page = 1;
     query();
@@ -1642,7 +1698,7 @@ d3.selectAll(".eco-param")
 
 // time slider
 (function() {
-  var margin = {top: 2, right: 14, bottom: 26, left: 14};
+  var margin = {top: 2, right: 14, bottom: 23, left: 14};
   var height = 1;
   var width = 250;
 
@@ -1673,15 +1729,29 @@ d3.selectAll(".eco-param")
 
   context.append("g")
       .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
+      .attr("transform", "translate(0,2)")
       .call(xAxis);
 
-  context.append("g")
+  var timebrushEl = context.append("g")
       .attr("class", "x brush")
       .call(timebrush)
-    .selectAll("rect")
-      .attr("y", -6)
-      .attr("height", height + margin.bottom);
+
+  timebrushEl.selectAll("rect")
+      .attr("y", -2)
+      .attr("height", height + margin.bottom)
+
+  timebrushEl.selectAll("rect.background")
+      .append("title")
+      .text("Click and drag a time range");
+
+  timebrushEl.selectAll(".resize rect")
+    .attr("x", -2)
+    .attr("width", 4)
+    .style("visibility", null)
+
+  timebrushEl.selectAll(".extent")
+    .append("title")
+    .text("Drag to shift time range");
 
 
   function brushed() {
@@ -1712,8 +1782,17 @@ function showLoadingView() {
   d3.select("#detail-view").style("display", "none");
 };
 
-function hideDetailView() {
-  d3.select("#details").style("display", "none");
+function hideDetailview() {
+  d3.select(".leaflet-left")
+    .transition()
+    .duration(0)
+    .delay(400)
+    .style("margin-left", "0%");
+    
+  d3.select("#details")
+    .transition()
+    .duration(400)
+    .style("margin-left", "-30%");
 };
 
 function query() {
@@ -1778,12 +1857,6 @@ function query() {
   console.log(querystring);
 
   // export links
-  d3.select("#export-csv")
-    .attr("href", ECO.base.api.observations + "?format=csv" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
-    .text(ECO.base.api.observations + "?format=csv" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
-  d3.select("#export-json")
-    .attr("href", ECO.base.api.observations + "?format=json" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
-    .text( ECO.base.api.observations + "?format=json" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
   d3.select("#export-geojson")
     .attr("href", ECO.base.api.observations + "?format=geojson" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
     .text(ECO.base.api.observations + "?format=geojson" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
