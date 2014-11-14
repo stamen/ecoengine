@@ -255,11 +255,11 @@ svg {
   margin: 0;
 }
 .panel.left {
-  width: 30%;
+  width: 28%;
   float: left;
 }
 .panel.right {
-  margin-left: 30%;
+  margin-left: 28%;
 }
 .panel:last-child {
   margin-right: 0;
@@ -274,7 +274,7 @@ svg {
 #details {
   display: none;
   height: auto;
-  width: 30%;
+  width: 28%;
   min-width: 278px;
   height: 420px;
   margin: 0;
@@ -340,7 +340,7 @@ svg {
 }
 
 .leaflet-left {
-  margin-left: 30%;
+  margin-left: 28%;
 }
 
 .leaflet-popup-pane {
@@ -350,10 +350,13 @@ svg {
 .layer-selection {
   position: absolute;
   top: 0px;
-  right: 10px;
+  right: 0px;
+  padding: 0 8px 8px;
   text-align: center;
   z-index: 100;
-  width: 160px;
+  width: 176px;
+  background: rgba(255,255,255,0.55);
+  border-radius: 2px;
 }
 
 .layer-selection select {
@@ -688,6 +691,14 @@ h3 {
         <option value="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png">OpenStreetMap</option>
         <option value="http://{s}.tile.stamen.com/terrain-background/{z}/{x}/{y}.jpg">Stamen Terrain</option>
       </select>
+      <h3>Point Layers</h3>
+      <em>nonfunctional checkboxes</em>
+      <div style="text-align: left; margin-left: 30px;">
+        <input type="checkbox"></input> Observations<br/>
+        <input type="checkbox"></input> Photos<br/>
+        <input type="checkbox"></input> Sensors<br/>
+        <input type="checkbox"></input> Reserves<br/>
+      </div>
     </div>
     <div id="bbox-select">
       Constrain Search to Map (this is currently broken)
@@ -971,7 +982,7 @@ d3.select("#details")
 
 ECO.detailview = function(row) {
   d3.select(".leaflet-left")
-    .style("margin-left", "30%");
+    .style("margin-left", "28%");
     
   var excluded = ["url", "remote_resource", "media_url", "observations", "source"];
 
@@ -1792,7 +1803,7 @@ function hideDetailview() {
   d3.select("#details")
     .transition()
     .duration(400)
-    .style("margin-left", "-30%");
+    .style("margin-left", "-28%");
 };
 
 function query() {
