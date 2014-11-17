@@ -688,6 +688,7 @@ h3 {
       </select><br/>
       <h3>Basemap</h3>
       <select id="layer-select">
+        <option value="http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png">Light</option>
         <option value="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png">OpenStreetMap</option>
         <option value="http://{s}.tile.stamen.com/terrain-background/{z}/{x}/{y}.jpg">Stamen Terrain</option>
       </select>
@@ -1055,7 +1056,7 @@ ECO.map = function() {
 
   map.scrollWheelZoom.disable();
 
-  var baseLayer = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  var baseLayer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
     attribution: '',
     subdomains: 'abc',
     minZoom: 1,
