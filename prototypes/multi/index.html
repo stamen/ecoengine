@@ -1229,6 +1229,11 @@ ECO.map = function() {
   }
 
   function onMarkerClick(evt) {
+    if ('url' in evt.target.data_) {
+      window.open(evt.target.data_.url,'_blank');
+    } else if ('data_url' in evt.target.data_) {
+      window.open(evt.target.data_.data_url,'_blank');
+    }
     evt.originalEvent.preventDefault();
     subscribers.forEach(function(s){
       if (s.click) s.click(evt);
