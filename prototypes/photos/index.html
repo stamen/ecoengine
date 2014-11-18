@@ -39,7 +39,15 @@ d3.json(resource, function(error, data) {
 
   $("#photos").justifiedGallery({
     rowHeight: 150,
-    margins: 4
+    margins: 4,
+    sizeRangeSuffixes: {
+      'lt100':'',    // don't use thumbnail suffixes
+      'lt240':'',
+      'lt320':'',
+      'lt500':'',
+      'lt640':'',
+      'lt1024':''
+    }
   });
 
   if (data.next) {
