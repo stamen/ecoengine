@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="justifiedGallery.min.css" rel="stylesheet">
 <title>Ecoengine Explorer</title>
 <style>
 html, body {
   background: #000;
 }
-#photos img {
-  max-height: 300px;
-}
 </style>
 
 <div id="photos"></div>
 
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="jquery.justifiedGallery.min.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="../lib/hashnav.js"></script>
 <script>
-var resource = 'https://dev-ecoengine.berkeley.edu/api/photos/?page_size=50';
+var resource = 'https://dev-ecoengine.berkeley.edu/api/photos/?page_size=100';
 
 d3.json(resource, function(error, data) {
   if (error) {
@@ -37,6 +36,11 @@ d3.json(resource, function(error, data) {
 
   photos.append("img")
     .attr("src", function(d) { return d.media_url; });
+
+  $("#photos").justifiedGallery({
+    rowHeight: 150,
+    margins: 4
+  });
 
   if (data.next) {
     d3.select("#photos").append("span")
