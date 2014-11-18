@@ -774,9 +774,9 @@ var sensorData = [];
 var ECO = ECO || {};
 ECO.base = {
   api: {
-    search: 'https://ecoengine.berkeley.edu/api/search/',
-    observations: 'https://ecoengine.berkeley.edu/api/observations/',
-    photos: 'https://ecoengine.berkeley.edu/api/photos/',
+    search: 'https://dev-ecoengine.berkeley.edu/api/search/',
+    observations: 'https://dev-ecoengine.berkeley.edu/api/observations/',
+    photos: 'https://dev-ecoengine.berkeley.edu/api/photos/',
     sensors: 'https://dev-ecoengine.berkeley.edu/api/sensors/?page_size=5000&format=geojson',
     layers: 'https://dev-ecoengine.berkeley.edu/api/layers/',
     rasters: '../tiles/rstore.json',
@@ -1747,13 +1747,11 @@ function query() {
     dateString += "&max_date=" + queryObj.max_date;
   }
 
-  var qString = "&q=\"";
-  var qStringSimple = "&q=\"";
+  var qString = "&q=";
+  var qStringSimple = "&q=";
   if (queryObj.q.length > 0 || advancedString.length > 0) {
-    qString += queryObj.q + '"' + advancedString;
+    qString += queryObj.q + advancedString;
     qStringSimple += queryObj.q;
-  } else {
-    qString += '"';
   }
 
   var hashString = orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page;
