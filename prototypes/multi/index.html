@@ -31,6 +31,10 @@ p {
   margin: 12px 0;
 }
 
+input.error {
+  display: inline-block;
+}
+
 /*
 .infobox {
   background: #fda;
@@ -45,6 +49,15 @@ p {
   position: relative;
   width: 76%;
   height: 520px;
+}
+
+.leaflet-popup {
+  z-index: 200;
+}
+
+.leaflet-popup img {
+  max-width: 130px;
+  max-height: 130px;
 }
 
 .wrap {
@@ -307,11 +320,6 @@ svg {
   text-align: center;
 }
 
-#loading-view {
-  margin: 20px auto;
-  font-size: 14px;
-  line-height: 1.35em;
-}
 #detail-view {
   margin-top: 8px;
 }
@@ -325,17 +333,6 @@ svg {
 #details .photo {
   margin: 0 auto;
   display: block;
-}
-
-#loading-view td {
-  width: 50%;
-}
-#loading-view td.loaded {
-  color: #4d4;
-}
-#loading-view td.error {
-  font-weight: bold;
-  color: #d44;
 }
 
 #detail-view {
@@ -695,17 +692,18 @@ h3 {
 
 <div class="map-area left dark" id="details">
   <h4><span id="detail-type"></span> Details</h4>
-  <table id="loading-view">
-  </table>
   <p id="detail-view">
   </p>
 </div>
 <div class="map-area">
   <div id="map">
     <div class="layer-selection">
-      <h3>Overlay</h3>
+      <h3>Boundaries</h3>
       <select id="overlay-select">
         <option value="https://dev-ecoengine.berkeley.edu/tiles/vtmveg/{z}/{x}/{y}.png">VTM Vegetation Features</option>
+      </select><br/>
+      <h3>Environment</h3>
+      <select id="environment-select">
       </select><br/>
       <h3>Basemap</h3>
       <select id="layer-select">
@@ -713,13 +711,14 @@ h3 {
         <option value="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png">OpenStreetMap</option>
         <option value="http://{s}.tile.stamen.com/terrain-background/{z}/{x}/{y}.jpg">Stamen Terrain</option>
       </select>
-      <h3>Point Layers</h3>
+      <h3>Data Layers</h3>
       <em>nonfunctional checkboxes</em>
       <div style="text-align: left; margin-left: 30px;">
-        <input type="checkbox"></input> Observations<br/>
-        <input type="checkbox"></input> Photos<br/>
-        <input type="checkbox"></input> Sensors<br/>
-        <input type="checkbox"></input> Reserves<br/>
+        <input type="checkbox" id="observations-check"></input> <span class="observations-label">Observations</span><br/>
+          <input type="checkbox" id="photos-check"></input> <span class="photos-label">Photos</span><br/>
+            <input type="checkbox" id="sensors-check"></input> <span class="sensors-label">Sensors</span><br/>
+              <input type="checkbox" id="reserves-check"></input> <span class="reserves-label">Reserves</span><br/>
+                <input type="checkbox" id="jepson-check"></input> <span class="jepson-label">Jepson Regions</span><br/>
       </div>
     </div>
     <div id="bbox-select">
@@ -869,21 +868,6 @@ var sortOrder = {
 var dateformat = d3.time.format("%Y %b %e");
 var compactdateformat = d3.time.format("%Y-%m-%d");
 
-
-var loadingView = d3.select("#loading-view")
-  .selectAll("tr")
-  .data(d3.keys(ECO.base.api))
-  .enter().append("tr");
-
-loadingView.append("td")
-  .attr("class", "key")
-  .text(function(d) {
-    return capitaliseFirstLetter(d);
-  });
-
-loadingView.append("td")
-  .attr("class", String);
-
 var advancedSearchSections = d3.select("#advanced-search-pane")
   .selectAll("div.section")
   .data(ECO.advancedSearch)
@@ -973,18 +957,39 @@ function hideflydowns() {
     .style("display", null)
 };
 
+function loadingCheck(type) {
+  d3.select("#" + type + "-check")
+    .classed("error", false)
+    .attr("disabled", "disabled")
+    .attr("checked", null);
+  d3.select("." + type + "-label")
+    .style("color", "#c82");
+  d3.selectAll(".error-label").remove();
+};
+
+function loadedCheck(type) {
+  d3.select("#" + type + "-check")
+    .attr("disabled", null)
+    .attr("checked", "checked");
+  d3.select("." + type + "-label")
+    .style("color", null);
+};
+
+function errorCheck(type, err) {
+  d3.select("." + type + "-label")
+    .style("color", "#a00")
+    .append("div")
+    .attr("class", "error-label")
+    .style("text-align", "center")
+    .text("(" + err + " error)");
+};
+
 d3.select("#export-sensors")
   .attr("href", ECO.base.api.sensors)
   .text(ECO.base.api.sensors);
-d3.select("#loading-view .sensors")
-  .classed("loaded", false)
-  .classed("error", false)
-  .text("Loading...");
+loadingCheck("sensors");
 d3.json(ECO.base.api.sensors, function(error, data) {
-  d3.select("#loading-view .sensors")
-    .classed("loaded", true)
-    .classed("error", false)
-    .text("Loaded");
+  loadedCheck("sensors");
 
   map.clear();
   sensorData = data.features;
@@ -992,15 +997,6 @@ d3.json(ECO.base.api.sensors, function(error, data) {
   map.draw();
 });
 
-
-// this drag behavior is just to suppress click events
-var clicksuppress = d3.behavior.drag();
-d3.select("#details")
-  .call(clicksuppress)
-  .on("click", function() {
-    if (d3.event.defaultPrevented) return;
-    setTimeout(hideDetailview, 100);
-  });
 
 ECO.detailview = function(row) {
   var excluded = ["url", "remote_resource", "media_url", "observations", "source"];
@@ -1067,6 +1063,7 @@ ECO.map = function() {
 
   var popup = L.popup({
     closeButton: false,
+    autoPan: false,
     offset: new L.Point(0,-4)
   });
 
@@ -1196,24 +1193,7 @@ ECO.map = function() {
 
   function onMarkerOver(evt) {
     showTooltip(evt);
-    var type = '';
-    if ('observation_type' in evt.target.data_) {
-      type = 'Observation';
-    } else if ('media_url' in evt.target.data_) {
-      type = 'Photo';
-    } else {
-      type = 'Sensor';
-    }
 
-    if (type == 'Observation') {
-      d3.select("#detail-type").html("<span class='eco-basic-icon " + evt.target.data_.observation_type + "'></span> Observation")
-    }
-    if (type == 'Photo') {
-      d3.select("#detail-type").html("<span class='eco-basic-icon media-photo'></span> Photo")
-    }
-    if (type == 'Sensor') {
-      d3.select("#detail-type").html("<span class='eco-basic-icon sensor'></span> Sensor")
-    }
     ECO.detailview(evt.target.data_);
     subscribers.forEach(function(s){
       if (s.over) s.over(evt);
@@ -1363,7 +1343,9 @@ ECO.map = function() {
         content += evt.target.data_['scientific_name'] + "<br/>" + evt.target.data_['record'];
       }
       if (type == 'Photo') {
-        content += evt.target.data_['authors'] + "<br/>" + evt.target.data_['record'];
+        content += "<img src='" + evt.target.data_['media_url'] + "'/><br/>";
+        content += evt.target.data_['authors'] + "<br/>";
+        content += evt.target.data_['record'];
       }
       if (type == 'Sensor') {
         content += evt.target.data_['station_name'] + "<br/>" + evt.target.data_['record'];
@@ -1647,21 +1629,14 @@ d3.select("#export-reserves")
   .attr("href", ECO.base.api.reserves)
   .text(ECO.base.api.reserves);
 
-d3.select("#loading-view .reserves")
-  .classed("loaded", false)
-  .classed("error", false)
-  .text("Loading...");
+loadingCheck("reserves");
 d3.json(ECO.base.api.reserves, function(error, data) {
   if (error) {
-    d3.select("#loading-view .reserves")
-      .classed("error", true)
-      .text(error.status + " Error");
+    errorCheck("reserves", error.status);
     return;
   };
-  d3.select("#loading-view .reserves")
-    .classed("loaded", true)
-    .classed("error", false)
-    .text("Loaded");
+  loadedCheck("reserves");
+
   if (!data) return;
   data.features.forEach(function(d) {
     d3.select("#reserve-list")
@@ -1680,21 +1655,13 @@ d3.select("#export-jepson")
   .attr("href", ECO.base.api.jepson)
   .text(ECO.base.api.jepson);
 
-d3.select("#loading-view .jepson")
-  .classed("loaded", false)
-  .classed("error", false)
-  .text("Loading...");
+loadingCheck("jepson");
 d3.json(ECO.base.api.jepson, function(error, data) {
   if (error) {
-    d3.select("#loading-view .jepson")
-      .classed("error", true)
-      .text(error.status + " Error");
+    errorCheck("jepson", error.status);
     return;
   };
-  d3.select("#loading-view .jepson")
-    .classed("loaded", true)
-    .classed("error", false)
-    .text("Loaded");
+  loadedCheck("jepson");
   if (!data) return;
   data.results.forEach(function(d) {
     d3.select("#jepson-list")
@@ -1891,22 +1858,14 @@ function query() {
     .attr("href", ECO.base.api.observations + "?format=geojson" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
     .text(ECO.base.api.observations + "?format=geojson" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
 
-  d3.select("#loading-view .observations")
-    .classed("loaded", false)
-    .classed("error", false)
-    .text("Loading...");
+  loadingCheck("observations");
   d3.json(querystring, function(error, data) {
     if (error) {
-      d3.select("#loading-view .observations")
-        .classed("error", true)
-        .text(error.status + " Error");
+      errorCheck("observations", error.status);
       return;
     }
     d3.select("#results").html("").style("color", null);
-    d3.select("#loading-view .observations")
-      .classed("loaded", true)
-      .classed("error", false)
-      .text("Loaded");
+    loadedCheck("observations");
 
     if (error) {
       d3.select("#results").append("div").html(error.responseText).style("color", "red");
@@ -2007,21 +1966,13 @@ function query() {
   d3.select("#export-photos")
     .attr("href", photoquerystring)
     .text(photoquerystring);
-  d3.select("#loading-view .photos")
-    .classed("loaded", false)
-    .classed("error", false)
-    .text("Loading...");
+  loadingCheck("photos");
   d3.json(photoquerystring, function(error, data) {
     if (error) {
-      d3.select("#loading-view .photos")
-        .classed("error", true)
-        .text(error.status + " Error");
+      errorCheck("photos", error.status);
       return;
     }
-    d3.select("#loading-view .photos")
-      .classed("loaded", true)
-      .classed("error", false)
-      .text("Loaded");
+    loadedCheck("photos");
     photoData = dataFilterCoordinates(data || []);
 
     map.draw();
