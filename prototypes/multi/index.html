@@ -31,9 +31,20 @@ p {
   margin: 12px 0;
 }
 
+/*
+.infobox {
+  background: #fda;
+  border: 1px dashed #999;
+  display: inline-block;
+  padding: 4px;
+}
+*/
+
 #map {
-  margin: 38px 0 0 0;
+  margin: 40px 0 0 24%;
   position: relative;
+  width: 76%;
+  height: 520px;
 }
 
 .wrap {
@@ -253,30 +264,38 @@ svg {
   padding: 0;
   vertical-align: top;
   margin: 0;
+  box-shadow: none;
 }
 .panel.left {
-  width: 28%;
+  width: 24%;
   float: left;
 }
 .panel.right {
-  margin-left: 28%;
+  margin-left: 24%;
 }
 .panel:last-child {
   margin-right: 0;
 }
+#facets {
+  position: absolute;
+  top: 40px;
+  background: white;
+  padding: 8px;
+}
 
 /* MAP */
 .map-area {
-  height: 420px;
+  height: 520px;
   line-height: 1.3em;
 }
 
 #details {
+  visibility: hidden; /* xxx */
   display: none;
   height: auto;
-  width: 28%;
+  width: 24%;
   min-width: 278px;
-  height: 420px;
+  height: 520px;
   margin: 0;
   padding: 12px 6px;
   overflow-x: hidden;
@@ -332,15 +351,6 @@ svg {
 #detail-view .photo {
   margin: 0 auto;
   text-align: center;
-}
-
-#map {
-  width: 100%;
-  height: 420px;
-}
-
-.leaflet-left {
-  margin-left: 28%;
 }
 
 .leaflet-popup-pane {
@@ -564,6 +574,17 @@ table .active {
   max-height: 140px;
   overflow-y: auto;
 }
+.bars {
+  line-height: 13px;
+  font-size: 12px;
+  padding-top: 1px;
+}
+.bars:hover {
+  background: #dadada;
+}
+.bars .count {
+  color: #bbb;
+}
 .field-plot span {
   text-decoration: none;
   padding-right: 4px;
@@ -710,12 +731,12 @@ h3 {
       <p class="map-info-content"></p>
   </div>
 </div>
+<div class="panel left" id="facets">
+  <h4>Filters</h4>
+  <!-- <p class="infobox">Click a name below to filter by facet</p> -->
+  <div id="search-bars"></div>
+</div>
 <div class="wrap">
-  <div class="panel left">
-    <h4>Facets</h4>
-    <p>Click a name below to filter by facet</p>
-    <div id="search-bars"></div>
-  </div>
   <div class="panel right">
     <h4>Observations</h4>
     <div id="results"></div>
@@ -982,9 +1003,6 @@ d3.select("#details")
   });
 
 ECO.detailview = function(row) {
-  d3.select(".leaflet-left")
-    .style("margin-left", "28%");
-    
   var excluded = ["url", "remote_resource", "media_url", "observations", "source"];
 
   d3.select("#details")
@@ -1462,6 +1480,7 @@ ECO.list = function() {
         .data(function(d) { return d.values; })
         .enter().append("div")
         .attr("class", "bars")
+        .attr("title", "Click to toggle filter")
         .append("div")
         .classed("active", function(d,i,g) {
           return queryObj.facets[searchfields[g]] == d[0];
@@ -1485,11 +1504,11 @@ ECO.list = function() {
       .style("width", function(d) { return Math.round(barwidth(d[1])) + "px"; });
 
     bars.append("span")
-      .attr("class", "count")
-      .text(function(d) { return d[1]; });
+      .text(function(d) { return " " + capitaliseFirstLetter(d[0]); });
 
     bars.append("span")
-      .text(function(d) { return " " + capitaliseFirstLetter(d[0]); });
+      .attr("class", "count")
+      .text(function(d) { return "(" + d[1] + ")"; });
 
     bars.append("span")
       .attr("class", "x")
@@ -1795,12 +1814,6 @@ function showLoadingView() {
 };
 
 function hideDetailview() {
-  d3.select(".leaflet-left")
-    .transition()
-    .duration(0)
-    .delay(400)
-    .style("margin-left", "0%");
-    
   d3.select("#details")
     .transition()
     .duration(400)
