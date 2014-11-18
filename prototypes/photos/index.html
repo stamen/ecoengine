@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+<title>Ecoengine Explorer</title>
+<style>
+</style>
+
+<div id="photos"></div>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="../lib/hashnav.js"></script>
+<script>
+var resource = 'https://dev-ecoengine.berkeley.edu/api/photos/';
+
+d3.json(resource, function(error, data) {
+  if (error) {
+    console.log(error);
+    return;
+  }
+
+  var photos = d3.select("#photos")
+    .html("")
+    .selectAll("a")
+    .data(data.results)
+    .enter().append("a")
+    .attr("href", function(d) { return d.url; })
+    .on("mouseover", function(d) {
+    })
+    .on("mouseout", function() {
+    });
+
+  photos.append("img")
+    .attr("src", function(d) { return d.media_url; });
+
+  if (data.next) {
+    d3.select("#photos").append("span")
+      .text(" Load more [+]")
+      .datum(data.next)
+      .on("click", loadMorePhotos);
+  }
+
+  function loadMorePhotos(url) {
+    d3.select(this).remove();
+
+    d3.json(url, function(error, data) {
+      if (error) {
+        console.log(error);
+        return;
+      }
+
+      var existingPhotos = d3.select("#photos").selectAll("a").data();
+
+      var photos = d3.select("#photos")
+        .selectAll("a")
+        .data(existingPhotos.concat(data.results))
+        .enter().append("a")
+        .attr("href", function(d) { return d.url; })
+        .on("mouseover", function(d) {
+        })
+        .on("mouseout", function() {
+        });
+
+      photos.append("img")
+        .attr("src", function(d) { return d.media_url; });
+
+      if (data.next) {
+        d3.select("#photos").append("span")
+          .text("Load more [+]")
+          .datum(data.next)
+          .on("click", loadMorePhotos);
+      }
+    });
+  };
+});
+
+</script>
