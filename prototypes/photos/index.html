@@ -3,6 +3,12 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 <title>Ecoengine Explorer</title>
 <style>
+html, body {
+  background: #000;
+}
+#photos img {
+  max-height: 300px;
+}
 </style>
 
 <div id="photos"></div>
@@ -10,7 +16,7 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="../lib/hashnav.js"></script>
 <script>
-var resource = 'https://dev-ecoengine.berkeley.edu/api/photos/';
+var resource = 'https://dev-ecoengine.berkeley.edu/api/photos/?page_size=50';
 
 d3.json(resource, function(error, data) {
   if (error) {
