@@ -708,15 +708,17 @@ h3 {
   <div id="map">
     <div class="layer-selection">
       <h3>Boundaries</h3>
-      <select id="overlay-select">
-        <option value="https://dev-ecoengine.berkeley.edu/tiles/vtmveg/{z}/{x}/{y}.png">VTM Vegetation Features</option>
+      <select id="boundary-select">
+        <option value="">None</option>
       </select><br/>
       <h3>Environment</h3>
       <select id="environment-select">
+        <option>None</option>
       </select><br/>
       <h3>Basemap</h3>
       <select id="layer-select">
         <option value="http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png">Light</option>
+        <option value="http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png">Dark</option>
         <option value="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png">OpenStreetMap</option>
         <option value="http://{s}.tile.stamen.com/terrain-background/{z}/{x}/{y}.jpg">Stamen Terrain</option>
       </select>
@@ -1088,7 +1090,15 @@ ECO.map = function() {
     maxZoom: 16
   }).addTo(map);
 
-  var overlayLayer = L.tileLayer('https://dev-ecoengine.berkeley.edu/tiles/vtmveg/{z}/{x}/{y}.png', {
+  var environmentLayer = L.tileLayer('', {
+    attribution: '',
+    subdomains: 'abc',
+    minZoom: 2,
+    transparent: true,
+    maxZoom: 16
+  }).addTo(map);
+
+  var boundaryLayer = L.tileLayer('', {
     attribution: '',
     subdomains: 'abc',
     minZoom: 2,
@@ -1140,12 +1150,12 @@ ECO.map = function() {
         .text("Loaded");
       rasters.results.forEach(function(d) {
         if (d.tags.indexOf("boundaries") > -1) { 
-          d3.select("#overlay-select")
+          d3.select("#boundary-select")
             .append("option")
             .attr("value", d.tile_template)
             .text(d.name);
         } else {
-          d3.select("#layer-select")
+          d3.select("#environment-select")
             .append("option")
             .attr("value", d.tile_template)
             .text(d.name);
@@ -1156,12 +1166,12 @@ ECO.map = function() {
     if (!layers) return;
     layers.results.forEach(function(d) {
         if (d.tags.indexOf("boundaries") > -1) { 
-          d3.select("#overlay-select")
+          d3.select("#boundary-select")
             .append("option")
             .attr("value", d.tile_template)
             .text(d.name);
         } else {
-          d3.select("#layer-select")
+          d3.select("#environment-select")
             .append("option")
             .attr("value", d.tile_template)
             .text(d.name);
@@ -1173,9 +1183,14 @@ ECO.map = function() {
     .on("change", function() {
       baseLayer.setUrl(this.value);
     });
-  d3.select("#overlay-select")
+  d3.select("#boundary-select")
     .on("change", function() {
-      overlayLayer.setUrl(this.value);
+      boundaryLayer.setUrl(this.value);
+    });
+
+  d3.select("#environment-select")
+    .on("change", function() {
+      environmentLayer.setUrl(this.value);
     });
 
   /*
