@@ -1540,7 +1540,9 @@ ECO.datatable = function() {
       .selectAll("th")
       .data(fields)
       .enter().append("th")
-      .text(String)
+      .text(function(d) {
+        return capitaliseFirstLetter(d).replace(/_/g, " ");
+      })
       .style("color", function(d) {
         if (queryObj.sortFields[d] == "+") { 
           return "#0a0";
