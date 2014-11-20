@@ -1884,20 +1884,25 @@ function query() {
     qStringSimple += queryObj.q;
   }
 
-  var hashString = orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page;
+  var pageString = "";
+  if (queryObj.page > 1) {
+    pageString = "&page=" + queryObj.page;
+  }
+
+  var hashString = orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString;
 
   window.location.hash = hashString;
 
   var querystring = ECO.base.api.observations + "?format=geojson" + hashString;
   var searchquerystring = ECO.base.api.search + "?format=json" + orderString + facetstring+ qString + dateString + "&facets_limit=100";
-  var photoquerystring = ECO.base.api.photos  + "?format=geojson" + orderString+ qStringSimple + bboxString + dateString + "&page_size=20page=1";
+  var photoquerystring = ECO.base.api.photos  + "?format=geojson" + orderString+ qStringSimple + bboxString + dateString + "&page_size=80page=1";
 
   console.log(querystring);
 
   // export links
   d3.select("#export-geojson")
-    .attr("href", ECO.base.api.observations + "?format=geojson" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
-    .text(ECO.base.api.observations + "?format=geojson" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
+    .attr("href", ECO.base.api.observations + "?format=geojson" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString)
+    .text(ECO.base.api.observations + "?format=geojson" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString);
 
   loadingCheck("observations");
   d3.json(querystring, function(error, data) {
