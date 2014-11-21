@@ -96,6 +96,7 @@ h2.app-title {
 
 .header .eco-param {
   text-align: center;
+  border-radius: 2px;
 }
 
 .eco-param,
@@ -237,11 +238,14 @@ svg {
 }
 
 #time-slider {
-  display: inline;
+  display: inline-block;
+  background: #114e7c;
+  height: 24px;
+  border-radius: 2px;
 }
 
 #time-slider svg {
-  margin-bottom: -12px;
+  margin-bottom: -10px;
 }
 
 
@@ -650,10 +654,10 @@ h3 {
 </style>
 <body>
 <div class="header">
-  Search <input type="text" value="" id="searchterm" class="eco-param" placeholder="Species or Location"></input>
-  &nbsp; Begin Date <input type="text" value="" id="minyear" class="eco-param" placeholder="1900-01-01"></input>
+  Search <input type="text" value="" id="searchterm" class="eco-param" placeholder="Species or Location" title="yyyy-mm-dd"></input>
+  &nbsp; <input type="text" value="" id="minyear" class="eco-param" placeholder="Begin Date" title="yyyy-mm-dd"></input>
   <span id="time-slider"></span>
-  <input type="text" value="" id="maxyear" class="eco-param" placeholder="2018-12-31"></input> End Date
+  <input type="text" value="" id="maxyear" class="eco-param" placeholder="End Date"></input>
   <!-- &nbsp; <div class="search-btn">Search</div> -->
   <div style="float: right;">
     <a class="cursor" id="advanced-search-btn">Advanced</a>
@@ -1789,8 +1793,8 @@ d3.selectAll(".eco-param")
       .text("Click and drag a time range");
 
   timebrushEl.selectAll(".resize rect")
-    .attr("x", -2)
-    .attr("width", 4)
+    .attr("x", -1)
+    .attr("width", 2)
     .style("visibility", null)
 
   timebrushEl.selectAll(".extent")
@@ -1801,8 +1805,17 @@ d3.selectAll(".eco-param")
   function brushed() {
     var extent = timebrush.extent();
 
-    queryObj.min_date = d3.select("#minyear").node().value = compactdateformat(extent[0]);
-    queryObj.max_date = d3.select("#maxyear").node().value = compactdateformat(extent[1]);
+    var min_date = compactdateformat(extent[0]);
+    var max_date = compactdateformat(extent[1]);
+
+    // no single date ranges
+    if (min_date == max_date) {
+      min_date = "";
+      max_date = "";
+    }
+
+    queryObj.min_date = d3.select("#minyear").node().value = min_date;
+    queryObj.max_date = d3.select("#maxyear").node().value = max_date;
   }
 
   function brushend() {
