@@ -19,6 +19,10 @@ a {
   text-decoration: none;
 }
 
+.dark a {
+  color: #82badb;
+}
+
 a:hover {
   text-decoration: underline;
 }
@@ -27,9 +31,33 @@ p {
   margin: 12px 0;
 }
 
+input.error {
+  display: inline-block;
+}
+
+/*
+.infobox {
+  background: #fda;
+  border: 1px dashed #999;
+  display: inline-block;
+  padding: 4px;
+}
+*/
+
 #map {
-  margin: 38px 0 0 0;
+  margin: 40px 0 0 24%;
   position: relative;
+  width: 76%;
+  height: 480px;
+}
+
+.leaflet-popup {
+  z-index: 200;
+}
+
+.leaflet-popup img {
+  max-width: 130px;
+  max-height: 130px;
 }
 
 .wrap {
@@ -41,12 +69,13 @@ p {
   background: #317eac;
   border-bottom: 1px solid #114e7c;
   padding: 8px;
-  position: fixed;
+  position: absolute;
   top: 0;
-  height: 38px;
+  min-height: 38px;
+  min-width: 960px;
   width: 100%;
   z-index: 2000;
-  overflow: hidden;
+  line-height: 24px;
 }
 
 .header a {
@@ -67,6 +96,7 @@ h2.app-title {
 
 .header .eco-param {
   text-align: center;
+  border-radius: 2px;
 }
 
 .eco-param,
@@ -88,19 +118,19 @@ h2.app-title {
 .eco-param::-webkit-input-placeholder { /* WebKit browsers */
   color:    #bbb;
   font-weight: normal;
-  font-size: 13px;
+  font-size: 11px;
 }
 .eco-param:-moz-placeholder,
 .eco-param2:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
   color:    #bbb;
   font-weight: normal;
-  font-size: 13px;
+  font-size: 11px;
   opacity:  1;
 }
 .eco-param::-moz-placeholder,
 .eco-param2::-moz-placeholder { /* Mozilla Firefox 19+ */
   color:    #bbb;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: normal;
   opacity:  1;
 }
@@ -108,7 +138,7 @@ h2.app-title {
 .eco-param2:-ms-input-placeholder { /* Internet Explorer 10+ */
   color:    #bbb;
   font-weight: normal;
-  font-size: 13px;
+  font-size: 11px;
 }
 
 h4 {
@@ -149,8 +179,8 @@ h4 {
 .hide-btn {
   font-weight: bold;
   font-size: 15px;
-  position: fixed;
-  top: 46px;
+  position: absolute;
+  top: 12px;
   right: 24px;
 }
 
@@ -166,12 +196,12 @@ h4 {
 .flydown {
   background: #fff;
   border-bottom: 1px solid #114e7c;
-  position: fixed;
+  position: absolute;
   top: 0; 
   bottom: 0;
   height: 100%; 
   width: 100%;
-  z-index:2000;
+  z-index: 2000;
   padding: 8px;
   overflow: auto;
   display: none;
@@ -198,16 +228,24 @@ svg {
 .brush .extent {
   stroke: none;
   fill: #fff;
-  fill-opacity: .5;
+  fill-opacity: .2;
   shape-rendering: crispEdges;
 }
 
+.brush .resize rect {
+  fill: #fff;
+  fill-opacity: 0.85;
+}
+
 #time-slider {
-  display: inline;
+  display: inline-block;
+  background: #114e7c;
+  height: 24px;
+  border-radius: 2px;
 }
 
 #time-slider svg {
-  margin-bottom: -12px;
+  margin-bottom: -10px;
 }
 
 
@@ -243,59 +281,77 @@ svg {
   padding: 0;
   vertical-align: top;
   margin: 0;
+  box-shadow: none;
 }
 .panel.left {
-  width: 30%;
+  width: 24%;
   float: left;
 }
 .panel.right {
-  margin-left: 30%;
+  margin-left: 24%;
 }
 .panel:last-child {
   margin-right: 0;
 }
+#facets {
+  position: absolute;
+  top: 40px;
+  background: white;
+  padding: 8px;
+}
 
 /* MAP */
-.map-detail {
-  height: 360px;
+.map-area {
+  height: 480px;
   line-height: 1.3em;
 }
 
-.map-detail.left {
-  padding: 8px 0 0 8px;
-  overflow-y: auto;
+#details {
+  visibility: hidden; /* xxx */
+  display: none;
+  height: auto;
+  width: 24%;
+  min-width: 278px;
+  height: 480px;
+  margin: 0;
+  padding: 12px 6px;
   overflow-x: hidden;
+  position: absolute;
+  background: #222;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  z-index: 5; 
+  text-align: center;
 }
 
-#loading-view {
-  margin-top: 8px;
-  font-size: 14px;
-  line-height: 1.35em;
-}
 #detail-view {
   margin-top: 8px;
 }
+#details td {
+  width: 50%;
+}
+#details .key {
+  color: #bbb;
+  text-align: right;
+}
+#details .photo {
+  margin: 0 auto;
+  display: block;
+}
 
-#loading-view span {
-  padding-left: 8px;
-}
-#loading-view span.loaded {
-  color: #0a0;
-}
-#loading-view span.error {
-  font-weight: bold;
-  color: #c00;
+#detail-view {
+  width: 100%;
 }
 
 #detail-view img {
-  max-width: 260px;
-  max-height: 220px;
+  max-width: 100%;
+  max-height: 240px;
   margin-bottom: 8px;
 }
 
-#map {
-  width: 100%;
-  height: 360px;
+#detail-view .photo {
+  margin: 0 auto;
+  text-align: center;
 }
 
 .leaflet-popup-pane {
@@ -304,14 +360,22 @@ svg {
 
 .layer-selection {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  text-align: right;
+  top: 0px;
+  right: 0px;
+  padding: 0 8px 8px;
+  text-align: center;
   z-index: 100;
-  width: 100%;
+  width: 176px;
+  background: rgba(255,255,255,0.55);
+  border-radius: 2px;
+}
+
+.layer-selection select {
+  max-width: 160px;
 }
 
 #bbox-select {
+  display: none;
   position: absolute;
   bottom: 20px;
   right: 0px;
@@ -376,6 +440,14 @@ svg {
   border: 1px solid #fff;
 }
 
+.leaflet-marker-icon.eco-basic-icon {
+  opacity: 0.5;
+}
+
+.leaflet-marker-icon.eco-basic-icon:hover {
+  opacity: 1;
+}
+
 #detail-type .eco-basic-icon {
   display: inline-block;
   height: 16px;
@@ -390,6 +462,22 @@ svg {
   position: relative;
   margin-right: 4px;
   top: 2px;
+}
+
+.table .asc-arrow,
+.table .desc-arrow {
+  display: none;
+}
+.table .ascending .asc-arrow,
+.table .descending .desc-arrow {
+  display: inline-block;
+}
+.table .ascending {
+  cursor: s-resize;
+}
+.table th,
+.table .descending {
+  cursor: n-resize;
 }
 
 .eco-basic-icon.sensor {
@@ -472,32 +560,6 @@ svg {
   display: block;
 }
 
-
-#photos {
-  width: 100%;
-  color: #fff;
-  background: #111;
-  min-height: 32px;
-  padding: 1px;
-}
-#photos img {
-  height: 64px;
-  display: inline-block;
-  padding: 1px;
-}
-
-#photos {
-  position: relative;
-}
-
-#photos h4 {
-  pointer-events: none;
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  background: rgba(0,0,0,0.5);
-}
-
 #results table {
   font-size: 12px;
 }
@@ -524,6 +586,21 @@ table .active {
   line-height: 14px;
   cursor: pointer;
   margin-right: 8px;
+}
+.bar-group {
+  max-height: 140px;
+  overflow-y: auto;
+}
+.bars {
+  line-height: 13px;
+  font-size: 12px;
+  padding-top: 1px;
+}
+.bars:hover {
+  background: #dadada;
+}
+.bars .count {
+  color: #bbb;
 }
 .field-plot span {
   text-decoration: none;
@@ -577,13 +654,15 @@ h3 {
 </style>
 <body>
 <div class="header">
-  Search <input type="text" value="" id="searchterm" class="eco-param" placeholder="Observations/photos"></input>
-  &nbsp; Date Range <input type="text" value="" id="minyear" class="eco-param" placeholder="1900-01-01"></input>
+  Search <input type="text" value="" id="searchterm" class="eco-param" placeholder="Species or Location" title="yyyy-mm-dd"></input>
+  &nbsp; <input type="text" value="" id="minyear" class="eco-param" placeholder="Begin Date" title="yyyy-mm-dd"></input>
   <span id="time-slider"></span>
-  <input type="text" value="" id="maxyear" class="eco-param" placeholder="2018-12-31"></input>
-  &nbsp; <div class="search-btn">Search</div>
-  &nbsp; <span class="cursor" id="advanced-search-btn">Advanced</span> |
-  <span class="cursor" id="export-btn">Export</span>
+  <input type="text" value="" id="maxyear" class="eco-param" placeholder="End Date"></input>
+  <!-- &nbsp; <div class="search-btn">Search</div> -->
+  <div style="float: right;">
+    <a class="cursor" id="advanced-search-btn">Advanced</a>
+    &nbsp; <a class="cursor" id="export-btn">Queries</a>
+  </div>
 </div>
 <div id="advanced-search" class="flydown">
   <h4>Advanced Search</h4>
@@ -613,17 +692,15 @@ h3 {
   <h4>Observations</h4>
   <p>
     <span class="export-buttons">
-      CSV <a href="#" id="export-csv" target="_blank"></a><br/>
-      JSON <a href="#" id="export-json" target="_blank"></a><br/>
-      GeoJSON <a href="#" id="export-geojson" target="_blank"></a><br/>
+      <a href="#" id="export-geojson" target="_blank"></a><br/>
     <span>
   </p>
   <h4>Search</h4>
-      Data <a href="#" id="export-search" target="_blank"></a><br/>
+      <a href="#" id="export-search" target="_blank"></a><br/>
   <h4>Photos</h4>
-      Data <a href="#" id="export-photos" target="_blank"></a><br/>
+      <a href="#" id="export-photos" target="_blank"></a><br/>
   <h4>Sensors</h4>
-      Data <a href="#" id="export-sensors" target="_blank"></a><br/>
+      <a href="#" id="export-sensors" target="_blank"></a><br/>
   <h4>Raster Layers</h4>
       Layers <a href="#" id="export-layers" target="_blank"></a><br/>
       Rasters <a href="#" id="export-rasters" target="_blank"></a><br/>
@@ -633,26 +710,41 @@ h3 {
   <a href="#" class="hide-btn">Hide</a>
 </div>
 
-<div class="panel left map-detail">
+<div class="map-area left dark" id="details">
   <h4><span id="detail-type"></span> Details</h4>
-  <p id="loading-view">
-  </p>
   <p id="detail-view">
   </p>
 </div>
-<div class="panel right map-detail">
+<div class="map-area">
   <div id="map">
     <div class="layer-selection">
-      <select id="overlay-select">
-        <option value="https://dev-ecoengine.berkeley.edu/tiles/vtmveg/{z}/{x}/{y}.png">VTM Vegetation Features</option>
-      </select>
+      <h3>Boundaries</h3>
+      <select id="boundary-select">
+        <option value="">None</option>
+      </select><br/>
+      <h3>Environment</h3>
+      <select id="environment-select">
+        <option>None</option>
+      </select><br/>
+      <h3>Basemap</h3>
       <select id="layer-select">
+        <option value="http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png">Light</option>
+        <option value="http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png">Dark</option>
         <option value="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png">OpenStreetMap</option>
         <option value="http://{s}.tile.stamen.com/terrain-background/{z}/{x}/{y}.jpg">Stamen Terrain</option>
       </select>
+      <h3>Data Layers</h3>
+      <em>nonfunctional checkboxes</em>
+      <div style="text-align: left; margin-left: 30px;">
+        <input type="checkbox" id="observations-check"></input> <span class="observations-label">Observations</span><br/>
+          <input type="checkbox" id="photos-check"></input> <span class="photos-label">Photos</span><br/>
+            <input type="checkbox" id="sensors-check"></input> <span class="sensors-label">Sensors</span><br/>
+              <input type="checkbox" id="reserves-check"></input> <span class="reserves-label">Reserves</span><br/>
+                <input type="checkbox" id="jepson-check"></input> <span class="jepson-label">Jepson Regions</span><br/>
+      </div>
     </div>
     <div id="bbox-select">
-      Constrain Search to Map
+      Constrain Search to Map (this is currently broken)
     </div>
   </div>
   <div class="map-info">
@@ -660,17 +752,12 @@ h3 {
       <p class="map-info-content"></p>
   </div>
 </div>
-<div id="photos" class="photos">
-  <h4>Photos</h4>
-  <div class="inner-photos">
-  </div>
+<div class="panel left" id="facets">
+  <h4>Filters</h4>
+  <!-- <p class="infobox">Click a name below to filter by facet</p> -->
+  <div id="search-bars"></div>
 </div>
 <div class="wrap">
-  <div class="panel left">
-    <h4>Search Results</h4>
-    <p>Click one or more of the bars below to filter observations</p>
-    <div id="search-bars"></div>
-  </div>
   <div class="panel right">
     <h4>Observations</h4>
     <div id="results"></div>
@@ -786,6 +873,8 @@ ECO.base = {
 }
 
 var sortOrder = {
+  'resource': -3,
+  'observation_type': -1,
   georeferenced: 1,
   country: 2,
   'state_province': 3,
@@ -795,26 +884,11 @@ var sortOrder = {
   order: 11,
   family: 13,
   genus: 15,
-  'scientific_name': 17,
-  'observation_type': 19
+  'scientific_name': 17
 };
 
 var dateformat = d3.time.format("%Y %b %e");
 var compactdateformat = d3.time.format("%Y-%m-%d");
-
-
-var loadingView = d3.select("#loading-view")
-  .selectAll("div")
-  .data(d3.keys(ECO.base.api))
-  .enter().append("div");
-
-loadingView.append("strong")
-  .text(function(d) {
-    return capitaliseFirstLetter(d);
-  });
-
-loadingView.append("span")
-  .attr("class", String);
 
 var advancedSearchSections = d3.select("#advanced-search-pane")
   .selectAll("div.section")
@@ -905,18 +979,39 @@ function hideflydowns() {
     .style("display", null)
 };
 
+function loadingCheck(type) {
+  d3.select("#" + type + "-check")
+    .classed("error", false)
+    .attr("disabled", "disabled")
+    .attr("checked", null);
+  d3.select("." + type + "-label")
+    .style("color", "#c82");
+  d3.selectAll(".error-label").remove();
+};
+
+function loadedCheck(type) {
+  d3.select("#" + type + "-check")
+    .attr("disabled", null)
+    .attr("checked", "checked");
+  d3.select("." + type + "-label")
+    .style("color", null);
+};
+
+function errorCheck(type, err) {
+  d3.select("." + type + "-label")
+    .style("color", "#a00")
+    .append("div")
+    .attr("class", "error-label")
+    .style("text-align", "center")
+    .text("(" + err + " error)");
+};
+
 d3.select("#export-sensors")
   .attr("href", ECO.base.api.sensors)
   .text(ECO.base.api.sensors);
-d3.select("#loading-view .sensors")
-  .classed("loaded", false)
-  .classed("error", false)
-  .text("Loading...");
+loadingCheck("sensors");
 d3.json(ECO.base.api.sensors, function(error, data) {
-  d3.select("#loading-view .sensors")
-    .classed("loaded", true)
-    .classed("error", false)
-    .text("Loaded");
+  loadedCheck("sensors");
 
   map.clear();
   sensorData = data.features;
@@ -924,7 +1019,14 @@ d3.json(ECO.base.api.sensors, function(error, data) {
   map.draw();
 });
 
+
 ECO.detailview = function(row) {
+  var excluded = ["url", "remote_resource", "media_url", "observations", "source"];
+
+  d3.select("#details")
+    .style("margin-left", 0)
+    .style("display", "block");
+
   var container = d3.select("#detail-view")
     .style("display", null)
     .html("");
@@ -933,24 +1035,37 @@ ECO.detailview = function(row) {
 
   if ("media_url" in row && row.media_url) {
     container.append("a")
+      .attr("class", "photo")
       .attr("href", row.media_url)
     .append("img")
       .attr("src", row.media_url);
   }
 
-  var divs = container.selectAll("div")
-    .data(d3.entries(row))
-    .enter().append("div")
+  var table = container.append("table")
 
-  divs.append("strong")
+  var divs = container.selectAll("tr")
+    .data(d3.entries(row).filter(function(d) {
+      if (excluded.indexOf(d.key) > -1) return false;
+      if (d.value == null) return false;
+      return true;
+    }))
+    .enter().append("tr")
+
+  divs.append("td")
+    .attr("class", "key")
     .html(function(d) { return d.key + " &nbsp; "; });
 
-  divs.append("span")
+  divs.append("td")
     .html(function(d) {
 
       if (typeof d.value == "string") {
         if (d.value.slice(0,4) == "http") {
           return "<a href='" + d.value + "'>" + d.value + "</a>";
+        }
+        if (d.key == "record") {
+          if (row["remote_resource"] !== "") {
+            return "<a href='" + row["remote_resource"] + "'>" + d.value + "</a>";
+          }
         }
         return d.value;
       }
@@ -970,6 +1085,7 @@ ECO.map = function() {
 
   var popup = L.popup({
     closeButton: false,
+    autoPan: false,
     offset: new L.Point(0,-4)
   });
 
@@ -977,7 +1093,7 @@ ECO.map = function() {
 
   map.scrollWheelZoom.disable();
 
-  var baseLayer = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  var baseLayer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
     attribution: '',
     subdomains: 'abc',
     minZoom: 1,
@@ -985,7 +1101,15 @@ ECO.map = function() {
     maxZoom: 16
   }).addTo(map);
 
-  var overlayLayer = L.tileLayer('https://dev-ecoengine.berkeley.edu/tiles/vtmveg/{z}/{x}/{y}.png', {
+  var environmentLayer = L.tileLayer('', {
+    attribution: '',
+    subdomains: 'abc',
+    minZoom: 2,
+    transparent: true,
+    maxZoom: 16
+  }).addTo(map);
+
+  var boundaryLayer = L.tileLayer('', {
     attribution: '',
     subdomains: 'abc',
     minZoom: 2,
@@ -1037,12 +1161,12 @@ ECO.map = function() {
         .text("Loaded");
       rasters.results.forEach(function(d) {
         if (d.tags.indexOf("boundaries") > -1) { 
-          d3.select("#overlay-select")
+          d3.select("#boundary-select")
             .append("option")
             .attr("value", d.tile_template)
             .text(d.name);
         } else {
-          d3.select("#layer-select")
+          d3.select("#environment-select")
             .append("option")
             .attr("value", d.tile_template)
             .text(d.name);
@@ -1053,12 +1177,12 @@ ECO.map = function() {
     if (!layers) return;
     layers.results.forEach(function(d) {
         if (d.tags.indexOf("boundaries") > -1) { 
-          d3.select("#overlay-select")
+          d3.select("#boundary-select")
             .append("option")
             .attr("value", d.tile_template)
             .text(d.name);
         } else {
-          d3.select("#layer-select")
+          d3.select("#environment-select")
             .append("option")
             .attr("value", d.tile_template)
             .text(d.name);
@@ -1070,9 +1194,14 @@ ECO.map = function() {
     .on("change", function() {
       baseLayer.setUrl(this.value);
     });
-  d3.select("#overlay-select")
+  d3.select("#boundary-select")
     .on("change", function() {
-      overlayLayer.setUrl(this.value);
+      boundaryLayer.setUrl(this.value);
+    });
+
+  d3.select("#environment-select")
+    .on("change", function() {
+      environmentLayer.setUrl(this.value);
     });
 
   /*
@@ -1099,24 +1228,7 @@ ECO.map = function() {
 
   function onMarkerOver(evt) {
     showTooltip(evt);
-    var type = '';
-    if ('observation_type' in evt.target.data_) {
-      type = 'Observation';
-    } else if ('media_url' in evt.target.data_) {
-      type = 'Photo';
-    } else {
-      type = 'Sensor';
-    }
 
-    if (type == 'Observation') {
-      d3.select("#detail-type").html("<span class='eco-basic-icon " + evt.target.data_.observation_type + "'></span> Observation")
-    }
-    if (type == 'Photo') {
-      d3.select("#detail-type").html("<span class='eco-basic-icon media-photo'></span> Photo")
-    }
-    if (type == 'Sensor') {
-      d3.select("#detail-type").html("<span class='eco-basic-icon sensor'></span> Sensor")
-    }
     ECO.detailview(evt.target.data_);
     subscribers.forEach(function(s){
       if (s.over) s.over(evt);
@@ -1125,13 +1237,18 @@ ECO.map = function() {
 
   function onMarkerOut(evt) {
     hideTooltip();
-    showLoadingView();
+    //hideDetailview();
     subscribers.forEach(function(s){
       if (s.out) s.out(evt);
     });
   }
 
   function onMarkerClick(evt) {
+    if ('url' in evt.target.data_) {
+      window.open(evt.target.data_.url,'_blank');
+    } else if ('data_url' in evt.target.data_) {
+      window.open(evt.target.data_.data_url,'_blank');
+    }
     evt.originalEvent.preventDefault();
     subscribers.forEach(function(s){
       if (s.click) s.click(evt);
@@ -1154,7 +1271,7 @@ ECO.map = function() {
       ECO.detailview(layer.properties);
     })
     .on("mouseout", function() {
-      showLoadingView();
+      //hideDetailview();
     });
   };
 
@@ -1200,30 +1317,44 @@ ECO.map = function() {
         .on('mouseout', onMarkerOut)
         .on('click', onMarkerClick);
 
-      if (!bds) {
-        bds = new L.latLngBounds([ll]);
-      } else {
-        bds.extend(ll);
+      if (type == 'observation') {
+        if (!bds) {
+          bds = new L.latLngBounds([ll]);
+        } else {
+          bds.extend(ll);
+        }
       }
+
       markers.push(m);
     });
 
-    bds.pad(0.1);
+    if (queryObj.bbox.length == 0) {
+      if (bds) {
+        bds.pad(0.15);
 
-    setTimeout(function(){
-      // basic method to determine if bounds is big enough to set
-      var tr = map.latLngToLayerPoint(bds.getNorthEast()),
-          bl = map.latLngToLayerPoint(bds.getSouthWest()),
-          xDiff = Math.abs(tr.x - bl.x),
-          yDiff = Math.abs(tr.y - bl.y);
+        setTimeout(function(){
+          // basic method to determine if bounds is big enough to set
+          var tr = map.latLngToLayerPoint(bds.getNorthEast()),
+              bl = map.latLngToLayerPoint(bds.getSouthWest()),
+              xDiff = Math.abs(tr.x - bl.x),
+              yDiff = Math.abs(tr.y - bl.y);
 
-      if (xDiff < 200 || yDiff < 200) {
-        map.setView(bds.getCenter(), 5);
-      } else {
-        map.fitBounds(bds);
+          if (xDiff < 200 || yDiff < 200) {
+            map.setView(bds.getCenter(), 5);
+          } else {
+            map.fitBounds(bds);
+          }
+
+        },200);
       }
-
-    },1);
+    } else {
+      var bbox = queryObj.bbox.split(",");
+      // TODO fix this
+      map.fitBounds([
+        [bbox[1], bbox[0]],
+        [bbox[3], bbox[2]]
+      ]);
+    }
   }
 
   function showTooltip(evt) {
@@ -1247,7 +1378,9 @@ ECO.map = function() {
         content += evt.target.data_['scientific_name'] + "<br/>" + evt.target.data_['record'];
       }
       if (type == 'Photo') {
-        content += evt.target.data_['authors'] + "<br/>" + evt.target.data_['record'];
+        content += "<img src='" + evt.target.data_['media_url'] + "'/><br/>";
+        content += evt.target.data_['authors'] + "<br/>";
+        content += evt.target.data_['record'];
       }
       if (type == 'Sensor') {
         content += evt.target.data_['station_name'] + "<br/>" + evt.target.data_['record'];
@@ -1363,26 +1496,19 @@ ECO.list = function() {
           .replace("clss", "class")
         )});
 
-    var bars = fieldplot.selectAll("div.bars")
+    var bars = fieldplot.append("div")
+        .attr("class", "bar-group")
+        .selectAll("div.bars")
         .data(function(d) { return d.values; })
         .enter().append("div")
         .attr("class", "bars")
+        .attr("title", "Click to toggle filter")
         .append("div")
-        .style("display", function(d,i) { return i > 9 ? "none" : null})
         .classed("active", function(d,i,g) {
           return queryObj.facets[searchfields[g]] == d[0];
         })
-        .on("mouseover", function(d,i,g) {
-          d3.select("#detail-type").text("Search");
-          ECO.detailview({
-            "field": searchfields[g],
-            "value": d[0],
-            "count": d[1],
-            "url": d[2]
-          });
-        })
         .on("mouseout", function() {
-          showLoadingView();
+          //hideDetailview();
         })
         .on("click", function(d,i,g) {
           queryObj.page = 1;
@@ -1400,29 +1526,15 @@ ECO.list = function() {
       .style("width", function(d) { return Math.round(barwidth(d[1])) + "px"; });
 
     bars.append("span")
-      .attr("class", "count")
-      .text(function(d) { return d[1]; });
+      .text(function(d) { return " " + capitaliseFirstLetter(d[0]); });
 
     bars.append("span")
-      .text(function(d) { return " " + capitaliseFirstLetter(d[0]); });
+      .attr("class", "count")
+      .text(function(d) { return "(" + d[1] + ")"; });
 
     bars.append("span")
       .attr("class", "x")
       .text(" x");
-
-    fieldplot
-      .filter(function(d) { return d.values.length > 9; })
-      .append("span")
-      .attr("class", "show-more")
-      .text("[+] Show more")
-      .on("click", function(d) {
-        bars.filter(function(p,i,g) { 
-          return searchfields[g] == d.field;
-        })
-        .style("display", "block");
-
-        d3.select(this).remove();
-      });
   }
   return __;
 };
@@ -1438,19 +1550,19 @@ ECO.datatable = function() {
           .classed("active", function(d) {
             return props.record == d.properties.record;
           });
-        console.log("Datatable: Marker mouseover: ", props.record);
+        //console.log("Datatable: Marker mouseover: ", props.record);
       },
       out: function(evt) {
         if (!evt.target.data_) return;
         var props = evt.target.data_;
         __.table.selectAll("tr.listing")
           .classed("active", false);
-        console.log("Datatable: Marker mouseout: ", props.record);
+        //console.log("Datatable: Marker mouseout: ", props.record);
       },
       click: function(evt) {
         if (!evt.target.data_) return;
         var props = evt.target.data_;
-        console.log("Datatable: Marker click: ", props.record);
+        //console.log("Datatable: Marker click: ", props.record);
       }
   };
 
@@ -1459,17 +1571,19 @@ ECO.datatable = function() {
       .append("table")
       .attr("class", "table");
 
-    __.table.append("tr")
+    var headers = __.table.append("tr")
       .selectAll("th")
       .data(fields)
       .enter().append("th")
-      .text(String)
-      .style("color", function(d) {
+      .text(function(d) {
+        return capitaliseFirstLetter(d).replace(/_/g, " ");
+      })
+      .attr("class", function(d) {
         if (queryObj.sortFields[d] == "+") { 
-          return "#0a0";
+          return "ascending";
         }
         if (queryObj.sortFields[d] == "-") { 
-          return "#b00";
+          return "descending";
         }
       })
       .on("click", function(d) {
@@ -1483,6 +1597,14 @@ ECO.datatable = function() {
         query();
       });
 
+    headers.append("span")
+      .attr("class", "asc-arrow")
+      .html("&#9650");
+
+    headers.append("span")
+      .attr("class", "desc-arrow")
+      .html("&#9660");
+
     __.table
       .selectAll("tr.listing")
       .data(data.features)
@@ -1490,11 +1612,15 @@ ECO.datatable = function() {
       .attr("class", "listing")
       .classed("zebra", function(d,i) { return i % 2 == 0;})
       .on("mouseover", function(d) {
+        //disabled
+        return;
+
+
         d3.select("#detail-type").html("<span class='eco-basic-icon " + d.properties.observation_type + "'></span> Observation")
         ECO.detailview(d.properties);
       })
       .on("mouseout", function() {
-        showLoadingView();
+        //hideDetailview();
       })
       .each(function(d) {
         var entry = d3.select(this)
@@ -1548,21 +1674,14 @@ d3.select("#export-reserves")
   .attr("href", ECO.base.api.reserves)
   .text(ECO.base.api.reserves);
 
-d3.select("#loading-view .reserves")
-  .classed("loaded", false)
-  .classed("error", false)
-  .text("Loading...");
+loadingCheck("reserves");
 d3.json(ECO.base.api.reserves, function(error, data) {
   if (error) {
-    d3.select("#loading-view .reserves")
-      .classed("error", true)
-      .text(error.status + " Error");
+    errorCheck("reserves", error.status);
     return;
   };
-  d3.select("#loading-view .reserves")
-    .classed("loaded", true)
-    .classed("error", false)
-    .text("Loaded");
+  loadedCheck("reserves");
+
   if (!data) return;
   data.features.forEach(function(d) {
     d3.select("#reserve-list")
@@ -1581,21 +1700,13 @@ d3.select("#export-jepson")
   .attr("href", ECO.base.api.jepson)
   .text(ECO.base.api.jepson);
 
-d3.select("#loading-view .jepson")
-  .classed("loaded", false)
-  .classed("error", false)
-  .text("Loading...");
+loadingCheck("jepson");
 d3.json(ECO.base.api.jepson, function(error, data) {
   if (error) {
-    d3.select("#loading-view .jepson")
-      .classed("error", true)
-      .text(error.status + " Error");
+    errorCheck("jepson", error.status);
     return;
   };
-  d3.select("#loading-view .jepson")
-    .classed("loaded", true)
-    .classed("error", false)
-    .text("Loaded");
+  loadedCheck("jepson");
   if (!data) return;
   data.results.forEach(function(d) {
     d3.select("#jepson-list")
@@ -1613,7 +1724,8 @@ d3.json(ECO.base.api.jepson, function(error, data) {
 d3.select("#bbox-select")
   .on("click", function() {
     var bds = map.map.getBounds();
-    var bbox = [bds._northEast.lng, bds._northEast.lat, bds._southWest.lng, bds._southWest.lat].join(",");
+    // needs to be bottom left, upper right
+    var bbox = [bds._northEast.lng, bds._southWest.lat, bds._southWest.lng, bds._northEast.lat].join(",");
     queryObj.bbox = bbox;
     query();
   });
@@ -1625,7 +1737,7 @@ d3.selectAll(".eco-param")
     queryObj.min_date = d3.select("#minyear").node().value;
     queryObj.max_date = d3.select("#maxyear").node().value;
     timebrush.extent([new Date(queryObj.min_date), new Date(queryObj.max_date)]);
-    d3.select("#time-slider .brush").call(timebrush)
+    d3.select("#time-slider .brush").call(timebrush);
 
     queryObj.page = 1;
     query();
@@ -1634,7 +1746,7 @@ d3.selectAll(".eco-param")
 
 // time slider
 (function() {
-  var margin = {top: 2, right: 14, bottom: 26, left: 14};
+  var margin = {top: 2, right: 14, bottom: 23, left: 14};
   var height = 1;
   var width = 250;
 
@@ -1665,22 +1777,45 @@ d3.selectAll(".eco-param")
 
   context.append("g")
       .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
+      .attr("transform", "translate(0,2)")
       .call(xAxis);
 
-  context.append("g")
+  var timebrushEl = context.append("g")
       .attr("class", "x brush")
       .call(timebrush)
-    .selectAll("rect")
-      .attr("y", -6)
-      .attr("height", height + margin.bottom);
+
+  timebrushEl.selectAll("rect")
+      .attr("y", -2)
+      .attr("height", height + margin.bottom)
+
+  timebrushEl.selectAll("rect.background")
+      .append("title")
+      .text("Click and drag a time range");
+
+  timebrushEl.selectAll(".resize rect")
+    .attr("x", -1)
+    .attr("width", 2)
+    .style("visibility", null)
+
+  timebrushEl.selectAll(".extent")
+    .append("title")
+    .text("Drag to shift time range");
 
 
   function brushed() {
     var extent = timebrush.extent();
 
-    queryObj.min_date = d3.select("#minyear").node().value = compactdateformat(extent[0]);
-    queryObj.max_date = d3.select("#maxyear").node().value = compactdateformat(extent[1]);
+    var min_date = compactdateformat(extent[0]);
+    var max_date = compactdateformat(extent[1]);
+
+    // no single date ranges
+    if (min_date == max_date) {
+      min_date = "";
+      max_date = "";
+    }
+
+    queryObj.min_date = d3.select("#minyear").node().value = min_date;
+    queryObj.max_date = d3.select("#maxyear").node().value = max_date;
   }
 
   function brushend() {
@@ -1698,9 +1833,17 @@ d3.selectAll(".eco-param")
 query();
 
 function showLoadingView() {
+  d3.select("#details").style("display", "block");
   d3.select("#detail-type").text("Loading ");
   d3.select("#loading-view").style("display", null);
   d3.select("#detail-view").style("display", "none");
+};
+
+function hideDetailview() {
+  d3.select("#details")
+    .transition()
+    .duration(400)
+    .style("margin-left", "-28%");
 };
 
 function query() {
@@ -1754,43 +1897,34 @@ function query() {
     qStringSimple += queryObj.q;
   }
 
-  var hashString = orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page;
+  var pageString = "";
+  if (queryObj.page > 1) {
+    pageString = "&page=" + queryObj.page;
+  }
+
+  var hashString = orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString;
 
   window.location.hash = hashString;
 
   var querystring = ECO.base.api.observations + "?format=geojson" + hashString;
   var searchquerystring = ECO.base.api.search + "?format=json" + orderString + facetstring+ qString + dateString + "&facets_limit=100";
-  var photoquerystring = ECO.base.api.photos  + "?format=geojson" + orderString+ qStringSimple + bboxString + dateString + "&page_size=20page=1";
+  var photoquerystring = ECO.base.api.photos  + "?format=geojson" + orderString+ qStringSimple + bboxString + dateString + "&page_size=80page=1";
 
   console.log(querystring);
 
   // export links
-  d3.select("#export-csv")
-    .attr("href", ECO.base.api.observations + "?format=csv" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
-    .text(ECO.base.api.observations + "?format=csv" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
-  d3.select("#export-json")
-    .attr("href", ECO.base.api.observations + "?format=json" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
-    .text( ECO.base.api.observations + "?format=json" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
   d3.select("#export-geojson")
-    .attr("href", ECO.base.api.observations + "?format=geojson" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page)
-    .text(ECO.base.api.observations + "?format=geojson" + orderString + sortstring + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + "&page=" + queryObj.page);
+    .attr("href", ECO.base.api.observations + "?format=geojson" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString)
+    .text(ECO.base.api.observations + "?format=geojson" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString);
 
-  d3.select("#loading-view .observations")
-    .classed("loaded", false)
-    .classed("error", false)
-    .text("Loading...");
+  loadingCheck("observations");
   d3.json(querystring, function(error, data) {
     if (error) {
-      d3.select("#loading-view .observations")
-        .classed("error", true)
-        .text(error.status + " Error");
+      errorCheck("observations", error.status);
       return;
     }
     d3.select("#results").html("").style("color", null);
-    d3.select("#loading-view .observations")
-      .classed("loaded", true)
-      .classed("error", false)
-      .text("Loaded");
+    loadedCheck("observations");
 
     if (error) {
       d3.select("#results").append("div").html(error.responseText).style("color", "red");
@@ -1853,7 +1987,7 @@ function query() {
 
     /*
     d3.range(2,Math.min(10,pagecount)).forEach(function(nextpage) {
-      var nextquerystring = ECO.base.api.observations + "?ordering=" + sortstring + facetstring + "&format=geojson&q=" + queryObj.q + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + queryObj.page_size + "&page=" + nextpage;
+      var nextquerystring = ECO.base.api.observations + "?ordering=" + orderstring + facetstring + "&format=geojson&q=" + queryObj.q + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + queryObj.page_size + "&page=" + nextpage;
       d3.json(nextquerystring, function(error, data) {
       console.log(data);
         mapData.concat(dataFilterCoordinates(data || []));
@@ -1891,100 +2025,17 @@ function query() {
   d3.select("#export-photos")
     .attr("href", photoquerystring)
     .text(photoquerystring);
-  d3.select("#loading-view .photos")
-    .classed("loaded", false)
-    .classed("error", false)
-    .text("Loading...");
+  loadingCheck("photos");
   d3.json(photoquerystring, function(error, data) {
     if (error) {
-      d3.select("#loading-view .photos")
-        .classed("error", true)
-        .text(error.status + " Error");
+      errorCheck("photos", error.status);
       return;
     }
-    d3.select("#loading-view .photos")
-      .classed("loaded", true)
-      .classed("error", false)
-      .text("Loaded");
+    loadedCheck("photos");
     photoData = dataFilterCoordinates(data || []);
 
     map.draw();
 
-    var photos = d3.select("#photos .inner-photos")
-      .html("")
-      .selectAll("a")
-      .data(data.features)
-      .enter().append("a")
-      .attr("href", function(d) { return d.properties.url; })
-      .on("mouseover", function(d) {
-        d3.select("#detail-type").text("Photo");
-        ECO.detailview(d.properties);
-      })
-      .on("mouseout", function() {
-        showLoadingView();
-      });
-
-    photos.append("img")
-      .attr("src", function(d) { return d.properties.media_url; });
-
-    if (data.next) {
-      d3.select("#photos .inner-photos").append("span")
-        .text(" Load more [+]")
-        .datum(data.next)
-        .on("click", loadMorePhotos);
-    }
-
-    function loadMorePhotos(url) {
-      d3.select(this).remove();
-
-      d3.select("#loading-view .photos")
-        .classed("loaded", false)
-        .classed("error", false)
-        .text("Loading...");
-
-      d3.select("#loading-view").style("display", null);
-      d3.select("#detail-view").style("display", "none");
-      d3.json(url, function(error, data) {
-        if (error) {
-          d3.select("#loading-view .photos")
-            .classed("error", true)
-            .text(error.status + " Error");
-          return;
-        }
-        d3.select("#loading-view .photos")
-          .classed("loaded", true)
-          .classed("error", false)
-          .text("Loaded");
-        photoData.concat(dataFilterCoordinates(data || []));
-        map.draw();
-
-        var existingPhotos = d3.select("#photos .inner-photos").selectAll("a").data();
-
-        var photos = d3.select("#photos .inner-photos")
-          .selectAll("a")
-          .data(existingPhotos.concat(data.features))
-          .enter().append("a")
-          .attr("href", function(d) { return d.properties.url; })
-          .on("mouseover", function(d) {
-            d3.select("#detail-type").text("Photo");
-            ECO.detailview(d.properties);
-          })
-          .on("mouseout", function() {
-            showLoadingView();
-          });
-
-        photos.append("img")
-          .attr("src", function(d) { return d.properties.media_url; });
-
-
-        if (data.next) {
-          d3.select("#photos .inner-photos").append("span")
-            .text("Load more [+]")
-            .datum(data.next)
-            .on("click", loadMorePhotos);
-        }
-      });
-    };
   });
 };
 
