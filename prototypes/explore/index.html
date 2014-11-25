@@ -51,6 +51,22 @@ input.error {
   height: 480px;
 }
 
+.zoom-reset {
+    position: relative;
+}
+
+.zoom-reset:after {
+    content: ' ';
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    text-align: center;
+    font-size: 14px;
+    width: 16px;
+    height: 16px;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAnElEQVR4AY3RsW0CMRSA4Y/0SXGNN2AEJEoWuLTUuKKhRWIRb2EpWYABrJNuiasPOR2N00dCzjfA03vv93+jpKiKZPRHkK2ejpqjp1UWAAgWN3cRDdHdzSIAZBd7E2hgsneRYWP05ZVP3yQnzHaggZ0ZJwmKLR4G0MDgga3CRvXulR8f3Qm9HfpXdP/whrOrgyoCourg6ky/Rb/mL8ILRiXYagrrAAAAAElFTkSuQmCC958a6c25d16fbb8d6a05fc04a1d3aeff');
+}
+
 .leaflet-popup {
   z-index: 200;
 }
@@ -767,6 +783,7 @@ h3 {
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="../lib/zoom-extras.js"></script>
 <script src="../lib/hashnav.js"></script>
 <script src="config.js"></script>
 <script>
@@ -1077,7 +1094,7 @@ ECO.map = function() {
   var __ = {};
 
   var defaultCenter = new L.LatLng(37.7,-122),
-      defaultZoom = 6,
+      defaultZoom = 2,
       markers = [],
       subscribers = [],
       map;
@@ -1089,9 +1106,26 @@ ECO.map = function() {
     offset: new L.Point(0,-4)
   });
 
-  map = __.map = L.map('map').setView(defaultCenter, defaultZoom);
+  map = __.map = L.map('map', {
+    zoomControl: false
+  }).setView(defaultCenter, defaultZoom);
 
   map.scrollWheelZoom.disable();
+
+  var zoomControls = new L.Control.ZoomExtras( {
+      position: 'topleft',
+      extras: [{
+        text: '',
+        title: 'Reset',
+        klass: 'zoom-reset',
+        onClick: function() {
+          this._map.setView(defaultCenter, defaultZoom);
+          // remove bounding box?
+        },
+        onDisabled: function(btn, className) {
+        }
+      }]
+  }).addTo(map);
 
   var baseLayer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
     attribution: '',
