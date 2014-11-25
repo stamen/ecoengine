@@ -1,5 +1,28 @@
 var ECO = ECO || {};
 
+ECO.basemaps = [
+  {
+    'name': 'Light',
+    'url': 'http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
+    'attribution': 'Map tiles by <a href="http://cartodb.com/attributions#basemaps">CartoDB</a>, under <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>. Data by <a href="http://www.openstreetmap.org/">OpenStreetMap</a>, under ODbL.'
+  },
+  {
+    'name': 'Dark',
+    'url': 'http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png',
+    'attribution': 'Map tiles by <a href="http://cartodb.com/attributions#basemaps">CartoDB</a>, under <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>. Data by <a href="http://www.openstreetmap.org/">OpenStreetMap</a>, under ODbL.'
+  },
+  {
+    'name': 'OpenStreetMap',
+    'url': 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    'attribution': '© OpenStreetMap contributors'
+  },
+  {
+    'name': 'Stamen Terrain',
+    'url': 'http://{s}.tile.stamen.com/terrain-background/{z}/{x}/{y}.jpg',
+    'attribution': 'Map tiles by <a href="http://stamen.com/">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org/">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.'
+  }
+];
+
 ECO.advancedSearch = [
   {
     'section': 'Unique Identifier (Observations)',
