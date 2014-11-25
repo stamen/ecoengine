@@ -744,10 +744,6 @@ h3 {
       </select><br/>
       <h3>Basemap</h3>
       <select id="layer-select">
-        <option value="http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png">Light</option>
-        <option value="http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png">Dark</option>
-        <option value="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png">OpenStreetMap</option>
-        <option value="http://{s}.tile.stamen.com/terrain-background/{z}/{x}/{y}.jpg">Stamen Terrain</option>
       </select>
       <h3>Data Layers</h3>
       <em>nonfunctional checkboxes</em>
@@ -1107,7 +1103,8 @@ ECO.map = function() {
   });
 
   map = __.map = L.map('map', {
-    zoomControl: false
+    zoomControl: false,
+    attributionControl: false
   }).setView(defaultCenter, defaultZoom);
 
   map.scrollWheelZoom.disable();
@@ -1127,8 +1124,13 @@ ECO.map = function() {
       }]
   }).addTo(map);
 
-  var baseLayer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
-    attribution: '',
+
+  var attributionControl = L.control.attribution({
+    prefix: false 
+  }).addTo(map);
+
+  var baseLayer = L.tileLayer(ECO.basemaps['Light'].url, {
+    attribution: ECO.basemaps['Light'].attribution,
     subdomains: 'abc',
     minZoom: 1,
     transparent: true,
@@ -1225,8 +1227,18 @@ ECO.map = function() {
   });
 
   d3.select("#layer-select")
+    .selectAll("option")
+    .data(d3.keys(ECO.basemaps))
+    .enter().append("option")
+    .text(String);
+
+  d3.select("#layer-select")
     .on("change", function() {
-      baseLayer.setUrl(this.value);
+      var name = this.value;
+      //attributionControl.addAttribution(ECO.basemaps[name].attribution);
+      d3.select("#map .leaflet-control-attribution")
+        .html(ECO.basemaps[name].attribution);
+      baseLayer.setUrl(ECO.basemaps[name].url);
     });
   d3.select("#boundary-select")
     .on("change", function() {
