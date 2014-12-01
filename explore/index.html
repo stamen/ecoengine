@@ -10,7 +10,7 @@ body {
   height: 100%;
   background: #fff;
   margin: 0;
-  min-width: 960px;
+  min-width: 800px;
   line-height: 1.3em;
 }
 
@@ -88,7 +88,7 @@ input.error {
   position: absolute;
   top: 0;
   min-height: 38px;
-  min-width: 960px;
+  min-width: 800px;
   width: 100%;
   z-index: 2000;
   line-height: 24px;
@@ -1386,7 +1386,7 @@ ECO.map = function() {
 
     if (queryObj.bbox.length == 0) {
       if (bds && isAutozoom) {
-        bds.pad(0.15);
+        bds.pad(0.33);
 
         setTimeout(function(){
           // basic method to determine if bounds is big enough to set
