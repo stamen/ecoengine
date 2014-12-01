@@ -624,8 +624,14 @@ table .active {
   font-size: 12px;
   padding-top: 1px;
 }
-.bars:hover {
-  background: #dadada;
+.bars .alert {
+  padding: 12px 0;
+  margin: 0;
+}
+.bars .alert:hover {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
 }
 .bars .count {
   color: #bbb;
@@ -775,6 +781,10 @@ h3 {
 </div>
 <div class="panel left" id="facets">
   <h4>Filters</h4>
+  <p>
+  These bar charts display the distribution of data across multiple facets.<br/>
+    Click on a bar to toggle a filter for each field.<br/>
+  </p>
   <!-- <p class="infobox">Click a name below to filter by facet</p> -->
   <div id="search-loading" class="loading-msg alert-warning"></div>
   <div id="search-bars"></div>
@@ -1575,7 +1585,7 @@ ECO.list = function() {
         .attr("class", "bars")
         .attr("title", "Click to toggle filter")
         .append("div")
-        .classed("active", function(d,i,g) {
+        .classed("alert alert-success", function(d,i,g) {
           return queryObj.facets[searchfields[g]] == d[0];
         })
         .on("mouseout", function() {
