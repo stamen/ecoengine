@@ -1994,6 +1994,7 @@ function query() {
 
   loadingCheck("observations");
   d3.select("#results-loading")
+    .classed("alert", true)
     .html("<strong>Loading...</strong>");
   d3.json(querystring, function(error, data) {
     if (error) {
@@ -2057,7 +2058,9 @@ function query() {
     d3.select(".pagination").append("div")
       .style("clear", "both");
 
-    d3.select("#results-loading").html("");
+    d3.select("#results-loading")
+      .classed("alert", false)
+      .html("");
     datatable.draw(data);
 
     mapData = dataFilterCoordinates(data || []);
@@ -2088,6 +2091,7 @@ function query() {
     .classed("error", false)
     .text("Loading...");
   d3.select("#search-loading")
+    .classed("alert", true)
     .html("<strong>Loading...</strong>");
   d3.json(searchquerystring, function(error, data) {
     if (error) {
@@ -2100,7 +2104,9 @@ function query() {
       .classed("loaded", true)
       .classed("error", false)
       .text("Loaded");
-    d3.select("#search-loading").html("");
+    d3.select("#search-loading")
+      .classed("alert", false)
+      .html("");
     fieldlist.draw(data);
   });
 
