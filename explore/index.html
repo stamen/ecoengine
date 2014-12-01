@@ -583,6 +583,12 @@ svg {
   display: block;
 }
 
+.loading-msg {
+  margin: 8px 0;
+  line-height: 2em;
+  padding: 0 8px;
+}
+
 #results table {
   font-size: 12px;
 }
@@ -771,6 +777,7 @@ h3 {
 <div class="panel left" id="facets">
   <h4>Filters</h4>
   <!-- <p class="infobox">Click a name below to filter by facet</p> -->
+  <div id="search-loading" class="loading-msg alert-warning"></div>
   <div id="search-bars"></div>
 </div>
 <div class="wrap">
@@ -782,6 +789,7 @@ h3 {
       <a href="#" id="export-json" target="_blank">JSON</a>, or
       <a href="#" id="export-geojson" target="_blank">GeoJSON</a> from the <a href="https://ecoengine.berkeley.edu/">Berkeley Ecoinformatics Engine</a>
     </div>
+    <div id="results-loading" class="loading-msg alert-warning"></div>
     <div id="results"></div>
   </div>
 </div>
@@ -1985,6 +1993,8 @@ function query() {
     .attr("href", ECO.base.api.observations + "?format=geojson" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString);
 
   loadingCheck("observations");
+  d3.select("#results-loading")
+    .html("<strong>Loading...</strong>");
   d3.json(querystring, function(error, data) {
     if (error) {
       errorCheck("observations", error.status);
@@ -2047,6 +2057,7 @@ function query() {
     d3.select(".pagination").append("div")
       .style("clear", "both");
 
+    d3.select("#results-loading").html("");
     datatable.draw(data);
 
     mapData = dataFilterCoordinates(data || []);
@@ -2076,6 +2087,8 @@ function query() {
     .classed("loaded", false)
     .classed("error", false)
     .text("Loading...");
+  d3.select("#search-loading")
+    .html("<strong>Loading...</strong>");
   d3.json(searchquerystring, function(error, data) {
     if (error) {
       d3.select("#loading-view .search")
@@ -2087,6 +2100,7 @@ function query() {
       .classed("loaded", true)
       .classed("error", false)
       .text("Loaded");
+    d3.select("#search-loading").html("");
     fieldlist.draw(data);
   });
 
