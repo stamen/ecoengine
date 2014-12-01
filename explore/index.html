@@ -754,6 +754,8 @@ h3 {
               <input type="checkbox" id="reserves-check"></input> <span class="reserves-label">Reserves</span><br/>
                 <input type="checkbox" id="jepson-check"></input> <span class="jepson-label">Jepson Regions</span><br/>
       </div>
+      <h3>Options</h3>
+      <input type="checkbox" id="autozoom-check"></input> Autozoom
     </div>
     <div id="bbox-select">
       Constrain Search to Map (this is currently broken)
@@ -783,6 +785,8 @@ h3 {
 <script src="../lib/hashnav.js"></script>
 <script src="config.js"></script>
 <script>
+var isAutozoom = false;
+
 var fields = [
   "record",
   "scientific_name",
@@ -1018,6 +1022,12 @@ function errorCheck(type, err) {
     .style("text-align", "center")
     .text("(" + err + " error)");
 };
+
+// autozoom toggle
+d3.select("#autozoom-check")
+  .on("change", function(d) {
+    isAutozoom = this.checked;
+  });
 
 d3.select("#export-sensors")
   .attr("href", ECO.base.api.sensors)
@@ -1375,7 +1385,7 @@ ECO.map = function() {
     });
 
     if (queryObj.bbox.length == 0) {
-      if (bds) {
+      if (bds && isAutozoom) {
         bds.pad(0.15);
 
         setTimeout(function(){
