@@ -908,7 +908,7 @@ ECO.base = {
     photos: 'https://dev-ecoengine.berkeley.edu/api/photos/',
     sensors: 'https://dev-ecoengine.berkeley.edu/api/sensors/?page_size=5000&format=geojson',
     layers: 'https://dev-ecoengine.berkeley.edu/api/layers/',
-    rasters: '../tiles/rstore.json',
+    rasters: 'rstore.json',
     reserves: 'https://dev-ecoengine.berkeley.edu/api/layers/reserves/features/?page_size=500',
     jepson: 'https://dev-ecoengine.berkeley.edu/api/layers/jepson-regions/features/?page_size=500'
   }
@@ -1066,60 +1066,6 @@ d3.json(ECO.base.api.sensors, function(error, data) {
 
   map.draw();
 });
-
-
-ECO.detailview = function(row) {
-  var excluded = ["url", "remote_resource", "media_url", "observations", "source"];
-
-  d3.select("#details")
-    .style("margin-left", 0)
-    .style("display", "block");
-
-  var container = d3.select("#detail-view")
-    .style("display", null)
-    .html("");
-
-  d3.select("#loading-view").style("display", "none");
-
-  if ("media_url" in row && row.media_url) {
-    container.append("a")
-      .attr("class", "photo")
-      .attr("href", row.media_url)
-    .append("img")
-      .attr("src", row.media_url);
-  }
-
-  var table = container.append("table")
-
-  var divs = container.selectAll("tr")
-    .data(d3.entries(row).filter(function(d) {
-      if (excluded.indexOf(d.key) > -1) return false;
-      if (d.value == null) return false;
-      return true;
-    }))
-    .enter().append("tr")
-
-  divs.append("td")
-    .attr("class", "key")
-    .html(function(d) { return d.key + " &nbsp; "; });
-
-  divs.append("td")
-    .html(function(d) {
-
-      if (typeof d.value == "string") {
-        if (d.value.slice(0,4) == "http") {
-          return "<a href='" + d.value + "'>" + d.value + "</a>";
-        }
-        if (d.key == "record") {
-          if (row["remote_resource"] !== "") {
-            return "<a href='" + row["remote_resource"] + "'>" + d.value + "</a>";
-          }
-        }
-        return d.value;
-      }
-      return JSON.stringify(d.value);
-    });
-};
 
 ECO.map = function() {
   var __ = {};
@@ -1310,7 +1256,6 @@ ECO.map = function() {
   function onMarkerOver(evt) {
     showTooltip(evt);
 
-    ECO.detailview(evt.target.data_);
     subscribers.forEach(function(s){
       if (s.over) s.over(evt);
     });
@@ -1346,14 +1291,11 @@ ECO.map = function() {
 
       }
     }).addTo(map); 
+    poly.data_ = layer.properties;
 
-    poly.on('mouseover', function() {
-      d3.select("#detail-type").text("Reserve ");
-      ECO.detailview(layer.properties);
-    })
-    .on("mouseout", function() {
-      //hideDetailview();
-    });
+    poly.on('mouseover', onMarkerOver)
+        .on('mouseout', onMarkerOut)
+        .on('click', onMarkerClick);
   };
 
   function addMarkers(data) {
@@ -1371,21 +1313,21 @@ ECO.map = function() {
       }      
 
       if (type == 'observation') {
-        var markerIcon= L.divIcon({
+        var markerIcon = L.divIcon({
           className: 'eco-basic-icon ' + d.properties.observation_type.replace(/ /g,"-"),
           iconSize: new L.Point(12,12)
         });
       }
 
       if (type == 'photo') {
-        var markerIcon= L.divIcon({
+        var markerIcon = L.divIcon({
           className: 'eco-basic-icon media-photo',
           iconSize: new L.Point(12,12)
         });
       }
 
       if (type == 'sensor') {
-        var markerIcon= L.divIcon({
+        var markerIcon = L.divIcon({
           className: 'eco-basic-icon sensor',
           iconSize: new L.Point(12,12)
         });
@@ -1440,21 +1382,29 @@ ECO.map = function() {
 
   function showTooltip(evt) {
       if (!evt.target.data_) return;
+      console.log(evt);
+
       var type = ''
       if ('observation_type' in evt.target.data_) {
         type = 'Observation';
       } else if ('media_url' in evt.target.data_) {
         type = 'Photo';
-      } else {
+      } else if ('station_name' in evt.target.data_){
         type = 'Sensor';
+      } else if ('layer' in evt.target.data_) {
+        type = 'Reserve';
       }
 
+      // tooltip header
       if (type == 'Observation') {
         var content = "<strong>" + type + " (" + evt.target.data_.observation_type + ")</strong><br/>";
+      } else if (type == 'Reserve') {
+        var content = "<strong>" + evt.target.data_.name + "</strong><br/>";
       } else {
         var content = "<strong>" + type + "</strong><br/>";
       }
       
+      // tooltip content 
       if (type == 'Observation') {
         content += evt.target.data_['scientific_name'] + "<br/>" + evt.target.data_['record'];
       }
@@ -1464,10 +1414,15 @@ ECO.map = function() {
         content += evt.target.data_['record'];
       }
       if (type == 'Sensor') {
-        content += evt.target.data_['station_name'] + "<br/>" + evt.target.data_['record'];
+        content += evt.target.data_['station_name'] + "<br/>"
+        content += evt.target.data_['record'];
       }
+      if (type == 'Reserve') {
+        content += evt.target.data_['record'];
+      }
+
       popup
-          .setLatLng(evt.target._latlng)
+          .setLatLng(evt.latlng)
           .setContent(content)
           .openOn(map);
   }
@@ -1698,7 +1653,6 @@ ECO.datatable = function() {
 
 
         d3.select("#detail-type").html("<span class='eco-basic-icon " + d.properties.observation_type + "'></span> Observation")
-        ECO.detailview(d.properties);
       })
       .on("mouseout", function() {
         //hideDetailview();
