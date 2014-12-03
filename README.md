@@ -10,10 +10,16 @@ See more about the API at https://ecoengine.berkeley.edu/
 
 The live interface will live at http://holos.berkeley.edu/explore/
 
+## Project Goals
+
+
+
 ## Configuration
 
 * Describe `config.js`
-* Instructions for switching development vs. production version of the API
+  * Endpoints - Instructions for switching development vs. production version of the API
+  * Basemaps
+  * Advanced Search Fields
 
 ## Dependencies
 
@@ -37,11 +43,6 @@ This is a front-end-development project only, and it relies on the following (ca
 
 * Location and (basic) description of images, existing CSS, HTML, etc.
 
-## How do I install it?
+## How do I run the project locally?
 
 Just clone the repo and use your favorite web server in `/ecoengine` to test locally.
-
-## How do I deploy it to the world?
-
-What specific section(s) of `index.html` need to be brought into a production environment to function?
-

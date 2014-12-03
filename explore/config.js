@@ -162,13 +162,3 @@ ECO.advancedSearch = [
   }
   */
 ];
-
-ECO.iconColors = {
-  'specimen': 'red',
-  'vtm vegetation feature': 'green',
-  'plot survey': 'blue',
-  'photo': 'pink',
-  'fossil': 'purple',
-  'observation': 'orange',
-  'checklist': 'magenta'
-};
