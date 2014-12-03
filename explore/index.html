@@ -900,18 +900,7 @@ var photoData = [];
 var sensorData = [];
 
 var ECO = ECO || {};
-ECO.base = {
-  api: {
-    search: 'https://dev-ecoengine.berkeley.edu/api/search/',
-    observations: 'https://dev-ecoengine.berkeley.edu/api/observations/',
-    photos: 'https://dev-ecoengine.berkeley.edu/api/photos/',
-    sensors: 'https://dev-ecoengine.berkeley.edu/api/sensors/?page_size=5000&format=geojson',
-    layers: 'https://dev-ecoengine.berkeley.edu/api/layers/',
-    rasters: 'rstore.json',
-    reserves: 'https://dev-ecoengine.berkeley.edu/api/layers/reserves/features/?page_size=500',
-    jepson: 'https://dev-ecoengine.berkeley.edu/api/layers/jepson-regions/features/?page_size=500'
-  }
-}
+
 
 var sortOrder = {
   'resource': -3,
@@ -1072,10 +1061,10 @@ d3.select("#autozoom-check")
   });
 
 d3.select("#export-sensors")
-  .attr("href", ECO.base.api.sensors)
-  .text(ECO.base.api.sensors);
+  .attr("href", ECO.endpoints.sensors)
+  .text(ECO.endpoints.sensors);
 loadingCheck("sensors");
-d3.json(ECO.base.api.sensors, function(error, data) {
+d3.json(ECO.endpoints.sensors, function(error, data) {
   loadedCheck("sensors");
 
   map.clear();
@@ -1153,18 +1142,18 @@ ECO.map = function() {
 
 
   d3.select("#export-layers")
-    .attr("href", ECO.base.api.layers)
-    .text(ECO.base.api.layers);
+    .attr("href", ECO.endpoints.layers)
+    .text(ECO.endpoints.layers);
   d3.select("#export-rasters")
-    .attr("href", ECO.base.api.rasters)
-    .text(ECO.base.api.rasters);
+    .attr("href", ECO.endpoints.rasters)
+    .text(ECO.endpoints.rasters);
   // Layer select box
 
   d3.select("#loading-view .layers")
     .classed("loaded", false)
     .classed("error", false)
     .text("Loading...");
-  d3.json(ECO.base.api.layers, function(error, layers) {
+  d3.json(ECO.endpoints.layers, function(error, layers) {
     if (error) {
       d3.select("#loading-view .layers")
         .classed("error", true)
@@ -1180,7 +1169,7 @@ ECO.map = function() {
       .classed("loaded", false)
       .classed("error", false)
       .text("Loading...");
-    d3.json(ECO.base.api.rasters, function(error, rasters) {
+    d3.json(ECO.endpoints.rasters, function(error, rasters) {
       if (error) {
         d3.select("#loading-view .rasters")
           .classed("error", true)
@@ -1249,7 +1238,7 @@ ECO.map = function() {
     });
 
   /*
-  var apiLayer = L.tileLayer(ECO.base.api.tiles, {
+  var apiLayer = L.tileLayer(ECO.endpoints.tiles, {
     attribution: '&copy; <a href="http://ecoengine.berkeley.edu">EcoEngine</a>',
     subdomains: 'abc',
     minZoom: 1,
@@ -1724,11 +1713,11 @@ var map = new ECO.map().subscribe(datatable.mapEvents);
 var timebrush = d3.svg.brush()
 
 d3.select("#export-reserves")
-  .attr("href", ECO.base.api.reserves)
-  .text(ECO.base.api.reserves);
+  .attr("href", ECO.endpoints.reserves)
+  .text(ECO.endpoints.reserves);
 
 loadingCheck("reserves");
-d3.json(ECO.base.api.reserves, function(error, data) {
+d3.json(ECO.endpoints.reserves, function(error, data) {
   if (error) {
     errorCheck("reserves", error.status);
     return;
@@ -1750,11 +1739,11 @@ d3.json(ECO.base.api.reserves, function(error, data) {
 });
 
 d3.select("#export-jepson")
-  .attr("href", ECO.base.api.jepson)
-  .text(ECO.base.api.jepson);
+  .attr("href", ECO.endpoints.jepson)
+  .text(ECO.endpoints.jepson);
 
 loadingCheck("jepson");
-d3.json(ECO.base.api.jepson, function(error, data) {
+d3.json(ECO.endpoints.jepson, function(error, data) {
   if (error) {
     errorCheck("jepson", error.status);
     return;
@@ -1959,19 +1948,19 @@ function query() {
 
   window.location.hash = hashString;
 
-  var querystring = ECO.base.api.observations + "?format=geojson" + hashString;
-  var searchquerystring = ECO.base.api.search + "?format=json" + orderString + facetstring+ qString + dateString + "&facets_limit=100";
-  var photoquerystring = ECO.base.api.photos  + "?format=geojson" + orderString+ qStringSimple + bboxString + dateString + "&page_size=80page=1";
+  var querystring = ECO.endpoints.observations + "?format=geojson" + hashString;
+  var searchquerystring = ECO.endpoints.search + "?format=json" + orderString + facetstring+ qString + dateString + "&facets_limit=100";
+  var photoquerystring = ECO.endpoints.photos  + "?format=geojson" + orderString+ qStringSimple + bboxString + dateString + "&page_size=80page=1";
 
   console.log(querystring);
 
   // export links
   d3.select("#export-csv")
-    .attr("href", ECO.base.api.observations + "?format=csv" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString);
+    .attr("href", ECO.endpoints.observations + "?format=csv" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString);
   d3.select("#export-json")
-    .attr("href", ECO.base.api.observations + "?format=json" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString);
+    .attr("href", ECO.endpoints.observations + "?format=json" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString);
   d3.select("#export-geojson")
-    .attr("href", ECO.base.api.observations + "?format=geojson" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString);
+    .attr("href", ECO.endpoints.observations + "?format=geojson" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString);
 
   loadingCheck("observations");
   d3.select("#results-loading")
@@ -2050,7 +2039,7 @@ function query() {
 
     /*
     d3.range(2,Math.min(10,pagecount)).forEach(function(nextpage) {
-      var nextquerystring = ECO.base.api.observations + "?ordering=" + orderstring + facetstring + "&format=geojson&q=" + queryObj.q + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + queryObj.page_size + "&page=" + nextpage;
+      var nextquerystring = ECO.endpoints.observations + "?ordering=" + orderstring + facetstring + "&format=geojson&q=" + queryObj.q + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + queryObj.page_size + "&page=" + nextpage;
       d3.json(nextquerystring, function(error, data) {
       console.log(data);
         mapData.concat(dataFilterCoordinates(data || []));
