@@ -1,34 +1,35 @@
 # Berkeley Ecoinformatics Search Engine
 
-In this project, Stamen is designing two main methods of searching the Berkeley Ecoinformatics database, one method primarily based on a map and another on time or other non-geographical elements. To the greatest extent possible, code should be modular so that elements like timelines or selectors can be recombined in furute work after our engagement is complete.
+For this project, Stamen designed a rich search interface to explore the Berkeley Ecoengine API. 
 
-See more at https://ecoengine.berkeley.edu/
+The Stamen-built prototype lives at http://studio.stamen.com/berkeley/show/ecoengine/explore (password protected, inquire with teh Ecoengine team if you need access).
 
-Our interface will live at http://holos.berkeley.edu/explore/
+See more about the API at https://ecoengine.berkeley.edu/
 
+The live interface will live at http://holos.berkeley.edu/explore/
 
-## Branches
+## Configuration
 
-* List, describe and link
-
-To clone a specific branch (to prevent having to switch branches when working
-on different components), use:
-
-```bash
-git clone git@github.com:stamen/berkeley-ecoinformatics.git -b <branch> repo-name-<branch>
-```
+* Describe config.js
+* Instructions for switching development vs. production version of the API
 
 ## Dependencies
 
 ### Software
 
-This is a front-end-development project only, but we'll probably have dependencies like D3 and Leaflet and maybe others as well.
+This is a front-end-development project only, and it relies on the following (called in `index.html`)
+
+* `http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css`
+* `http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js`
+* `http://d3js.org/d3.v3.min.js`
+* `/lib/zoom-extras.js`
+* `/lib/hashnav.js`
+* `config.js`
 
 ### Data
 
-* All data will come from the Berkeley Ecoinformatics API, documented at https://dev-ecoengine.berkeley.edu/docs/quickstart.html
-* No other data will be part of the project
-* During development, use the dev site at https://dev-ecoengine.berkeley.edu/
+* All data comes from the Berkeley Ecoinformatics API, documented at https://dev-ecoengine.berkeley.edu/docs/quickstart.html
+* The Stamen prorotype uses the dev API at https://dev-ecoengine.berkeley.edu. See "Configuration" above for instructions for changing that to the production version.
 
 ### Static Assets
 
@@ -36,12 +37,9 @@ This is a front-end-development project only, but we'll probably have dependenci
 
 ## How do I install it?
 
-Describe that here.
-
-## How do I test it other than locally?
-
-Do we have Prosthetic or any other special methods required for testing? Describe those here if so.
+Just clone the repo and use your favorite web server in `/ecoengine` to test locally.
 
 ## How do I deploy it to the world?
 
-If this is a live thing in the world, how do we push changes to the live thing?
+What specific section(s) of `index.html` need to be brought into a production environment to function?
+
