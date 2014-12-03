@@ -759,13 +759,12 @@ h3 {
       <select id="layer-select">
       </select>
       <h3>Data Layers</h3>
-      <em>nonfunctional checkboxes</em>
       <div style="text-align: left; margin-left: 30px;">
         <input type="checkbox" id="observations-check"></input> <span class="observations-label">Observations</span><br/>
-          <input type="checkbox" id="photos-check"></input> <span class="photos-label">Photos</span><br/>
-            <input type="checkbox" id="sensors-check"></input> <span class="sensors-label">Sensors</span><br/>
-              <input type="checkbox" id="reserves-check"></input> <span class="reserves-label">Reserves</span><br/>
-                <input type="checkbox" id="jepson-check"></input> <span class="jepson-label">Jepson Regions</span><br/>
+        <input type="checkbox" id="photos-check"></input> <span class="photos-label">Photos</span><br/>
+        <input type="checkbox" id="sensors-check"></input> <span class="sensors-label">Sensors</span><br/>
+        <input type="checkbox" id="reserves-check"></input> <span class="reserves-label">Reserves</span><br/>
+        <input type="checkbox" id="jepson-check"></input> <span class="jepson-label">Jepson Regions</span><br/>
       </div>
       <h3>Options</h3>
       <input type="checkbox" id="autozoom-check"></input> Autozoom
@@ -1025,7 +1024,8 @@ function loadingCheck(type) {
   d3.select("#" + type + "-check")
     .classed("error", false)
     .attr("disabled", "disabled")
-    .attr("checked", null);
+    .attr("checked", null)
+    .on("change", function() {});
   d3.select("." + type + "-label")
     .style("color", "#c82");
   d3.selectAll(".error-label").remove();
@@ -1034,7 +1034,24 @@ function loadingCheck(type) {
 function loadedCheck(type) {
   d3.select("#" + type + "-check")
     .attr("disabled", null)
-    .attr("checked", "checked");
+    .attr("checked", "checked")
+    .on("change", function() {
+      var layerCheckMap = {
+        observations: 'eco-observation',
+        photos: 'photo',
+        sensors: 'sensor',
+        reserves: 'reserve'
+      };
+
+      if (this.checked) {
+        d3.selectAll("." + layerCheckMap[type])
+          .style("display", null);
+      } else {
+        d3.selectAll("." + layerCheckMap[type])
+          .style("display", "none");
+      }
+
+    });
   d3.select("." + type + "-label")
     .style("color", null);
 };
@@ -1284,6 +1301,7 @@ ECO.map = function() {
   function addPoly(layer, color) {
     var poly = L.geoJson(layer.geometry, {
       style: {
+        className: 'reserve',
         color: color,
         weight: 1,
         opacity: 0.9,
@@ -1314,14 +1332,14 @@ ECO.map = function() {
 
       if (type == 'observation') {
         var markerIcon = L.divIcon({
-          className: 'eco-basic-icon ' + d.properties.observation_type.replace(/ /g,"-"),
+          className: 'eco-basic-icon eco-observation ' + d.properties.observation_type.replace(/ /g,"-"),
           iconSize: new L.Point(12,12)
         });
       }
 
       if (type == 'photo') {
         var markerIcon = L.divIcon({
-          className: 'eco-basic-icon media-photo',
+          className: 'eco-basic-icon photo media-photo',
           iconSize: new L.Point(12,12)
         });
       }
