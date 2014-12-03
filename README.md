@@ -1,6 +1,8 @@
 # Berkeley Ecoinformatics Search Engine
 
-For this project, Stamen designed a rich search interface to explore the Berkeley Ecoengine API. 
+For this project, Stamen designed a rich search interface to explore the Berkeley Ecoengine API. Here's a screenshot:
+
+![image](https://cloud.githubusercontent.com/assets/1423200/5288977/bd8c6db2-7aee-11e4-83e6-46ada43cab8c.png)
 
 The Stamen-built prototype lives at http://studio.stamen.com/berkeley/show/ecoengine/explore (password protected, inquire with teh Ecoengine team if you need access).
 
@@ -10,7 +12,7 @@ The live interface will live at http://holos.berkeley.edu/explore/
 
 ## Configuration
 
-* Describe config.js
+* Describe `config.js`
 * Instructions for switching development vs. production version of the API
 
 ## Dependencies
