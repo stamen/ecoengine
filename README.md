@@ -1,15 +1,16 @@
 # EcoEngine Explorer
 
-For this project, Stamen designed a rich search interface to explore the Berkeley Ecoengine API. Here's a screenshot:
+Stamen built a rich prototype search interface to explore the Berkeley Ecoengine API. Here's a screenshot:
 
+![image](https://cloud.githubusercontent.com/assets/1423200/5288977/bd8c6db2-7aee-11e4-83e6-46ada43cab8c.png)
 
-The Stamen-built prototype lives at http://studio.stamen.com/berkeley/show/ecoengine/explore (password protected, inquire with the Ecoengine team if you need access).
+The prototype lives at http://studio.stamen.com/berkeley/show/ecoengine/explore (password protected, inquire with the Ecoengine team if you need access).
 
 *Question: Can we post the final build at a public URL?*
 
 Based on the [EcoEngine API](https://ecoengine.berkeley.edu/)
 
-The plan is for someone from Berkeley to integrate the interface into  http://holos.berkeley.edu/explore/.
+One possibility for the interface is for Berkeley to integrate with http://holos.berkeley.edu/explore/. Ths prototype is fully functional without a back-end, however, so it will work on any web server without any back-end dependencies (besides EcoEngine itself for the data).
 
 ## Features
 
@@ -22,10 +23,6 @@ The plan is for someone from Berkeley to integrate the interface into  http://ho
 * Advanced attribute search
 * Bounding box search *(pending)*
 * Footprint search *(pending, based on bounding box)*
-
-## Screenshot
-
-![image](https://cloud.githubusercontent.com/assets/1423200/5288977/bd8c6db2-7aee-11e4-83e6-46ada43cab8c.png)
 
 ## Configuration
 
