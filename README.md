@@ -2,7 +2,7 @@
 
 Stamen built a rich prototype search interface to explore the Berkeley Ecoengine API. Here's a screenshot:
 
-![image](https://cloud.githubusercontent.com/assets/1423200/5288977/bd8c6db2-7aee-11e4-83e6-46ada43cab8c.png)
+![EcoEngine](https://cloud.githubusercontent.com/assets/156229/5325698/82deef8a-7ca8-11e4-8a4a-921b5c684152.png)
 
 The prototype lives at http://studio.stamen.com/berkeley/show/ecoengine/explore (password protected, inquire with the Ecoengine team if you need access).
 
@@ -100,6 +100,8 @@ As well as these stylesheets.
 ## Photos
 
 A basic fullscreen photo viewer sits in the `/photos` directory. A Photo Ribbon also appears in an early version of Explorer at `/prototypes/multi` which displays filtered photos.
+
+![EcoEngine](https://cloud.githubusercontent.com/assets/156229/5325740/c78b40d8-7ca9-11e4-99e7-8426a3e15cff.png)
 
 In Phase 1, Photos is a secondary goal, so additional features may not be added if Explorer requires more work. If time permits, a desired feature is to link direct to the gallery from Explorer to view a filtered set of photos.
 
