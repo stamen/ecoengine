@@ -397,6 +397,7 @@ svg {
 }
 
 #bbox-select {
+  font-weight: bold;
   margin: 12px 0;
   padding: 2px 12px;
   background: rgba(255,255,255,0.8);
@@ -765,8 +766,10 @@ h3 {
       <div id="bbox-select">
         Bounding Box Search
       </div>
-      <h3>Options</h3>
-      <input type="checkbox" id="autozoom-check"></input> Autozoom to observations
+      <div style="display: none;">
+        <h3>Options</h3>
+        <input type="checkbox" id="autozoom-check"></input> Autozoom to observations
+      </div>
     </div>
   </div>
   <div class="map-info">
