@@ -16,12 +16,12 @@ One possibility for the interface is for Berkeley to integrate with http://holos
 
 * Search box
 * Brushable time filter
-* Faceted search with histograms *(currently only operates on Observation queries)*
+* Faceted search with histograms *(filters only Observation queries)*
 * Raster map with multiple layers
 * Marker map display of Observations, Sensors, Photos
 * Polygon map display of Regions
 * Advanced attribute search
-* Bounding box search *(pending)*
+* Bounding box search
 * Footprint search *(pending, based on bounding box)*
 
 ## Configuration
