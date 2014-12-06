@@ -397,17 +397,13 @@ svg {
 }
 
 #bbox-select {
-  display: none;
-  position: absolute;
-  bottom: 20px;
-  right: 0px;
-  text-align: right;
-  z-index: 100;
-  background: #fff;
+  margin: 12px 0;
   padding: 2px 12px;
   background: rgba(255,255,255,0.8);
   cursor: pointer;
   border-radius: 2px;
+  background: #ddd;
+  background: rgba(100,100,100,0.1);
 }
 
 #bbox-select:hover {
@@ -766,11 +762,11 @@ h3 {
         <input type="checkbox" id="reserves-check"></input> <span class="reserves-label">Reserves</span><br/>
         <input type="checkbox" id="jepson-check"></input> <span class="jepson-label">Jepson Regions</span><br/>
       </div>
+      <div id="bbox-select">
+        Bounding Box Search
+      </div>
       <h3>Options</h3>
-      <input type="checkbox" id="autozoom-check"></input> Autozoom
-    </div>
-    <div id="bbox-select">
-      Constrain Search to Map (this is currently broken)
+      <input type="checkbox" id="autozoom-check"></input> Autozoom to observations
     </div>
   </div>
   <div class="map-info">
@@ -792,7 +788,7 @@ h3 {
   <div class="panel right">
     <h4>Observations</h4>
     <div class="export-buttons">
-      Export the data below as
+      <a href="#" id="export-view">View data</a> or export as 
       <a href="#" id="export-csv" target="_blank">CSV</a>,
       <a href="#" id="export-json" target="_blank">JSON</a>, or
       <a href="#" id="export-geojson" target="_blank">GeoJSON</a> from the <a href="https://ecoengine.berkeley.edu/">Berkeley Ecoinformatics Engine</a>
@@ -1779,7 +1775,7 @@ d3.select("#bbox-select")
   .on("click", function() {
     var bds = map.map.getBounds();
     // needs to be bottom left, upper right
-    var bbox = [bds._northEast.lng, bds._southWest.lat, bds._southWest.lng, bds._northEast.lat].join(",");
+    var bbox = [bds._southWest.lng, bds._southWest.lat, bds._northEast.lng, bds._northEast.lat].join(",");
     queryObj.bbox = bbox;
     query();
   });
@@ -1961,12 +1957,14 @@ function query() {
   window.location.hash = hashString;
 
   var querystring = ECO.endpoints.observations + "?format=geojson" + hashString;
-  var searchquerystring = ECO.endpoints.search + "?format=json" + orderString + facetstring+ qString + dateString + "&facets_limit=100";
+  var searchquerystring = ECO.endpoints.search + "?format=json" + orderString + facetstring+ qString + bboxString + dateString + "&facets_limit=100";
   var photoquerystring = ECO.endpoints.photos  + "?format=geojson" + orderString+ qStringSimple + bboxString + dateString + "&page_size=80page=1";
 
   console.log(querystring);
 
   // export links
+  d3.select("#export-view")
+    .attr("href", ECO.endpoints.observations + "?" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString);
   d3.select("#export-csv")
     .attr("href", ECO.endpoints.observations + "?format=csv" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString);
   d3.select("#export-json")
