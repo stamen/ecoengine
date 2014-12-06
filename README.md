@@ -60,7 +60,7 @@ For production, `dev-` should be removed from each URL.
 
 The key is used as the name of the dropdown. URL and attribution values are both required for each tileset added to EcoEngine.
 
-The four basemaps in the initial version of Explorer are `Light`, `Dark, `OpenStreetMap` and `Stamen Terrain` (which currently only covers part of North America).
+The four basemaps in the initial version of Explorer are `Light`, `Dark`, `OpenStreetMap` and `Stamen Terrain` (which currently only covers part of North America).
 
 ### Advanced attribute search fields
 
