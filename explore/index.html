@@ -23,6 +23,13 @@ a {
   color: #82badb;
 }
 
+.small-note {
+  font-size: 10px;
+  line-height: 12px;
+  font-style: italic;
+  margin: 4px;
+}
+
 a:hover {
   text-decoration: underline;
 }
@@ -759,6 +766,7 @@ h3 {
         Bounding Box Search
       </div>
       <strong>Footprint</strong><br/>
+      <div class="small-note">Selecting a footprint performs a simple bounding box query that contains the region</div>
       <select id="reserve-list">
         <option value=0>Select Reserve</option>
       </select><br/>
@@ -779,10 +787,9 @@ h3 {
 </div>
 <div class="panel left" id="facets">
   <h4>Filters</h4>
-  <p>
-  These bar charts display the distribution of data across multiple facets.<br/>
-    Click on a bar to toggle a filter for each field.<br/>
-  </p>
+  <div class="small-note">These bar charts display the distribution of data across multiple facets.<br/>
+    Click on a bar to toggle a filter for each field.</em>
+  </div>
   <!-- <p class="infobox">Click a name below to filter by facet</p> -->
   <div id="search-loading" class="loading-msg alert-warning"></div>
   <div id="search-bars"></div>
@@ -1781,16 +1788,39 @@ d3.json(ECO.endpoints.jepson, function(error, data) {
     return;
   };
   loadedCheck("jepson");
+
   if (!data) return;
-  data.results.forEach(function(d) {
+  data.features.forEach(function(d) {
+    console.log(d);
     d3.select("#jepson-list")
       .append("option")
       .attr("value", JSON.stringify(d.geometry))
       .text(d.properties.name);
   });
-  d3.select("#reserve-list")
+  d3.select("#jepson-list")
     .on("change", function() {
-      queryObj.advanced["g"] = this.value;
+      if (this.value == 0) return;
+
+      var geojson = JSON.parse(this.value);
+      var coords = flatten(geojson.coordinates);
+      var bds = findBounds(coords);
+
+      var bbox = [
+        bds.left,
+        bds.bottom,
+        bds.right,
+        bds.top
+      ];
+
+      queryObj.bbox = bbox.join(",");
+
+      map.map.fitBounds([
+        [bbox[1], bbox[0]],
+        [bbox[3], bbox[2]]
+      ]);
+
+      query();
+
     });
 });
 
