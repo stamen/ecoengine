@@ -1812,6 +1812,7 @@ d3.json(ECO.endpoints.jepson, function(error, data) {
         bds.top
       ];
 
+      console.log(bbox);
       queryObj.bbox = bbox.join(",");
 
       map.map.fitBounds([
@@ -2161,12 +2162,18 @@ function query() {
   });
 };
 
-// Flatten nested array
+// Flatten nested coordinate arrays, like MultiPolygon
 function flatten(arr) {
   var ret = [];
   arr.forEach(function(inner) {
     inner.forEach(function(d) {
-      ret.push(d);
+      if (typeof d[0] == "number") {
+        ret.push(d);
+      } else {
+        d.forEach(function(p) {
+          ret.push(p);
+        });
+      }
     });
   });
   return ret;
