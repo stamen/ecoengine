@@ -699,14 +699,6 @@ h3 {
   <h4>Advanced Search</h4>
   <p>
     <div style="display:none;">
-      <strong>Footprint</strong><br/>
-      <p>
-      Footprint <select id="reserve-list">
-        <option></option>
-      </select><select id="jepson-list">
-        <option></option>
-      </select>
-      </p>
     </div>
     <div id="advanced-search-pane"></div>
     <p>
@@ -766,6 +758,14 @@ h3 {
       <div id="bbox-select">
         Bounding Box Search
       </div>
+      <strong>Footprint</strong><br/>
+      <select id="reserve-list">
+        <option value=0>Select Reserve</option>
+      </select><br/>
+        <select id="jepson-list">
+        <option value=0>Select Jepson Region</option>
+      </select>
+
       <div style="display: none;">
         <h3>Options</h3>
         <input type="checkbox" id="autozoom-check"></input> Autozoom to observations
@@ -1743,9 +1743,30 @@ d3.json(ECO.endpoints.reserves, function(error, data) {
       .text(d.properties.name)
     map.addPoly(d, "#fb5");
   });
+
   d3.select("#reserve-list")
     .on("change", function() {
-      queryObj.advanced["g"] = this.value;
+      if (this.value == 0) return;
+
+      var geojson = JSON.parse(this.value);
+      var coords = flatten(geojson.coordinates);
+      var bds = findBounds(coords);
+
+      var bbox = [
+        bds.left,
+        bds.bottom,
+        bds.right,
+        bds.top
+      ];
+
+      queryObj.bbox = bbox.join(",");
+
+      map.map.fitBounds([
+        [bbox[1], bbox[0]],
+        [bbox[3], bbox[2]]
+      ]);
+
+      query();
     });
 });
 
@@ -2108,6 +2129,39 @@ function query() {
     map.draw();
 
   });
+};
+
+// Flatten nested array
+function flatten(arr) {
+  var ret = [];
+  arr.forEach(function(inner) {
+    inner.forEach(function(d) {
+      ret.push(d);
+    });
+  });
+  return ret;
+};
+
+// Find bounding box for coordinates
+function findBounds(coords) {
+  var top = coords[0][1],
+      right = coords[0][0],
+      bottom = coords[0][1],
+      left = coords[0][0];
+
+  coords.forEach(function(d) {
+    if (d[1] > top) top = d[1];
+    if (d[1] < bottom) bottom= d[1];
+    if (d[0] > right) right = d[0];
+    if (d[0] < left) left = d[0];
+  });
+
+  return {
+    top: top,
+    right: right,
+    bottom: bottom,
+    left: left
+  }
 };
 
 function capitaliseFirstLetter(string) {
