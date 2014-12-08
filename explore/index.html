@@ -853,12 +853,12 @@ var queryObj = {
 fields.forEach(function(d) { queryObj.sortFields[d] = false; });
 
 function logHash(hash) {            
-  console.log(hash);
+  //console.log(hash);
   if (hash.parameters) {              
     var parameters = hash.parameters;
     for (var name in parameters) {
       var value = parameters[name];
-      console.log(name,value);
+      //console.log(name,value);
       if (name == "q") {
         var fields = value.replace(/"/g, "").split(",")
         queryObj.q = fields[0];
@@ -1791,7 +1791,6 @@ d3.json(ECO.endpoints.jepson, function(error, data) {
 
   if (!data) return;
   data.features.forEach(function(d) {
-    console.log(d);
     d3.select("#jepson-list")
       .append("option")
       .attr("value", JSON.stringify(d.geometry))
@@ -1812,7 +1811,6 @@ d3.json(ECO.endpoints.jepson, function(error, data) {
         bds.top
       ];
 
-      console.log(bbox);
       queryObj.bbox = bbox.join(",");
 
       map.map.fitBounds([
@@ -1985,7 +1983,7 @@ function query() {
     advancedString += queryObj.advanced[key];
     advancedString += '"';
   }
-  console.log(advancedString);
+  //console.log(advancedString);
 
   var dateString = "";
   if (queryObj.min_date) {
@@ -2015,7 +2013,7 @@ function query() {
   var searchquerystring = ECO.endpoints.search + "?format=json" + orderString + facetstring+ qString + bboxString + dateString + "&facets_limit=100";
   var photoquerystring = ECO.endpoints.photos  + "?format=geojson" + orderString+ qStringSimple + bboxString + dateString + "&page_size=80page=1";
 
-  console.log(querystring);
+  //console.log(querystring);
 
   // export links
   d3.select("#export-view")
