@@ -6,16 +6,29 @@
 html, body {
   background: #000;
 }
+.more {
+  width: 100%;
+  color: #fff;
+  font-size: 18px;
+  text-align: center;
+  background: #111;
+  margin: 24px 0;
+  padding: 24px 0;
+}
+.more:hover {
+  background: #333;
+}
 </style>
 
 <div id="photos"></div>
+<div id="photos-more"></div>
 
 <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="jquery.justifiedGallery.min.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="../lib/hashnav.js"></script>
 <script>
-var resource = 'https://dev-ecoengine.berkeley.edu/api/photos/?page_size=60';
+var resource = 'https://dev-ecoengine.berkeley.edu/api/photos/?page_size=24';
 
 d3.json(resource, function(error, data) {
   if (error) {
@@ -51,16 +64,24 @@ d3.json(resource, function(error, data) {
   });
 
   if (data.next) {
-    d3.select("#photos").append("span")
+    d3.select("#photos-more").append("div")
+      .attr("class", "more")
       .text(" Load more [+]")
-      .datum(data.next)
+      .datum(data.next.replace("http:", "https:"))
       .on("click", loadMorePhotos);
   }
 
   function loadMorePhotos(url) {
-    d3.select(this).remove();
+    d3.select("#photos-more")
+      .html("")
+      .append("div")
+      .attr("class", "more")
+      .text("Loading...");
 
     d3.json(url, function(error, data) {
+      d3.select("#photos-more")
+        .html("");
+
       if (error) {
         console.log(error);
         return;
@@ -81,10 +102,13 @@ d3.json(resource, function(error, data) {
       photos.append("img")
         .attr("src", function(d) { return d.media_url; });
 
+      $("#photos").justifiedGallery("norewind");
+
       if (data.next) {
-        d3.select("#photos").append("span")
+        d3.select("#photos-more").append("div")
+          .attr("class", "more")
           .text("Load more [+]")
-          .datum(data.next)
+          .datum(data.next.replace("http:", "https:"))
           .on("click", loadMorePhotos);
       }
     });
