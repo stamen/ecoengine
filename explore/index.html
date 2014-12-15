@@ -723,6 +723,7 @@ h3 {
   <h4>Search</h4>
       <a href="#" id="export-search" target="_blank"></a><br/>
   <h4>Photos</h4>
+      <a href="#" id="photo-gallery" target="_blank">Photo Gallery</a> (URL parameters still in progress)<br/>
       <a href="#" id="export-photos" target="_blank"></a><br/>
   <h4>Sensors</h4>
       <a href="#" id="export-sensors" target="_blank"></a><br/>
@@ -2012,6 +2013,7 @@ function query() {
   var querystring = ECO.endpoints.observations + "?format=geojson" + hashString;
   var searchquerystring = ECO.endpoints.search + "?format=json" + orderString + facetstring+ qString + bboxString + dateString + "&facets_limit=100";
   var photoquerystring = ECO.endpoints.photos  + "?format=geojson" + orderString+ qStringSimple + bboxString + dateString + "&page_size=80page=1";
+  var photogallery = "../photos/?" + orderString+ qStringSimple + bboxString + dateString + "&page_size=80page=1";
 
   //console.log(querystring);
 
@@ -2146,6 +2148,8 @@ function query() {
   d3.select("#export-photos")
     .attr("href", photoquerystring)
     .text(photoquerystring);
+  d3.select("#photo-gallery")
+    .attr("href", photogallery);
   loadingCheck("photos");
   d3.json(photoquerystring, function(error, data) {
     if (error) {
