@@ -717,9 +717,13 @@ h3 {
 </div>
 
 <div id="export-pane" class="flydown">
+  <h4>Share</h4> 
+  <p>Copy this URL to share the page. Note that dropdown selections (such as raster layers) are currently not saved. Only parameters used to query the observations API are shared.</p>
+  <p><a href="#" id="share-the-page"></a></p>
   <h4>Export</h4> 
-  <p>This flyout is intended to provide information about the queries and export options for each API.</p>
-  <!--<h4>Observations</h4>-->
+  <p>These are the queries used to generate the interface on this page.</p>
+  <h4>Observations</h4>
+      <a href="#" id="export-observations" target="_blank"></a><br/>
   <h4>Search</h4>
       <a href="#" id="export-search" target="_blank"></a><br/>
   <h4>Photos</h4>
@@ -2018,7 +2022,15 @@ function query() {
 
   //console.log(querystring);
 
+  // share link
+  d3.select("#share-the-page")
+    .attr("href", window.location.href)
+    .text(window.location.href);
+
   // export links
+  d3.select("#export-observations")
+    .attr("href", querystring)
+    .text(querystring);
   d3.select("#export-view")
     .attr("href", ECO.endpoints.observations + "?" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString);
   d3.select("#export-csv")
