@@ -389,7 +389,7 @@ svg {
 
 .layer-selection {
   position: absolute;
-  top: 0px;
+  top: 40px;
   right: 0px;
   padding: 0 8px 8px;
   text-align: center;
@@ -743,44 +743,45 @@ h3 {
 </div>
 <div class="map-area">
   <div id="map">
-    <div class="layer-selection">
-      <h3>Boundaries</h3>
-      <select id="boundary-select">
-        <option value="">None</option>
-      </select><br/>
-      <h3>Environment</h3>
-      <select id="environment-select">
-        <option>None</option>
-      </select><br/>
-      <h3>Basemap</h3>
-      <select id="layer-select">
-      </select>
-      <h3>Data Layers</h3>
-      <div style="text-align: left; margin-left: 30px;">
-        <input type="checkbox" id="observations-check"></input> <span class="observations-label">Observations</span><br/>
-        <input type="checkbox" id="photos-check"></input> <span class="photos-label">Photos</span><br/>
-        <input type="checkbox" id="sensors-check"></input> <span class="sensors-label">Sensors</span><br/>
-        <input type="checkbox" id="reserves-check"></input> <span class="reserves-label">Reserves</span><br/>
-        <input type="checkbox" id="jepson-check"></input> <span class="jepson-label">Jepson Regions</span><br/>
-      </div>
-      <div id="bbox-select">
-        Bounding Box Search
-      </div>
-      <strong>Footprint</strong><br/>
-      <div class="small-note">Selecting a footprint performs a simple bounding box query that contains the region</div>
-      <select id="reserve-list">
-        <option value=0>Select Reserve</option>
-      </select><br/>
-        <select id="jepson-list">
-        <option value=0>Select Jepson Region</option>
-      </select>
+  </div>
+  <div class="layer-selection">
+    <h3>Boundaries</h3>
+    <select id="boundary-select">
+      <option value="">None</option>
+    </select><br/>
+    <h3>Environment</h3>
+    <select id="environment-select">
+      <option>None</option>
+    </select><br/>
+    <h3>Basemap</h3>
+    <select id="layer-select">
+    </select>
+    <h3>Data Layers</h3>
+    <div style="text-align: left; margin-left: 30px;">
+      <input type="checkbox" id="observations-check"></input> <span class="observations-label">Observations</span><br/>
+      <input type="checkbox" id="photos-check"></input> <span class="photos-label">Photos</span><br/>
+      <input type="checkbox" id="sensors-check"></input> <span class="sensors-label">Sensors</span><br/>
+      <input type="checkbox" id="reserves-check"></input> <span class="reserves-label">Reserves</span><br/>
+      <input type="checkbox" id="jepson-check"></input> <span class="jepson-label">Jepson Regions</span><br/>
+    </div>
+    <div id="bbox-select">
+      Bounding Box Search
+    </div>
+    <strong>Footprint</strong><br/>
+    <div class="small-note">Selecting a footprint performs a simple bounding box query that contains the region</div>
+    <select id="reserve-list">
+      <option value=0>Select Reserve</option>
+    </select><br/>
+      <select id="jepson-list">
+      <option value=0>Select Jepson Region</option>
+    </select>
 
-      <div style="display: none;">
-        <h3>Options</h3>
-        <input type="checkbox" id="autozoom-check"></input> Autozoom to observations
-      </div>
+    <div style="display: none;">
+      <h3>Options</h3>
+      <input type="checkbox" id="autozoom-check"></input> Autozoom to observations
     </div>
   </div>
+
   <div class="map-info">
       <button class="map-info-close">x</button>
       <p class="map-info-content"></p>
