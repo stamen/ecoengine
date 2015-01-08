@@ -1,22 +1,15 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <html>
+<title>Leaflet Multiple Layers Example</title>
+<link rel="stylesheet" href="http://leafletjs.com/dist/leaflet.css" />
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://leafletjs.com/dist/leaflet.js"></script>
 <style>
 body {
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 13px;
-  width: 100%;
   background: #f6f6f6;
-  margin: 0;
-}
-
-a {
-  color: #317eac;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
 }
 
 .map-container {
@@ -30,18 +23,12 @@ h5 {
   margin-bottom: 2px;
 }
 
+.leaflet-control-container {
+  display: none;
+}
 </style>
-<head>
-  <title>Leaflet Multiple Layers Example</title>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="http://leafletjs.com/dist/leaflet.css" />
-  <script src="http://d3js.org/d3.v3.min.js"></script>
-</head>
 <body>
   <div id="results"></div>
-
-  <script src="http://leafletjs.com/dist/leaflet.js"></script>
   <script>
     var dispatch = d3.dispatch("pan");
     var maps = {};
@@ -65,9 +52,6 @@ h5 {
           .setView([37.733795, -122.446747], 8)
           .on("moveend", function(d) {
             dispatch.pan(this); 
-          })
-          .on("zoomend", function(d) {
-            dispatch.pan(this); 
           });
 
         L.tileLayer(d.tile_template, {
@@ -85,17 +69,6 @@ h5 {
         }
       });
     });
-    /*
-    var map2 = L.map('map2')
-      .setView([37.733795, -122.446747], 10);
-
-    L.tileLayer('https://dev-ecoengine.berkeley.edu/tiles/cacounties/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      attribution: ''
-    }).addTo(map2);
-    */
-
   </script>
 </body>
 </html>
-
