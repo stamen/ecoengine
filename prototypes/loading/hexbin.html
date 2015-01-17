@@ -17,8 +17,7 @@ path {
   fill: #e6e6e6;
 }
 
-.states,
-.hexagons path {
+.states { 
   stroke: #fff;
 }
 </style>
@@ -43,20 +42,20 @@ d3.select("#query-url").attr("href", query);
 
 continuousLoad(query);
 
-var width = 640,
+var width = 680,
     height = 440,
     parseDate = d3.time.format("%x").parse;
 
 var hexbin = d3.hexbin()
     .size([width, height])
-    .radius(8);
+    .radius(4);
 
 var radius = d3.scale.sqrt()
-    .domain([1, 1000])
-    .range([1.5, 10]);
+    .domain([1, 800])
+    .range([1, 6]);
 
 var color = d3.scale.linear()
-    .domain([1,1000])
+    .domain([1,800])
     .range(["#999988", "#664433"])
     .interpolate(d3.interpolateLab);
 
