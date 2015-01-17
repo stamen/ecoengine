@@ -30,7 +30,7 @@ path {
 .graticule {
   fill: none;
   stroke: #c9c9c9;
-  stroke-width: .5px;
+  stroke-width: 0.5px;
   stroke-opacity: .5;
 }
 
@@ -41,7 +41,7 @@ path {
 </style>
 <body>
 
-<h2>EcoEngine from Antarctica</h2>
+<h2>EcoEngine from the Arctic</h2>
 <p><span id="georeferenced-count">0</span> <a id="query-url">Chordata observations</a> loaded on a <a href="https://www.jasondavies.com/maps/peirce/">Peirce Quincuncial Projection</a></p>
 <div id="eco-map"></div>
 <p><small><em>Warning! This page will attempt to load up to <strong id="total-count">?</strong> observations if you let it run.</em></small></p>
@@ -80,7 +80,7 @@ var color = d3.scale.sqrt()
 
 var projection = d3.geo.peirceQuincuncial()
     .scale(100)
-    .rotate([90,90])
+    .rotate([90,-89.9999])
     .translate([width / 2, height / 2])
     .precision(.1);
 
