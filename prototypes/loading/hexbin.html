@@ -5,6 +5,8 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   width: 960px;
   margin: 0 auto;
+  color: #222;
+  font-size: 15px;
 }
 path {
   fill: none;
@@ -12,7 +14,7 @@ path {
 }
 
 .land {
-  fill: #eee;
+  fill: #e6e6e6;
 }
 
 .states,
@@ -21,9 +23,11 @@ path {
 }
 </style>
 <body>
+
 <h3>Western Fence Lizards <em>(Sceloporus Occidentalis)</em></h3>
-<p><a href="http://bl.ocks.org/mbostock/4330486">d3.hexbin</a> used to bin <span id="lizard-count">0</span> georeferenced lizards.<br/>
- A total of <a id="query-url"><span id="lizard-all"></span> data points</a> loaded and held in memory.</p>
+<p><a href="http://bl.ocks.org/mbostock/4330486">d3.hexbin</a> used to bin <span id="lizard-count">0</span> georeferenced lizards.
+A total of <a id="query-url"><span id="lizard-all"></span> data points</a> loaded and held in memory.</p>
+
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://d3js.org/d3.hexbin.v0.min.js"></script>
 <script src="http://d3js.org/queue.v1.min.js"></script>
@@ -49,7 +53,12 @@ var hexbin = d3.hexbin()
 
 var radius = d3.scale.sqrt()
     .domain([1, 1000])
-    .range([0.5, 12]);
+    .range([1.5, 10]);
+
+var color = d3.scale.linear()
+    .domain([1,1000])
+    .range(["#999988", "#664433"])
+    .interpolate(d3.interpolateLab);
 
 var projection = d3.geo.albers()
     .scale(800)
@@ -66,6 +75,9 @@ var svg = d3.select("body").append("svg")
 var background = svg.append("g")
   .attr("class", "us-map");
 
+var hexagons = svg.append("g")
+    .attr("class", "hexagons")
+
 function ready() {
   lizards.forEach(function(d) {
     var p = projection(d.geojson.coordinates);
@@ -73,19 +85,15 @@ function ready() {
     d[1] = p[1];
   });
 
-  var hexagons = svg.append("g")
-      .attr("class", "hexagons")
-    .selectAll("path")
+  var hexbins = hexagons.selectAll("path")
       .data(hexbin(lizards).sort(function(a, b) { return b.length - a.length; }))
 
-  hexagons.enter().append("path")
-      .attr("d", function(d) { return hexbin.hexagon(radius(d.length)); })
-      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+  hexbins.enter().append("path")
 
-  hexagons
+  hexbins
       .attr("d", function(d) { return hexbin.hexagon(radius(d.length)); })
       .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
-      .style("fill", "#333");
+      .style("fill", function(d) { return color(d.length); })
 }
 
 function continuousLoad(url) {
