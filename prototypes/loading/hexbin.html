@@ -114,12 +114,12 @@ function continuousLoad(url) {
 
     if (data.next) {
       function loadNext() {
-        console.log("load next");
+        //console.log("load next");
         continuousLoad(data.next);
       };
       setTimeout(loadNext, 30);
     } else {
-      console.log("done.");
+      //console.log("done.");
     }
   });
 }
