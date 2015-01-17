@@ -38,13 +38,25 @@ path {
   stroke: #f5f5f5;
 }
 
+#eco-map {
+  position: relative;
+  height: 500px;
+}
+
+#eco-map svg,
+#eco-map canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
 </style>
 <body>
 
 <h2>EcoEngine from Antarctica</h2>
 <p><span id="georeferenced-count">0</span> <a id="query-url">Chordata observations</a> loaded on a <a href="https://www.jasondavies.com/maps/peirce/">Peirce Quincuncial Projection</a></p>
 <div id="eco-map"></div>
-<p><small><em>Warning! This page will attempt to load up to <strong id="total-count">?</strong> observations if you let it run.</em></small></p>
+<p><small><em>This is a stress test for animation and loading/binning many data points.</em></small></p>
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://d3js.org/d3.hexbin.v0.min.js"></script>
@@ -61,17 +73,17 @@ d3.select("#query-url").attr("href", query);
 
 continuousLoad(query);
 
-var width = 480,
-    height = 480,
+var width = 500,
+    height = 500,
     parseDate = d3.time.format("%x").parse;
 
 var hexbin = d3.hexbin()
     .size([width, height])
-    .radius(4.5);
+    .radius(5);
 
 var radius = d3.scale.sqrt()
     .domain([1, 4000])
-    .range([1, 5.5]);
+    .range([1, 6.5]);
 
 var color = d3.scale.sqrt()
     .domain([1,1000,4000])
@@ -79,8 +91,8 @@ var color = d3.scale.sqrt()
     .interpolate(d3.interpolateLab);
 
 var projection = d3.geo.peirceQuincuncial()
-    .scale(100)
-    .rotate([90,90])
+    .scale(108)
+    .rotate([0,90])
     .translate([width / 2, height / 2])
     .precision(.1);
 
@@ -90,6 +102,16 @@ var path = d3.geo.path()
     .projection(projection);
 
 var graticule = d3.geo.graticule();
+
+var canvas = d3.select("#eco-map").append("canvas")
+    .attr("width", width)
+    .attr("height", height);
+
+var context = canvas.node().getContext("2d");
+
+var pathCanvas = d3.geo.path()
+  .projection(projection)
+  .context(context);
 
 var svg = d3.select("#eco-map").append("svg")
     .attr("width", width)
@@ -114,15 +136,9 @@ function ready() {
   radius.domain([1,binmax]);
   color.domain([1,1000,binmax]);
 
-  var hexbins = hexagons.selectAll("path")
-      .data(bins)
-
-  hexbins.enter().append("path")
-
-  hexbins
-      .attr("d", function(d) { return hexbin.hexagon(radius(d.length)); })
-      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
-      .style("fill", function(d) { return color(d.length); })
+  hexagons.selectAll("path")
+    .data(bins)
+    .enter().append("path")
 }
 
 function continuousLoad(url) {
@@ -155,19 +171,26 @@ function continuousLoad(url) {
 // background countries layer
 d3.json("world-110m.json", function(error, us) {
   background.append("path")
-      .datum(topojson.feature(us, us.objects.land))
-      .attr("class", "land")
-      .attr("d", path);
-
-  background.append("path")
-      .datum(topojson.mesh(us, us.objects.countries, function(a, b) { return a !== b; }))
-      .attr("class", "states")
-      .attr("d", path);
-
-  background.append("path")
       .datum(graticule)
       .attr("class", "graticule")
+
+  d3.timer(function(t) {
+    projection.rotate([t/750,90]);
+
+    hexagons.selectAll("path")
+        .attr("d", function(d) { return hexbin.hexagon(radius(d.length)); })
+        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+        .style("fill", function(d) { return color(d.length); })
+
+    background.selectAll("path")
       .attr("d", path);
+
+    context.fillStyle = "#e9e9e9";
+    context.clearRect(0, 0, width, height);
+    context.beginPath();
+    pathCanvas(topojson.feature(us, us.objects.land));
+    context.fill();
+  });
 });
 
 function distance(a, b) {
