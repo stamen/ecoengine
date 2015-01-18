@@ -70,11 +70,11 @@ var hexbin = d3.hexbin()
     .radius(4.5);
 
 var radius = d3.scale.sqrt()
-    .domain([1, 4000])
-    .range([1, 5.5]);
+    .domain([1, 500, 4000])
+    .range([0.5, 2, 5.5]);
 
 var color = d3.scale.sqrt()
-    .domain([1,1000,4000])
+    .domain([1,500,4000])
     .range(["#222", "#045a8d", "#2b8cbe"])
     .interpolate(d3.interpolateLab);
 
@@ -109,8 +109,8 @@ function ready() {
   var bins = hexbin(lizards).sort(function(a, b) { return b.length - a.length; });
 
   var binmax = d3.max([4000, bins[0].length]);
-  radius.domain([1,binmax]);
-  color.domain([1,1000,binmax]);
+  radius.domain([1,500,binmax]);
+  color.domain([1,500,binmax]);
 
   var hexbins = hexagons.selectAll("path")
       .data(bins)
