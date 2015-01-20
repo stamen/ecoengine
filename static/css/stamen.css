@@ -1,4 +1,4 @@
-body {
+.stamen-ecoengine {
   font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 12px;
   width: 100%;
@@ -9,55 +9,46 @@ body {
   line-height: 1.3em;
 }
 
-a {
+.stamen-ecoengine a {
   color: #317eac;
   text-decoration: none;
 }
 
-.dark a {
+.stamen-ecoengine .dark a {
   color: #82badb;
 }
 
-.small-note {
+.stamen-ecoengine .small-note {
   font-size: 10px;
   line-height: 12px;
   font-style: italic;
   margin: 4px;
 }
 
-a:hover {
+.stamen-ecoengine a:hover {
   text-decoration: underline;
 }
 
-p {
+.stamen-ecoengine p {
   margin: 12px 0;
 }
 
-input.error {
+.stamen-ecoengine input.error {
   display: inline-block;
 }
 
-/*
-.infobox {
-  background: #fda;
-  border: 1px dashed #999;
-  display: inline-block;
-  padding: 4px;
-}
-*/
-
-#map {
+.stamen-ecoengine #map {
   margin: 40px 0 0 24%;
   position: relative;
   width: 76%;
   height: 480px;
 }
 
-.zoom-reset {
+.stamen-ecoengine .zoom-reset {
     position: relative;
 }
 
-.zoom-reset:after {
+.stamen-ecoengine .zoom-reset:after {
     content: ' ';
     position: absolute;
     top: 5px;
@@ -69,20 +60,20 @@ input.error {
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAnElEQVR4AY3RsW0CMRSA4Y/0SXGNN2AEJEoWuLTUuKKhRWIRb2EpWYABrJNuiasPOR2N00dCzjfA03vv93+jpKiKZPRHkK2ejpqjp1UWAAgWN3cRDdHdzSIAZBd7E2hgsneRYWP05ZVP3yQnzHaggZ0ZJwmKLR4G0MDgga3CRvXulR8f3Qm9HfpXdP/whrOrgyoCourg6ky/Rb/mL8ILRiXYagrrAAAAAElFTkSuQmCC958a6c25d16fbb8d6a05fc04a1d3aeff');
 }
 
-.leaflet-popup {
+.stamen-ecoengine .leaflet-popup {
   z-index: 200;
 }
 
-.leaflet-popup img {
+.stamen-ecoengine .leaflet-popup img {
   max-width: 130px;
   max-height: 130px;
 }
 
-.wrap {
+.stamen-ecoengine .wrap {
   margin: 8px 0 0 8px;
 }
 
-.header {
+.stamen-ecoengine .header {
   color: #fff;
   background: #317eac;
   border-bottom: 1px solid #114e7c;
@@ -96,29 +87,29 @@ input.error {
   line-height: 24px;
 }
 
-.header a {
+.stamen-ecoengine .header a {
   color: #fff;
   text-decoration: none;
 }
 
-.header a:hover {
+.stamen-ecoengine .header a:hover {
   text-decoration: underline;
 }
 
-h2.app-title {
+.stamen-ecoengine h2.app-title {
   margin: 0 12px 0 0;
   display: inline-block;
   font-size: 18px;
   font-weight: bold;
 }
 
-.header .eco-param {
+.stamen-ecoengine .header .eco-param {
   text-align: center;
   border-radius: 2px;
 }
 
-.eco-param,
-.eco-param2 {
+.stamen-ecoengine .eco-param,
+.stamen-ecoengine .eco-param2 {
   line-height: 15px;
   height: 22px;
   font-weight: bold;
@@ -128,48 +119,48 @@ h2.app-title {
   border-radius: 2px;
 }
 
-#searchterm { 
+.stamen-ecoengine #searchterm { 
   width: 120px;
 }
 
-.eco-param::-webkit-input-placeholder,
-.eco-param::-webkit-input-placeholder { /* WebKit browsers */
+.stamen-ecoengine .eco-param::-webkit-input-placeholder,
+.stamen-ecoengine .eco-param::-webkit-input-placeholder { /* WebKit browsers */
   color:    #bbb;
   font-weight: normal;
   font-size: 11px;
 }
-.eco-param:-moz-placeholder,
-.eco-param2:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+.stamen-ecoengine .eco-param:-moz-placeholder,
+.stamen-ecoengine .eco-param2:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
   color:    #bbb;
   font-weight: normal;
   font-size: 11px;
   opacity:  1;
 }
-.eco-param::-moz-placeholder,
-.eco-param2::-moz-placeholder { /* Mozilla Firefox 19+ */
+.stamen-ecoengine .eco-param::-moz-placeholder,
+.stamen-ecoengine .eco-param2::-moz-placeholder { /* Mozilla Firefox 19+ */
   color:    #bbb;
   font-size: 11px;
   font-weight: normal;
   opacity:  1;
 }
-.eco-param:-ms-input-placeholder,
-.eco-param2:-ms-input-placeholder { /* Internet Explorer 10+ */
+.stamen-ecoengine .eco-param:-ms-input-placeholder,
+.stamen-ecoengine .eco-param2:-ms-input-placeholder { /* Internet Explorer 10+ */
   color:    #bbb;
   font-weight: normal;
   font-size: 11px;
 }
 
-h4 {
+.stamen-ecoengine h4 {
   font-size: 16px;
   font-weight: bold;
   margin: 0;
 }
 
-#export-pane h4 {
+.stamen-ecoengine #export-pane h4 {
   margin-top: 8px;
 }
 
-.search-btn {
+.stamen-ecoengine .search-btn {
   background: #317eac;
   color: #fff;
   font-weight: bold;
@@ -180,21 +171,21 @@ h4 {
   font-size: 13px;
 }
 
-.header .search-btn {
+.stamen-ecoengine .header .search-btn {
   color: #317eac;
   background: #fff;
 }
 
-.search-btn:hover {
+.stamen-ecoengine .search-btn:hover {
   color: #fff;
   background: #0a0;
 }
 
-.flydown h4 {
+.stamen-ecoengine .flydown h4 {
   margin-bottom: 8px;
 }
 
-.hide-btn {
+.stamen-ecoengine .hide-btn {
   font-weight: bold;
   font-size: 15px;
   position: absolute;
@@ -202,16 +193,16 @@ h4 {
   right: 24px;
 }
 
-#minyear,
-#maxyear {
+.stamen-ecoengine #minyear,
+.stamen-ecoengine #maxyear {
   width: 90px;
   text-align: center;
 }
 
-.export-buttons {
+.stamen-ecoengine .export-buttons {
 }
 
-.flydown {
+.stamen-ecoengine .flydown {
   background: #fff;
   border-bottom: 1px solid #114e7c;
   position: absolute;
@@ -226,71 +217,71 @@ h4 {
   margin-top: 38px;
 }
 
-.flydown .field td {
+.stamen-ecoengine .flydown .field td {
   padding: 4px 8px;
 }
 
 
 /* Time Slider */
-svg {
+.stamen-ecoengine svg {
   font-size: 8px;
   fill: #fff;
 }
 
-.axis path,
-.axis line {
+.stamen-ecoengine .axis path,
+.stamen-ecoengine .axis line {
   fill: none;
   stroke: #abd;
 }
 
-.brush .extent {
+.stamen-ecoengine .brush .extent {
   stroke: none;
   fill: #fff;
   fill-opacity: .2;
   shape-rendering: crispEdges;
 }
 
-.brush .resize rect {
+.stamen-ecoengine .brush .resize rect {
   fill: #fff;
   fill-opacity: 0.85;
 }
 
-#time-slider {
+.stamen-ecoengine #time-slider {
   display: inline-block;
   background: #114e7c;
   border-radius: 2px;
 }
 
-#time-slider svg {
+.stamen-ecoengine #time-slider svg {
   margin-bottom: -10px;
 }
 
-.export-buttons {
+.stamen-ecoengine .export-buttons {
   line-height: 1.5em;
   padding: 0 0 4px;
   margin: 8px 0 4px;
   border-bottom: 1px dashed #d0d0d0;
 }
 
-.paging {
+.stamen-ecoengine .paging {
   line-height: 1.5em;
   margin: 0 0 8px;
 }
 
-.pagination {
+.stamen-ecoengine .pagination {
   margin: 0;
 }
 
-.pagination span {
+.stamen-ecoengine .pagination span {
   margin-right: 7px;
   cursor: pointer;
   padding: 1px 3px;
   color: #317eac;
 }
-.pagination span:hover {
+.stamen-ecoengine .pagination span:hover {
   text-decoration: underline;
 }
-.pagination span.active {
+.stamen-ecoengine .pagination span.active {
   background: #317eac;
   color: #fff;
   border-radius: 2px;
@@ -298,7 +289,7 @@ svg {
   cursor: default;
 }
 
-.panel {
+.stamen-ecoengine .panel {
   background: transparent;
   border: none;
   position: relative;
@@ -307,17 +298,17 @@ svg {
   margin: 0;
   box-shadow: none;
 }
-.panel.left {
+.stamen-ecoengine .panel.left {
   width: 24%;
   float: left;
 }
-.panel.right {
+.stamen-ecoengine .panel.right {
   margin-left: 24%;
 }
-.panel:last-child {
+.stamen-ecoengine .panel:last-child {
   margin-right: 0;
 }
-#facets {
+.stamen-ecoengine #facets {
   position: absolute;
   top: 40px;
   background: white;
@@ -325,12 +316,12 @@ svg {
 }
 
 /* MAP */
-.map-area {
+.stamen-ecoengine .map-area {
   height: 480px;
   line-height: 1.3em;
 }
 
-#details {
+.stamen-ecoengine #details {
   visibility: hidden; /* xxx */
   display: none;
   height: auto;
@@ -348,41 +339,41 @@ svg {
   text-align: center;
 }
 
-#detail-view {
+.stamen-ecoengine #detail-view {
   margin-top: 8px;
 }
-#details td {
+.stamen-ecoengine #details td {
   width: 50%;
 }
-#details .key {
+.stamen-ecoengine #details .key {
   color: #bbb;
   text-align: right;
 }
-#details .photo {
+.stamen-ecoengine #details .photo {
   margin: 0 auto;
   display: block;
 }
 
-#detail-view {
+.stamen-ecoengine #detail-view {
   width: 100%;
 }
 
-#detail-view img {
+.stamen-ecoengine #detail-view img {
   max-width: 100%;
   max-height: 240px;
   margin-bottom: 8px;
 }
 
-#detail-view .photo {
+.stamen-ecoengine #detail-view .photo {
   margin: 0 auto;
   text-align: center;
 }
 
-.leaflet-popup-pane {
+.stamen-ecoengine .leaflet-popup-pane {
   pointer-events: none;
 }
 
-.layer-selection {
+.stamen-ecoengine .layer-selection {
   position: absolute;
   top: 40px;
   right: 0px;
@@ -394,11 +385,11 @@ svg {
   border-radius: 2px;
 }
 
-.layer-selection select {
+.stamen-ecoengine .layer-selection select {
   max-width: 160px;
 }
 
-#bbox-select {
+.stamen-ecoengine #bbox-select {
   font-weight: bold;
   margin: 12px 0;
   padding: 2px 12px;
@@ -409,12 +400,12 @@ svg {
   background: rgba(100,100,100,0.1);
 }
 
-#bbox-select:hover {
+.stamen-ecoengine #bbox-select:hover {
   color: #fff;
   background: #0a0;
 }
 
-.map-info {
+.stamen-ecoengine .map-info {
   position: absolute;
   display: none;
   top: 0;
@@ -425,11 +416,11 @@ svg {
   background: rgba(255,255,255,0.8);
   z-index: 1001;
 }
-.map-info.visible {
+.stamen-ecoengine .map-info.visible {
   display: block;
 }
 
-.map-info-close {
+.stamen-ecoengine .map-info-close {
   position: absolute;
   top: 1px;
   right: 5px;
@@ -444,7 +435,7 @@ svg {
   cursor: pointer;
 }
 
-.map-info-content {
+.stamen-ecoengine .map-info-content {
   padding: 10px 30px 10px 10px;
   margin: 0;
   font-size: 12px;
@@ -452,7 +443,7 @@ svg {
   color: #333;
 }
 
-.eco-basic-icon {
+.stamen-ecoengine .eco-basic-icon {
   width: 12px;
   height: 12px;
   border-radius: 50%;
@@ -461,15 +452,15 @@ svg {
   border: 1px solid #fff;
 }
 
-.leaflet-marker-icon.eco-basic-icon {
+.stamen-ecoengine .leaflet-marker-icon.eco-basic-icon {
   opacity: 0.5;
 }
 
-.leaflet-marker-icon.eco-basic-icon:hover {
+.stamen-ecoengine .leaflet-marker-icon.eco-basic-icon:hover {
   opacity: 1;
 }
 
-#detail-type .eco-basic-icon {
+.stamen-ecoengine #detail-type .eco-basic-icon {
   display: inline-block;
   height: 16px;
   width: 16px;
@@ -478,64 +469,64 @@ svg {
   top: 2px;
 }
 
-.table .eco-basic-icon {
+.stamen-ecoengine .table .eco-basic-icon {
   display: inline-block;
   position: relative;
   margin-right: 4px;
   top: 2px;
 }
 
-.table .asc-arrow,
-.table .desc-arrow {
+.stamen-ecoengine .table .asc-arrow,
+.stamen-ecoengine .table .desc-arrow {
   display: none;
 }
-.table .ascending .asc-arrow,
-.table .descending .desc-arrow {
+.stamen-ecoengine .table .ascending .asc-arrow,
+.stamen-ecoengine .table .descending .desc-arrow {
   display: inline-block;
 }
-.table .ascending {
+.stamen-ecoengine .table .ascending {
   cursor: s-resize;
 }
-.table th,
-.table .descending {
+.stamen-ecoengine .table th,
+.stamen-ecoengine .table .descending {
   cursor: n-resize;
 }
 
-.eco-basic-icon.sensor {
+.stamen-ecoengine .eco-basic-icon.sensor {
   border-radius: 0px;
   background: #d95f02;
 }
 
-.eco-basic-icon.vtm-vegetation-feature {
+.stamen-ecoengine .eco-basic-icon.vtm-vegetation-feature {
   background: #1b9e77;
 }
 
-.eco-basic-icon.plot-survey {
+.stamen-ecoengine .eco-basic-icon.plot-survey {
   background: #7570b3;
 }
 
-.eco-basic-icon.photo {
+.stamen-ecoengine .eco-basic-icon.photo {
   background: #a6cee3;
 }
 
-.eco-basic-icon.media-photo {
+.stamen-ecoengine .eco-basic-icon.media-photo {
   border-radius: 1px;
   background: #a6cee3;
 }
 
-.eco-basic-icon.specimen {
+.stamen-ecoengine .eco-basic-icon.specimen {
   background: #317eac;
 }
 
-.eco-basic-icon.fossil {
+.stamen-ecoengine .eco-basic-icon.fossil {
   background: #a7871d;
 }
 
-.eco-basic-icon.observation {
+.stamen-ecoengine .eco-basic-icon.observation {
   background: #1f78b4;
 }
 
-.eco-basic-icon.checklist {
+.stamen-ecoengine .eco-basic-icon.checklist {
   background: #666666;
 }
 
@@ -556,14 +547,14 @@ svg {
 }
 */
 
-.eco-photo-icon {
+.stamen-ecoengine .eco-photo-icon {
     width: 10px;
     height: 10px;
     border-radius: 2px;
     background: rgba(255,0,0,0.3);
 }
 
-.blocker {
+.stamen-ecoengine .blocker {
   position: absolute;
   height: 100%;
   width: 100%;
@@ -577,87 +568,87 @@ svg {
   padding: 0;
   display: none;
 }
-.loading .blocker {
+.stamen-ecoengine .loading .blocker {
   display: block;
 }
 
-.loading-msg {
+.stamen-ecoengine .loading-msg {
   margin: 8px 0;
   line-height: 2em;
   padding: 0 8px;
 }
 
-#results table {
+.stamen-ecoengine #results table {
   font-size: 12px;
 }
 
-#results table td,
-#results table th {
+.stamen-ecoengine #results table td,
+.stamen-ecoengine #results table th {
   padding: 2px 4px;
 }
-#results table th {
+.stamen-ecoengine #results table th {
   border-bottom: 1px solid #d0d0d0;
 }
-.listing {
+.stamen-ecoengine .listing {
   border-bottom: 1px solid #f0f0f0;
 }
-.zebra {
+.stamen-ecoengine .zebra {
   background: #fff;
 }
 
-table .active {
+.stamen-ecoengine table .active {
   background: #feb;
 }
 
-.field-plot {
+.stamen-ecoengine .field-plot {
   line-height: 14px;
   cursor: pointer;
   margin-right: 8px;
 }
-.bar-group {
+.stamen-ecoengine .bar-group {
   max-height: 140px;
   overflow-y: auto;
 }
-.bars {
+.stamen-ecoengine .bars {
   line-height: 13px;
   font-size: 12px;
   padding-top: 1px;
 }
-.bars .alert {
+.stamen-ecoengine .bars .alert {
   padding: 12px 0;
   margin: 0;
 }
-.bars .alert:hover {
+.stamen-ecoengine .bars .alert:hover {
   color: #a94442;
   background-color: #f2dede;
   border-color: #ebccd1;
 }
-.bars .count {
+.stamen-ecoengine .bars .count {
   color: #bbb;
 }
-.field-plot span {
+.stamen-ecoengine .field-plot span {
   text-decoration: none;
   padding-right: 4px;
 }
-.field-plot span {
+.stamen-ecoengine .field-plot span {
   color: #222;
 }
-.field-plot .active {
+.stamen-ecoengine .field-plot .active {
   font-weight: bold;
   background: #eee;
 }
-.field-plot .active .bar {
+.stamen-ecoengine .field-plot .active .bar {
   background: #0a0;
 }
-.field-plot .x {
+.stamen-ecoengine .field-plot .x {
   display: none;
   color: #ee4e32;
   font-weight: bold;
 }
-.field-plot .active:hover .x {
+.stamen-ecoengine .field-plot .active:hover .x {
   display: inline;
 }
-.field-plot .show-more {
+.stamen-ecoengine .field-plot .show-more {
   color: #bbb;
   cursor: pointer;
   font-size: 12px;
@@ -666,21 +657,21 @@ table .active {
   width: 100%;
   text-align: center;
 }
-.field-plot .show-more:hover {
+.stamen-ecoengine .field-plot .show-more:hover {
   color: #333;
 }
-.bar {
+.stamen-ecoengine .bar {
   display: inline-block;
   margin: 0 8px -1px;
   background: #317eac;
 }
-h3 {
+.stamen-ecoengine h3 {
   font-weight: bold;
   font-size: 1em;
   line-height: 1em;
   margin: 10px 0 4px 0;
 }
-.cursor {
+.stamen-ecoengine .cursor {
   cursor: pointer;
 }
 
