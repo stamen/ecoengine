@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  width: 960px;
+  margin: 0 auto;
+  color: #222;
+  font-size: 15px;
+}
+path {
+  fill: none;
+  stroke-linejoin: round;
+}
+
+.land {
+  fill: #e6e6e6;
+}
+
+.states { 
+  stroke: #fff;
+}
+.hexagons path {
+  stroke-width: 0.5px;
+  stroke: #bbb;
+}
+</style>
+<body>
+
+<h3>Western Fence Lizards and Dusky-Footed Woodrats</h3>
+<p>
+<span id="lizard-count">0</span> georeferenced <a id="query1-url" style="color: #2b83ba">lizards <em>(Sceloporus Occidentalis)</em></a><br/>
+<span id="woodrat-count">0</span> georeferenced <a id="query2-url" style="color: #d7191c">woodrats <em>(Neotoma)</em></a>
+</p>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/d3.hexbin.v0.min.js"></script>
+<script src="http://d3js.org/queue.v1.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script>
+// Based on http://bl.ocks.org/mbostock/4330486
+
+var query1 = 'https://dev-ecoengine.berkeley.edu/api/observations/?selected_facets=scientific_name_exact%3A"Sceloporus occidentalis"&q=&page_size=200';
+var query2 = 'https://dev-ecoengine.berkeley.edu/api/observations/?selected_facets=genus_exact%3A"neotoma"&q=&page_size=200';
+var woodrats = [];
+var lizards = [];
+
+d3.select("#query1-url").attr("href", query1);
+d3.select("#query2-url").attr("href", query2);
+
+loadLizards(query1);
+loadWoodrats(query2);
+
+var width = 680,
+    height = 440,
+    parseDate = d3.time.format("%x").parse;
+
+var hexbin = d3.hexbin()
+    .size([width, height])
+    .radius(4);
+
+var radius = d3.scale.sqrt()
+    .domain([1, 800])
+    .range([1, 6]);
+
+var color = d3.scale.linear()
+    .domain([-1,0,1])
+    .range(["#d7191c", "#666", "#2b83ba"])
+    .interpolate(d3.interpolateLab);
+
+var projection = d3.geo.albers()
+    .scale(800)
+    .translate([width / 2, height / 2])
+    .precision(.1);
+
+var path = d3.geo.path()
+    .projection(projection);
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var background = svg.append("g")
+  .attr("class", "us-map");
+
+var hexagons = svg.append("g")
+    .attr("class", "hexagons")
+
+function ready() {
+  var combined = lizards.concat(woodrats);
+  var hexbins = hexbin(combined)
+    .sort(function(a, b) { return b.length - a.length; });
+
+  var hexes = hexagons.selectAll("path")
+    .data(hexbins)
+
+  hexes.enter().append("path")
+
+  hexes
+      .attr("d", function(d) { return hexbin.hexagon(radius(d.length)); })
+      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+      .style("fill", function(d) {
+        var count = {
+          lizard: 0,
+          woodrat: 0
+        };
+        d.forEach(function(p) {
+          count[p.type]++;
+        });
+        var metric = (count.lizard - count.woodrat) / (count.lizard  + count.woodrat);
+        return color(metric);
+      });
+}
+
+function loadLizards(url) {
+  d3.json(url, function(error, data) {
+    //console.log(data);
+
+    // use only lizards with geojson
+    lizards = lizards.concat(data.results.filter(function(d) {
+      return !!d.geojson;
+    }).map(function(d) {
+      var p = projection(d.geojson.coordinates);
+      d.type = "lizard";
+      d[0] = p[0];
+      d[1] = p[1];
+      return d;
+    })
+    );
+
+    d3.select("#lizard-count").text(lizards.length);
+
+    ready();
+
+    if (data.next) {
+      function loadNext() {
+        //console.log("load next");
+        loadLizards(data.next);
+      };
+      setTimeout(loadNext, 30);
+    } else {
+      //console.log("done.");
+    }
+  });
+}
+
+function loadWoodrats(url) {
+  d3.json(url, function(error, data) {
+    //console.log(data);
+
+    // use only woodrats with geojson
+    woodrats = woodrats.concat(data.results.filter(function(d) {
+      return !!d.geojson;
+    }).map(function(d) {
+      var p = projection(d.geojson.coordinates);
+      d.type = "woodrat";
+      d[0] = p[0];
+      d[1] = p[1];
+      return d;
+    })
+    );
+
+    d3.select("#woodrat-count").text(woodrats.length);
+
+    ready();
+
+    if (data.next) {
+      function loadNext() {
+        //console.log("load next");
+        loadWoodrats(data.next);
+      };
+      setTimeout(loadNext, 30);
+    } else {
+      //console.log("done.");
+    }
+  });
+}
+
+// background us states layer
+d3.json("us.json", function(error, us) {
+  background.append("path")
+      .datum(topojson.feature(us, us.objects.land))
+      .attr("class", "land")
+      .attr("d", path);
+
+  background.append("path")
+      .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+      .attr("class", "states")
+      .attr("d", path);
+});
+</script>
