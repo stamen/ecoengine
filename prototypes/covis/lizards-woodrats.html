@@ -22,6 +22,7 @@ path {
 }
 .hexagons path {
   stroke-width: 0.5px;
+  stroke-opacity: 0.5;
   stroke: #fff;
 }
 .button {
@@ -75,8 +76,8 @@ var radius = d3.scale.sqrt()
     .range([1.5, 8]);
 
 var color = d3.scale.linear()
-    .domain([-1,0,1])
-    .range(["#d7191c", "#666", "#2b83ba"])
+    .domain([-1,-0.25,0.25,1])
+    .range(["#d7191c", "#777", "#777", "#2b83ba"])
     .interpolate(d3.interpolateLab);
 
 d3.select("#lizards-toggle")
