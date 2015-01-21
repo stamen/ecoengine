@@ -3,10 +3,11 @@
 <style>
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  width: 960px;
-  margin: 0 auto;
+  width: 780px;
+  margin: 30px auto;
   color: #222;
   font-size: 15px;
+  text-align: center;
 }
 path {
   fill: none;
@@ -16,22 +17,31 @@ path {
 .land {
   fill: #e6e6e6;
 }
-
 .states { 
   stroke: #fff;
 }
 .hexagons path {
   stroke-width: 0.5px;
-  stroke: #bbb;
+  stroke: #fff;
+}
+.button {
+  text-decoration: none;
+  color: #fff;
+  border-radius: 3px;
+  padding: 3px;
+  font-size: 13px;
+  cursor: pointer;
 }
 </style>
 <body>
 
-<h3>Western Fence Lizards and Dusky-Footed Woodrats</h3>
+<h3>Western Fence Lizard and Dusky-Footed Woodrat</h3>
 <p>
-<span id="lizard-count">0</span> georeferenced <a id="query1-url" style="color: #2b83ba">lizards <em>(Sceloporus Occidentalis)</em></a><br/>
-<span id="woodrat-count">0</span> georeferenced <a id="query2-url" style="color: #d7191c">woodrats <em>(Neotoma)</em></a>
+<a class="button" id="lizards-toggle" target="_blank"><span id="lizard-count">0</span> <em>Sceloporus Occidentalis</em></a>
+<a class="button" id="woodrats-toggle" target="_blank"><span id="woodrat-count">0</span> <em>Neotoma</em></a>
 </p>
+<div id="map"></div>
+<p><small><em>Non-georeferenced observations excluded.</em></small</p>
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://d3js.org/d3.hexbin.v0.min.js"></script>
@@ -42,41 +52,61 @@ path {
 
 var query1 = 'https://dev-ecoengine.berkeley.edu/api/observations/?selected_facets=scientific_name_exact%3A"Sceloporus occidentalis"&q=&page_size=200';
 var query2 = 'https://dev-ecoengine.berkeley.edu/api/observations/?selected_facets=genus_exact%3A"neotoma"&q=&page_size=200';
+
+var show_lizards = true;
+var show_woodrats = true;
+
 var woodrats = [];
 var lizards = [];
-
-d3.select("#query1-url").attr("href", query1);
-d3.select("#query2-url").attr("href", query2);
 
 loadLizards(query1);
 loadWoodrats(query2);
 
-var width = 680,
-    height = 440,
+var width = 780,
+    height = 560,
     parseDate = d3.time.format("%x").parse;
 
 var hexbin = d3.hexbin()
     .size([width, height])
-    .radius(4);
+    .radius(6);
 
 var radius = d3.scale.sqrt()
-    .domain([1, 800])
-    .range([1, 6]);
+    .domain([1, 1500])
+    .range([1.5, 8]);
 
 var color = d3.scale.linear()
     .domain([-1,0,1])
     .range(["#d7191c", "#666", "#2b83ba"])
     .interpolate(d3.interpolateLab);
 
+d3.select("#lizards-toggle")
+  .style("background", color(1))
+  .on("click", function() {
+    show_lizards
+      ? show_lizards = false
+      : show_lizards = true;
+    d3.select(this).transition().style("background", show_lizards ? color(1) : "#ddd")
+    ready();
+  });
+d3.select("#woodrats-toggle")
+  .style("background", color(-1))
+  .on("click", function() {
+    show_woodrats
+      ? show_woodrats = false
+      : show_woodrats = true;
+    d3.select(this).transition().style("background", show_woodrats ? color(-1) : "#ddd")
+    ready();
+  });
+
 var projection = d3.geo.albers()
-    .scale(800)
+    .scale(900)
     .translate([width / 2, height / 2])
     .precision(.1);
 
 var path = d3.geo.path()
     .projection(projection);
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#map").append("svg")
     .attr("width", width)
     .attr("height", height);
 
@@ -87,16 +117,25 @@ var hexagons = svg.append("g")
     .attr("class", "hexagons")
 
 function ready() {
-  var combined = lizards.concat(woodrats);
+  var combined = [];
+  if (show_lizards) combined = combined.concat(lizards);
+  if (show_woodrats) combined = combined.concat(woodrats);
+
   var hexbins = hexbin(combined)
     .sort(function(a, b) { return b.length - a.length; });
 
   var hexes = hexagons.selectAll("path")
-    .data(hexbins)
+    .data(hexbins, function(d) { return [d.x, d.y].join(""); })
 
   hexes.enter().append("path")
+      .attr("d", function(d) { return hexbin.hexagon(radius(d.length)); })
+      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+  hexes.exit()
+    .transition()
+    .attr("d", function(d) { return hexbin.hexagon(0); })
 
   hexes
+      .transition()
       .attr("d", function(d) { return hexbin.hexagon(radius(d.length)); })
       .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
       .style("fill", function(d) {
@@ -115,7 +154,7 @@ function ready() {
 function loadLizards(url) {
   d3.json(url, function(error, data) {
     //console.log(data);
-
+  
     // use only lizards with geojson
     lizards = lizards.concat(data.results.filter(function(d) {
       return !!d.geojson;
