@@ -23,7 +23,7 @@ path {
 .hexagons path {
   stroke-width: 0.5px;
   stroke-opacity: 0.5;
-  stroke: #fff;
+  stroke: none;
 }
 .button {
   text-decoration: none;
@@ -98,10 +98,9 @@ var radius = d3.scale.sqrt()
     .domain([1, 500])
     .range([1, 6]);
 
-var color = d3.scale.linear()
-    .domain([-1,-0.75,-0.5,-0.25,0,0.25,0.5,0.75,1])
-    .range(colorbrewer.RdBu[9])
-    .interpolate(d3.interpolateLab);
+var color = d3.scale.quantize()
+    .domain([-1,1])
+    .range(colorbrewer.RdBu[7]);
 
 d3.select("#query1")
   .attr("href", api_root + query1)
@@ -122,7 +121,7 @@ d3.select("#bin-size")
 
 d3.select("#colorbrewer")
   .on("change", function() {
-    color.range(colorbrewer[this.value][9]);
+    color.range(colorbrewer[this.value][7]);
     d3.select("#lizards-toggle")
       .transition()
       .style("background", color(1))
