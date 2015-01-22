@@ -50,7 +50,7 @@ Click to toggle - <a class="button" id="lizards-toggle" target="_blank"><span id
 </p>
 <div id="map"></div>
 <p>Hexbin Radius - <strong><span id="bin-size-print">6</span> px</strong> <input type="range" id="bin-size" value="6" min="1" max="20"></p> 
-<p>Color Palette - <select id="colorbrewer"><option>RdBu</option></select></p>
+<p>Color Palette - <select id="colorbrewer"><option>RdBuMod</option></select></p>
 <div class="notes">
   <small>
   <p>Things to Try:</p>
@@ -99,9 +99,14 @@ var radius = d3.scale.sqrt()
     .domain([1, 500])
     .range([1, 6]);
 
+colorbrewer["RdBuMod"] = {
+   3: ["rgb(178,24,43)", "#666",  "rgb(33,102,172)"],
+   7: ["rgb(178,24,43)", "#666",  "rgb(33,102,172)"]     // sorry
+};
+
 var color = d3.scale.quantize()
     .domain([-1,1])
-    .range(colorbrewer.RdBu[7]);
+    .range(colorbrewer.RdBuMod[3]);
 
 d3.select("#query1")
   .attr("href", api_root + query1)
