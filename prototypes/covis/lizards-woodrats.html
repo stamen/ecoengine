@@ -32,18 +32,37 @@ path {
   padding: 3px;
   font-size: 13px;
   cursor: pointer;
+  background: #ddd;
+}
+.notes {
+  background: #eee;
+  margin: 120px;
+  padding: 10px 10px 20px;
+  text-align: left;
 }
 </style>
 <body>
 
 <h3>Western Fence Lizard and Dusky-Footed Woodrat</h3>
 <p>
-<a class="button" id="lizards-toggle" target="_blank"><span id="lizard-count">0</span> <em>Sceloporus Occidentalis</em></a>
+Click to toggle - <a class="button" id="lizards-toggle" target="_blank"><span id="lizard-count">0</span> <em>Sceloporus Occidentalis</em></a>
 <a class="button" id="woodrats-toggle" target="_blank"><span id="woodrat-count">0</span> <em>Neotoma</em></a>
 </p>
 <div id="map"></div>
 <p>Hexbin Radius - <strong><span id="bin-size-print">6</span> px</strong> <input type="range" id="bin-size" value="6" min="1" max="20"></p> 
-<p><small><em>Non-georeferenced observations excluded.</em></small</p>
+<div class="notes">
+  <small>
+  <p>Things to Try:</p>
+  <ul>
+    <li>Toggle the blue and red observation sets</li>
+    <li>Notice changes in the size/color of hexagons when toggling</li>
+    <li>Increase/decrease the Hexbin radius</li>
+  </ul>
+  <p>Non-georeferenced observations excluded.</p>
+  <p>Query 1 Params<br/><a id="query1"></a></p>
+  <p>Query 2 Params<br/><a id="query2"></a></p>
+  </small>
+</div>
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://d3js.org/d3.hexbin.v0.min.js"></script>
@@ -52,8 +71,9 @@ path {
 <script>
 // Based on http://bl.ocks.org/mbostock/4330486
 
-var query1 = 'https://dev-ecoengine.berkeley.edu/api/observations/?selected_facets=scientific_name_exact%3A"Sceloporus occidentalis"&q=&page_size=200';
-var query2 = 'https://dev-ecoengine.berkeley.edu/api/observations/?selected_facets=genus_exact%3A"neotoma"&q=&page_size=200';
+var api_root = "https://dev-ecoengine.berkeley.edu/api/observations/";
+var query1 = '?selected_facets=scientific_name_exact%3A"Sceloporus occidentalis"&q=&page_size=200';
+var query2 = '?selected_facets=genus_exact%3A"neotoma"&q=&page_size=200';
 
 var show_lizards = true;
 var show_woodrats = true;
@@ -61,8 +81,8 @@ var show_woodrats = true;
 var woodrats = [];
 var lizards = [];
 
-loadLizards(query1);
-loadWoodrats(query2);
+loadLizards(api_root + query1);
+loadWoodrats(api_root + query2);
 
 var width = 780,
     height = 560,
@@ -80,6 +100,13 @@ var color = d3.scale.linear()
     .domain([-1,-0.25,0.25,1])
     .range(["#d7191c", "#888", "#888", "#2b83ba"])
     .interpolate(d3.interpolateLab);
+
+d3.select("#query1")
+  .attr("href", api_root + query1)
+  .text(query1);
+d3.select("#query2")
+  .attr("href", api_root + query2)
+  .text(query2);
 
 d3.select("#bin-size")
   .on("change", function() {
