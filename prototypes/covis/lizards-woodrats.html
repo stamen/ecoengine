@@ -50,6 +50,7 @@ Click to toggle - <a class="button" id="lizards-toggle" target="_blank"><span id
 </p>
 <div id="map"></div>
 <p>Hexbin Radius - <strong><span id="bin-size-print">6</span> px</strong> <input type="range" id="bin-size" value="6" min="1" max="20"></p> 
+<p>Color Palette <select id="colorbrewer"><option>RdBu</option></select></p>
 <div class="notes">
   <small>
   <p>Things to Try:</p>
@@ -68,6 +69,7 @@ Click to toggle - <a class="button" id="lizards-toggle" target="_blank"><span id
 <script src="http://d3js.org/d3.hexbin.v0.min.js"></script>
 <script src="http://d3js.org/queue.v1.min.js"></script>
 <script src="http://d3js.org/topojson.v1.min.js"></script>
+<script src="../lib/colorbrewer.js"></script>
 <script>
 // Based on http://bl.ocks.org/mbostock/4330486
 
@@ -97,13 +99,14 @@ var radius = d3.scale.sqrt()
     .range([1, 6]);
 
 var color = d3.scale.linear()
-    .domain([-1,-0.25,0.25,1])
-    .range(["#d7191c", "#888", "#888", "#2b83ba"])
+    .domain([-1,-0.75,-0.5,-0.25,0,0.25,0.5,0.75,1])
+    .range(colorbrewer.RdBu[9])
     .interpolate(d3.interpolateLab);
 
 d3.select("#query1")
   .attr("href", api_root + query1)
   .text(query1);
+
 d3.select("#query2")
   .attr("href", api_root + query2)
   .text(query2);
@@ -116,6 +119,22 @@ d3.select("#bin-size")
     d3.selectAll(".hexagons path").remove();
     ready();
   });
+
+d3.select("#colorbrewer")
+  .on("change", function() {
+    color.range(colorbrewer[this.value][9]);
+    d3.select("#lizards-toggle")
+      .transition()
+      .style("background", color(1))
+    d3.select("#woodrats-toggle")
+      .transition()
+      .style("background", color(-1))
+    ready();
+  })
+  .selectAll("option")
+  .data(d3.keys(colorbrewer))
+  .enter().append("option")
+  .text(String)
 
 d3.select("#lizards-toggle")
   .style("background", color(1))
