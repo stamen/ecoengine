@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  width: 100%;
+  margin: 14px;
+  font-size: 14px;
+}
+#intro pre {
+  margin: 12px 24px;
+}
+pre {
+  background: #f3f3f3;
+}
+</style>
+<title>EcoEngine Bulk CSV Download</title>
+<body>
+<div id="intro">
+  <h3>EcoEngine Bulk CSV Download</h3>
+  <p>This utility downloads multiple pages of an EcoEngine query and concatenates the results into CSV-formatted text on this page.<p>
+  <textarea id="query" placeholder="Enter a single EcoEngine query" cols=80 rows=5></textarea><br/>
+  <input type="button" id="run-query" value="Query"></input>
+  <span id="message"></span>
+  <h3>Examples</h3>
+  <p>Download all observations, 200 at a time</p>
+  <pre>https://dev-ecoengine.berkeley.edu/api/observations/?page_size=200</pre>
+  <p>Search for "lynx"</p>
+  <pre>https://dev-ecoengine.berkeley.edu/api/observations/?q=lynx</pre>
+  <p>Line breaks can be used to structure long queries, but not spaces</p>
+  <pre>https://dev-ecoengine.berkeley.edu/api/observations/
+?selected_facets=state_province_exact:California
+&q=
+&min_date=1922-03-15
+&max_date=1922-04-15</pre>
+</div>
+<pre id="output"></pre>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+var keys = [];
+var csv = "";
+var data = [];
+
+if (window.location.hash) {
+  document.getElementById("query").value = decodeURI(window.location.hash.replace("#",""));
+}
+
+d3.select("#run-query")
+  .on("click", function() {
+    var value = document.getElementById("query").value;
+    window.location.hash = value.replace(/\n/g,"%0A");
+    var query = value.replace(/\n/g,"");
+    startLoad(query);
+  });
+
+function startLoad(url) {
+  d3.json(url, function(error, subset) {
+    if (error) {
+      d3.select("#message").text(JSON.stringify(error));
+    }
+    d3.select("#intro")
+      .remove();
+
+    keys = d3.keys(subset.results[0]);
+
+    data = data.concat(subset.results);
+    csv += d3.csv.format(subset.results);
+
+    d3.select("title").text(data.length + " of " + subset.count);
+
+    d3.select("#output")
+      .text(csv);
+
+    if (subset.next) {
+      continuousLoad(subset.next);
+    }
+  });
+}
+
+function continuousLoad(url) {
+  d3.json(url, function(error, subset) {
+    rows = subset.results.map(function(d) { 
+      return keys.map(function(k) { return d[k]; });
+    });
+
+    data = data.concat(subset.results);
+    csv += d3.csv.formatRows(rows);
+
+    d3.select("title").text(data.length + " of " + subset.count);
+
+    d3.select("#output")
+      .text(csv);
+
+    if (subset.next) {
+      continuousLoad(subset.next);
+    }
+  });
+}
+</script>
