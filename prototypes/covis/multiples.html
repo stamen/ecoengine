@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  width: 1200px;
+  margin: 30px auto;
+  color: #222;
+  font-size: 15px;
+  text-align: center;
+}
+path {
+  fill: none;
+  stroke-linejoin: round;
+}
+
+.land {
+  fill: #e6e6e6;
+}
+.states { 
+  stroke: #fff;
+}
+.hexagons path {
+  stroke-width: 0.5px;
+  stroke-opacity: 0.5;
+  stroke: none;
+}
+.button {
+  text-decoration: none;
+  color: #fff;
+  border-radius: 3px;
+  padding: 3px;
+  font-size: 13px;
+  cursor: pointer;
+  background: #ddd;
+}
+.notes {
+  background: #eee;
+  margin: 120px;
+  padding: 10px 10px 20px;
+  text-align: left;
+}
+text.title {
+  font-size: 12px;
+  fill: #666;
+}
+</style>
+<body>
+
+<h3>Small Multiples</h3>
+<p>Hexbin Radius - <strong><span id="bin-size-print">4</span> px</strong> <input type="range" id="bin-size" value="6" min="1" max="12"></p> 
+<div id="maps"></div>
+<div class="notes">
+  <small>
+  <p>Non-georeferenced observations excluded.</p>
+  <p>Queries </p>
+  <ul id="query-list">
+  </ul>
+  </small>
+</div>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/d3.hexbin.v0.min.js"></script>
+<script src="http://d3js.org/queue.v1.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script src="../lib/colorbrewer.js"></script>
+<script>
+// Based on http://bl.ocks.org/mbostock/4330486
+
+var dispatch = d3.dispatch("refreshbins", "colorchange");
+
+/* Configuration */
+
+var api_root = "https://dev-ecoengine.berkeley.edu/api/observations/";
+var queries = [
+  ['Western Fence Lizard', '?selected_facets=scientific_name_exact%3A"Sceloporus occidentalis"&q=&page_size=200'],
+  ['Dusky-Footed Woodrat', '?selected_facets=genus_exact%3A"neotoma"&q=&page_size=200'],
+  ['Side-Blotched Lizard', '?selected_facets=scientific_name_exact%3A%22Uta stansburiana%22&q=&page_size=100'],
+  ['Clarkia', '?selected_facets=genus_exact%3A%22clarkia%22&q=&page_size=200'],
+  ['California Anchovy', '?selected_facets=scientific_name_exact%3A%22Engraulis mordax%22&q=&page_size=200']
+];
+
+var colors = [
+  "Blues",
+  "Greens",
+  "Oranges",
+  "Purples",
+  "Reds"
+];
+
+var lizards = queries.map(function() { return []; });
+
+/* Interface */
+
+d3.select("#query-list")
+  .selectAll("li")
+  .data(queries)
+  .enter().append("li")
+  .append("a")
+  .attr("href", function(d) { return api_root + d[1]; })
+  .text(function(d) { return d[0]; })
+
+d3.select("#bin-size")
+  .on("change", function() {
+    d3.select("#bin-size-print").text(this.value);
+    hexbin.radius(this.value);
+    radius.range([1, +this.value+0.5]);
+    d3.selectAll(".hexagons path").remove();
+    dispatch.refreshbins("all");
+  });
+
+d3.select("#colorbrewer")
+  .on("change", function() {
+    color.range(colorbrewer[this.value][7]);
+    refreshbins();
+  })
+  .selectAll("option")
+  .data(d3.keys(colorbrewer))
+  .enter().append("option")
+  .text(String)
+
+/* Chart */
+var width = 400,
+    height = 240,
+    parseDate = d3.time.format("%x").parse;
+
+var projection = d3.geo.albers()
+    .scale(400)
+    .translate([width / 2, height / 2])
+    .precision(.1);
+
+var hexbin = d3.hexbin()
+    .size([width, height])
+    .radius(4);
+
+var radius = d3.scale.sqrt()
+    .domain([1, 500])
+    .range([1, 4.5]);
+
+var path = d3.geo.path()
+    .projection(projection);
+
+queries.forEach(function(q,i) {
+  loadChart(q, i);
+});
+
+function loadChart(query, index) {
+  /*
+  var color = d3.scale.linear()
+      .range(colorbrewer[colors[index]][7]);
+      */
+
+  var svg = d3.select("#maps")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+  var background = svg.append("g")
+    .attr("class", "us-map");
+
+  var hexagons = svg.append("g")
+      .attr("class", "hexagons")
+
+  svg.append("text")
+    .attr("x", width/2)
+    .attr("y", 12)
+    .attr("text-anchor", "middle")
+    .attr("class", "title")
+    .text(query[0]);
+
+  function refreshbins() {
+    var hexbins = hexbin(lizards[index])
+      .sort(function(a, b) { return b.length - a.length; });
+
+    radius.domain([1, d3.max(hexbins, function(d) { return d.length; })])
+    //color.domain([1, d3.max(hexbins, function(d) { return d.length; })])
+
+    var hexes = hexagons.selectAll("path")
+      .data(hexbins, function(d) { return [d.x, d.y].join(""); })
+
+    hexes.enter().append("path")
+        .attr("d", function(d) { return hexbin.hexagon(radius(d.length)); })
+        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+        .style("fill", function(d) {
+          return colorbrewer[colors[index]][7][6];
+        });
+
+    hexes.exit()
+      .transition()
+      .attr("d", function(d) { return hexbin.hexagon(0); })
+
+    hexes
+        .transition()
+        .attr("d", function(d) { return hexbin.hexagon(radius(d.length)); })
+        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+  }
+
+  // background us states layer
+  d3.json("us.json", function(error, us) {
+    background.append("path")
+        .datum(topojson.feature(us, us.objects.land))
+        .attr("class", "land")
+        .attr("d", path);
+  });
+
+  loadQuery(api_root + query[1], index);
+
+  dispatch.on("refreshbins." + index, function(i) {
+    if (i == index) refreshbins();
+    if (i == "all") refreshbins();
+  });
+}
+
+function loadQuery(url,index) {
+  d3.json(url, function(error, data) {
+    //console.log(data);
+  
+    // use only lizards with geojson
+    lizards[index] = lizards[index].concat(data.results.filter(function(d) {
+      return !!d.geojson;
+    }).map(function(d) {
+      var p = projection(d.geojson.coordinates);
+      d.queryIndex = index;
+      d[0] = p[0];
+      d[1] = p[1];
+      return d;
+    })
+    );
+
+    dispatch.refreshbins(index);
+
+    if (data.next) {
+      function loadNext() {
+        //console.log("load next");
+        loadQuery(data.next, index);
+      };
+      setTimeout(loadNext, 30);
+    } else {
+      //console.log("done.");
+    }
+  });
+}
+</script>
