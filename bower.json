@@ -1,0 +1,25 @@
+{
+  "name": "ecoengine",
+  "version": "0.0.0",
+  "homepage": "https://github.com/stamen/ecoengine",
+  "authors": [
+    "syntagmatic",
+    "Eric Gelinas <evg@stamen.com>"
+  ],
+  "description": "Stamen built a rich prototype search interface to explore the Berkeley Ecoengine API",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "d3": "~3.5.3",
+    "leaflet": "~0.7.3",
+    "hashnav": "~1.0.2",
+    "d3-geo-projection": "~0.2.12"
+  }
+}

@@ -3,11 +3,7 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 <link rel="stylesheet" href="../static/css/stamen.css" />
-<script src="../static/js/stamen/leaflet.js"></script>
-<script src="../static/js/stamen/d3.v3.min.js"></script>
-<script src="../static/js/stamen/zoom-extras.js"></script>
-<script src="../static/js/stamen/hashnav.js"></script>
-<script src="../static/js/stamen/config-explore.js"></script>
+<script src="static/js/stamen/ecoengine.js"></script>
 
 <title>Ecoengine Explorer</title>
 <body>
@@ -33,16 +29,16 @@
       <p>
         <div class="search-btn">Search</div>
       </p>
-        
+
     </p>
     <a href="#" class="hide-btn">Hide</a>
   </div>
 
   <div id="export-pane" class="flydown">
-    <h4>Share</h4> 
+    <h4>Share</h4>
     <p>Copy this URL to share the page. Note that dropdown selections (such as raster layers) are currently not saved. Only parameters used to query the observations API are shared.</p>
     <p><a href="#" id="share-the-page"></a></p>
-    <h4>Export</h4> 
+    <h4>Export</h4>
     <p>These are the queries used to generate the interface on this page.</p>
     <h4>Observations</h4>
         <a href="#" id="export-observations" target="_blank"></a><br/>
@@ -126,7 +122,7 @@
     <div class="panel right">
       <h4>Observations</h4>
       <div class="export-buttons">
-        <a href="#" id="export-view">View data</a> or export as 
+        <a href="#" id="export-view">View data</a> or export as
         <a href="#" id="export-csv" target="_blank">CSV</a>,
         <a href="#" id="export-json" target="_blank">JSON</a>, or
         <a href="#" id="export-geojson" target="_blank">GeoJSON</a> from the <a href="https://ecoengine.berkeley.edu/">Berkeley Ecoinformatics Engine</a>
@@ -136,4 +132,4 @@
     </div>
   </div>
 </div>
-<script src="../static/js/stamen/ecoengine-explore.js"></script>
+<script src="static/js/stamen/ecoengine-explore.js"></script>
