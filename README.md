@@ -1,10 +1,8 @@
 # EcoEngine Explorer
 
-Stamen built a search interface to explore the Berkeley Ecoengine API. Here's a screenshot:
+Stamen built a prototype search interface to explore the Berkeley Ecoengine API. Here's a screenshot:
 
 [![EcoEngine](https://cloud.githubusercontent.com/assets/156229/5325698/82deef8a-7ca8-11e4-8a4a-921b5c684152.png)](http://stamen.github.io/ecoengine/explore/)
-
-Based on the [EcoEngine API](https://ecoengine.berkeley.edu/)
 
 ## Prototypes
 
@@ -20,6 +18,7 @@ Based on the [EcoEngine API](https://ecoengine.berkeley.edu/)
 * [Arctic Chordata](http://stamen.github.io/ecoengine/prototypes/projections/arctic.html)
 * [Early version of Explore](http://stamen.github.io/ecoengine/prototypes/multi/)
 * [Sensors](http://stamen.github.io/ecoengine/prototypes/sensors/index.html) - a simple "hello world" of accessing and printing EcoEngine data with d3
+
 
 ## Explore Features
 
