@@ -89,15 +89,15 @@ The interface does not require a backend to operate, aside from the EcoEngine AP
 
 The following libraries are required to run the Explorer interface.
 
-* `[d3.js](http://d3js.org/d3.v3.min.js)`
-* `[leaflet.js](http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js)`
-* `[zoom-extras.js](/lib/zoom-extras.js)`
-* `[hashnav.js](/lib/hashnav.js)`
+* [d3.js](http://d3js.org/d3.v3.min.js)
+* [leaflet.js](http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js)
+* [zoom-extras.js](/lib/zoom-extras.js)
+* [hashnav.js](/lib/hashnav.js)
 
 As well as these stylesheets.
 
-* `[leaflet.css](http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css)`
-* `[bootstrap.css](//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css)`
+* [leaflet.css](http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css)
+* [bootstrap.css](//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css)
 
 ### Data
 
@@ -112,11 +112,9 @@ As well as these stylesheets.
 
 ## Photos
 
-A basic fullscreen photo viewer sits in the `/photos` directory. A Photo Ribbon also appears in an early version of Explorer at `/prototypes/multi` which displays filtered photos.
+A basic fullscreen photo viewer.
 
-![EcoEngine](https://cloud.githubusercontent.com/assets/156229/5325740/c78b40d8-7ca9-11e4-99e7-8426a3e15cff.png)
-
-In Phase 1, Photos is a secondary goal, so additional features may not be added if Explorer requires more work. If time permits, a desired feature is to link direct to the gallery from Explorer to view a filtered set of photos.
+![EcoEngine](http://stamen.github.io/ecoengine/photos/)
 
 ## How do I run the project locally?
 
