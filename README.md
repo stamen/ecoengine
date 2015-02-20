@@ -4,8 +4,6 @@ Stamen built a search interface to explore the Berkeley Ecoengine API. Here's a 
 
 [![EcoEngine](https://cloud.githubusercontent.com/assets/156229/5325698/82deef8a-7ca8-11e4-8a4a-921b5c684152.png)](http://stamen.github.io/ecoengine/explore/)
 
-*Question: Can we post the final build at a public URL?*
-
 Based on the [EcoEngine API](https://ecoengine.berkeley.edu/)
 
 ## Prototypes
@@ -114,7 +112,7 @@ As well as these stylesheets.
 
 A basic fullscreen photo viewer.
 
--[![EcoEngine](https://cloud.githubusercontent.com/assets/156229/5325740/c78b40d8-7ca9-11e4-99e7-8426a3e15cff.png)](http://stamen.github.io/ecoengine/photos/)
+[![EcoEngine](https://cloud.githubusercontent.com/assets/156229/5325740/c78b40d8-7ca9-11e4-99e7-8426a3e15cff.png)](http://stamen.github.io/ecoengine/photos/)
 
 ## How do I run the project locally?
 
