@@ -114,7 +114,7 @@ As well as these stylesheets.
 
 A basic fullscreen photo viewer.
 
-![EcoEngine](http://stamen.github.io/ecoengine/photos/)
+-[![EcoEngine](https://cloud.githubusercontent.com/assets/156229/5325740/c78b40d8-7ca9-11e4-99e7-8426a3e15cff.png)](http://stamen.github.io/ecoengine/photos/)
 
 ## How do I run the project locally?
 
