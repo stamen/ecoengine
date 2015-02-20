@@ -1,6 +1,6 @@
 # EcoEngine Explorer
 
-Stamen built a prototype search interface to explore the Berkeley Ecoengine API. Here's a screenshot:
+Stamen built a search interface to explore the Berkeley Ecoengine API. Here's a screenshot:
 
 [![EcoEngine](https://cloud.githubusercontent.com/assets/156229/5325698/82deef8a-7ca8-11e4-8a4a-921b5c684152.png)](http://stamen.github.io/ecoengine/explore/)
 
