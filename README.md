@@ -1,18 +1,31 @@
 # EcoEngine Explorer
 
-Stamen built a rich prototype search interface to explore the Berkeley Ecoengine API. Here's a screenshot:
+Stamen built a search interface to explore the Berkeley Ecoengine API. Here's a screenshot:
 
-![EcoEngine](https://cloud.githubusercontent.com/assets/156229/5325698/82deef8a-7ca8-11e4-8a4a-921b5c684152.png)
-
-The prototype lives at http://studio.stamen.com/berkeley/show/ecoengine/explore (password protected, inquire with the Ecoengine team if you need access).
+[![EcoEngine](https://cloud.githubusercontent.com/assets/156229/5325698/82deef8a-7ca8-11e4-8a4a-921b5c684152.png)](http://stamen.github.io/ecoengine/explore/)
 
 *Question: Can we post the final build at a public URL?*
 
 Based on the [EcoEngine API](https://ecoengine.berkeley.edu/)
 
-One possibility for the interface is for Berkeley to integrate with http://holos.berkeley.edu/explore/. Ths prototype is fully functional without a back-end, however, so it will work on any web server without any back-end dependencies (besides EcoEngine itself for the data).
+## Prototypes
 
-## Features
+* [Explore](http://stamen.github.io/ecoengine/explore/)
+* [Lizards and Woodrats](http://stamen.github.io/ecoengine/prototypes/covis/lizards-woodrats.html)
+* [Taxa Sampling Distributions](http://stamen.github.io/ecoengine/prototypes/covis/multiples-taxa.html)
+* [Woodrats over Decades](http://stamen.github.io/ecoengine/prototypes/covis/multiples-decades.html)
+* [Quercus](http://stamen.github.io/ecoengine/prototypes/covis/oaks.html)
+* [Photos](http://stamen.github.io/ecoengine/photos/)
+* [Bulk Download](http://stamen.github.io/ecoengine/prototypes/loading/bulk-download.html)
+* [Observations](http://stamen.github.io/ecoengine/prototypes/observations/)
+* [Antarctic Chordata](http://stamen.github.io/ecoengine/prototypes/projections/antarctica.html)
+* [Arctic Chordata](http://stamen.github.io/ecoengine/prototypes/projections/arctic.html)
+* [Early version of Explore](http://stamen.github.io/ecoengine/prototypes/multi/)
+* [Sensors](http://stamen.github.io/ecoengine/prototypes/sensors/index.html) - a simple "hello world" of accessing and printing EcoEngine data with d3
+
+## Explore Features
+
+[Explore](http://stamen.github.io/ecoengine/explore) is a tool for browsing diverse parts of EcoEngine. Open the *Queries* tab to see what APIs are accessed.
 
 * Search box
 * Brushable time filter
@@ -22,7 +35,7 @@ One possibility for the interface is for Berkeley to integrate with http://holos
 * Polygon map display of Regions
 * Advanced attribute search
 * Bounding box search
-* Footprint search *(pending, based on bounding box)*
+* Footprint search
 
 ## Configuration
 
