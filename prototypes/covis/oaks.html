@@ -127,7 +127,7 @@ var limit = 24;
 var search_query = "https://dev-ecoengine.berkeley.edu/api/search/?q=" + search_term + "&selected_facets=georeferenced_exact%3A%22true%22&facets_limit=100";
 var queries = [];
 
-var dispatch = d3.dispatch("refreshbins", "changegenus");
+var dispatch = d3.dispatch("refreshbins", "reset");
 
 function search(url) {
   window.location.hash = "q=" + search_term + "&split=" + chart_split;
@@ -136,7 +136,7 @@ function search(url) {
   d3.select("#maps").html("Loading...");
 
   d3.json(url, function(error, data) {
-    console.log(data);
+    //console.log(data);
     d3.select("#query-list").html("");
     d3.select("#maps").html("");
     queries = data.fields[chart_split].slice(0,limit)
@@ -154,10 +154,13 @@ function search(url) {
 
 search(search_query);
 d3.select("#title-input").on("change", function() {
+  dispatch.reset();
+  search_term = this.value;
   search_query = "https://dev-ecoengine.berkeley.edu/api/search/?q=" + this.value + "&selected_facets=georeferenced_exact%3A%22true%22&facets_limit=100";
   search(search_query);
 });
 d3.select("#chart-split").on("change", function() {
+  dispatch.reset();
   chart_split = this.value;  
   search(search_query);
 });
@@ -296,7 +299,7 @@ function ready(queries) {
   }
 
   var bail = false;
-  dispatch.on("changegenus", function() {
+  dispatch.on("reset", function() {
     bail = true;
     dispatch.on("refreshbins", null);
   });
