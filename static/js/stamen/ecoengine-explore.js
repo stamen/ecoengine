@@ -29,16 +29,16 @@
     bbox: "",
     sortFields: {},
     advanced: {},
-    q: "",          
+    q: "",
     min_date: "",
     max_date: ""
   };
 
   fields.forEach(function(d) { queryObj.sortFields[d] = false; });
 
-  function logHash(hash) {            
+  function logHash(hash) {
     //console.log(hash);
-    if (hash.parameters) {              
+    if (hash.parameters) {
       var parameters = hash.parameters;
       for (var name in parameters) {
         var value = parameters[name];
@@ -69,7 +69,7 @@
     } else {
       console.log("There are no parameters.");
       console.log(hash.raw);
-    }       
+    }
   }
 
   initHashNav(logHash);
@@ -78,7 +78,7 @@
     d3.select("#searchterm").node().value = queryObj.q;
   }
   if (queryObj.min_date) {
-    d3.select("#minyear").node().value = queryObj.min_date; 
+    d3.select("#minyear").node().value = queryObj.min_date;
   }
   if (queryObj.max_date) {
     d3.select("#maxyear").node().value = queryObj.max_date;
@@ -304,7 +304,7 @@
 
 
     var attributionControl = L.control.attribution({
-      prefix: false 
+      prefix: false
     }).addTo(map);
 
     var baseLayer = L.tileLayer(ECO.basemaps['Light'].url, {
@@ -374,7 +374,7 @@
           .classed("error", false)
           .text("Loaded");
         rasters.results.forEach(function(d) {
-          if (d.tags.indexOf("boundaries") > -1) { 
+          if (d.tags.indexOf("boundaries") > -1) {
             d3.select("#boundary-select")
               .append("option")
               .attr("value", d.tile_template)
@@ -390,7 +390,7 @@
 
       if (!layers) return;
       layers.results.forEach(function(d) {
-          if (d.tags.indexOf("boundaries") > -1) { 
+          if (d.tags.indexOf("boundaries") > -1) {
             d3.select("#boundary-select")
               .append("option")
               .attr("value", d.tile_template)
@@ -488,7 +488,7 @@
           fillOpacity: 0.8
 
         }
-      }).addTo(map); 
+      }).addTo(map);
       poly.data_ = layer.properties;
 
       poly.on('mouseover', onMarkerOver)
@@ -508,7 +508,7 @@
           type = 'photo';
         } else {
           type = 'sensor';
-        }      
+        }
 
         if (type == 'observation') {
           var markerIcon = L.divIcon({
@@ -600,8 +600,8 @@
         } else {
           var content = "<strong>" + type + "</strong><br/>";
         }
-        
-        // tooltip content 
+
+        // tooltip content
         if (type == 'Observation') {
           content += evt.target.data_['scientific_name'] + "<br/>" + evt.target.data_['record'];
         }
@@ -815,19 +815,19 @@
           return capitaliseFirstLetter(d).replace(/_/g, " ");
         })
         .attr("class", function(d) {
-          if (queryObj.sortFields[d] == "+") { 
+          if (queryObj.sortFields[d] == "+") {
             return "ascending";
           }
-          if (queryObj.sortFields[d] == "-") { 
+          if (queryObj.sortFields[d] == "-") {
             return "descending";
           }
         })
         .on("click", function(d) {
-          if (queryObj.sortFields[d] == false) { 
+          if (queryObj.sortFields[d] == false) {
             queryObj.sortFields[d] = "+";
-          } else if (queryObj.sortFields[d] == "+") { 
+          } else if (queryObj.sortFields[d] == "+") {
             queryObj.sortFields[d] = "-";
-          } else if (queryObj.sortFields[d] == "-") { 
+          } else if (queryObj.sortFields[d] == "-") {
             queryObj.sortFields[d] = "+";
           }
           query();
@@ -1408,3 +1408,34 @@
     });
   }
 })();
+
+//
+// Copy query dialog
+//
+
+(function() {
+
+  d3.select("#get-query-btn").on("click", function() {
+
+    swal({
+      "title"              : "Here is your query URL",
+      "text"               : d3.select("#export-geojson").attr("href"),
+      "showCancelButton"   : true,
+      "cancelButtonText"   : "Close",
+      "confirmButtonText"  : "Go to Compare",
+      "confirmButtonColor" : "#00B5E2",
+      "closeOnConfirm"     : false,
+      "customClass"        : "modal-share"
+    }, function() {
+      location.href = "http://studio.stamen.com/berkeley/show/compare/";
+    });
+
+    var sweetAlert = document.querySelector(".sweet-alert");
+
+    if (sweetAlert) {
+      sweetAlert.removeAttribute("tabIndex");
+    }
+
+  }, false);
+
+}());

@@ -1,46 +1,36 @@
 !function() {
   var d3 = {
-    version: "3.5.4"
+    version: "3.5.3"
+  };
+  if (!Date.now) Date.now = function() {
+    return +new Date();
   };
   var d3_arraySlice = [].slice, d3_array = function(list) {
     return d3_arraySlice.call(list);
   };
-  var d3_document = this.document;
-  function d3_documentElement(node) {
-    return node && (node.ownerDocument || node.document).documentElement;
+  var d3_document = document, d3_documentElement = d3_document.documentElement, d3_window = window;
+  try {
+    d3_array(d3_documentElement.childNodes)[0].nodeType;
+  } catch (e) {
+    d3_array = function(list) {
+      var i = list.length, array = new Array(i);
+      while (i--) array[i] = list[i];
+      return array;
+    };
   }
-  function d3_window(node) {
-    return node && node.ownerDocument ? node.ownerDocument.defaultView : node;
-  }
-  if (d3_document) {
-    try {
-      d3_array(d3_document.documentElement.childNodes)[0].nodeType;
-    } catch (e) {
-      d3_array = function(list) {
-        var i = list.length, array = new Array(i);
-        while (i--) array[i] = list[i];
-        return array;
-      };
-    }
-  }
-  if (!Date.now) Date.now = function() {
-    return +new Date();
-  };
-  if (d3_document) {
-    try {
-      d3_document.createElement("DIV").style.setProperty("opacity", 0, "");
-    } catch (error) {
-      var d3_element_prototype = this.Element.prototype, d3_element_setAttribute = d3_element_prototype.setAttribute, d3_element_setAttributeNS = d3_element_prototype.setAttributeNS, d3_style_prototype = this.CSSStyleDeclaration.prototype, d3_style_setProperty = d3_style_prototype.setProperty;
-      d3_element_prototype.setAttribute = function(name, value) {
-        d3_element_setAttribute.call(this, name, value + "");
-      };
-      d3_element_prototype.setAttributeNS = function(space, local, value) {
-        d3_element_setAttributeNS.call(this, space, local, value + "");
-      };
-      d3_style_prototype.setProperty = function(name, value, priority) {
-        d3_style_setProperty.call(this, name, value + "", priority);
-      };
-    }
+  try {
+    d3_document.createElement("div").style.setProperty("opacity", 0, "");
+  } catch (error) {
+    var d3_element_prototype = d3_window.Element.prototype, d3_element_setAttribute = d3_element_prototype.setAttribute, d3_element_setAttributeNS = d3_element_prototype.setAttributeNS, d3_style_prototype = d3_window.CSSStyleDeclaration.prototype, d3_style_setProperty = d3_style_prototype.setProperty;
+    d3_element_prototype.setAttribute = function(name, value) {
+      d3_element_setAttribute.call(this, name, value + "");
+    };
+    d3_element_prototype.setAttributeNS = function(space, local, value) {
+      d3_element_setAttributeNS.call(this, space, local, value + "");
+    };
+    d3_style_prototype.setProperty = function(name, value, priority) {
+      d3_style_setProperty.call(this, name, value + "", priority);
+    };
   }
   d3.ascending = d3_ascending;
   function d3_ascending(a, b) {
@@ -453,9 +443,6 @@
     }
   });
   d3.behavior = {};
-  function d3_identity(d) {
-    return d;
-  }
   d3.rebind = function(target, source) {
     var i = 1, n = arguments.length, method;
     while (++i < n) target[method = arguments[i]] = d3_rebind(target, source, source[method]);
@@ -562,12 +549,8 @@
     return n.querySelector(s);
   }, d3_selectAll = function(s, n) {
     return n.querySelectorAll(s);
-  }, d3_selectMatches = function(n, s) {
-    var d3_selectMatcher = n.matches || n[d3_vendorSymbol(n, "matchesSelector")];
-    d3_selectMatches = function(n, s) {
-      return d3_selectMatcher.call(n, s);
-    };
-    return d3_selectMatches(n, s);
+  }, d3_selectMatcher = d3_documentElement.matches || d3_documentElement[d3_vendorSymbol(d3_documentElement, "matchesSelector")], d3_selectMatches = function(n, s) {
+    return d3_selectMatcher.call(n, s);
   };
   if (typeof Sizzle === "function") {
     d3_select = function(s, n) {
@@ -577,7 +560,7 @@
     d3_selectMatches = Sizzle.matchesSelector;
   }
   d3.selection = function() {
-    return d3.select(d3_document.documentElement);
+    return d3_selectionRoot;
   };
   var d3_selectionPrototype = d3.selection.prototype = [];
   d3_selectionPrototype.select = function(selector) {
@@ -737,10 +720,7 @@
         for (priority in name) this.each(d3_selection_style(priority, name[priority], value));
         return this;
       }
-      if (n < 2) {
-        var node = this.node();
-        return d3_window(node).getComputedStyle(node, null).getPropertyValue(name);
-      }
+      if (n < 2) return d3_window.getComputedStyle(this.node(), null).getPropertyValue(name);
       priority = "";
     }
     return this.each(d3_selection_style(name, value, priority));
@@ -806,14 +786,11 @@
     });
   };
   function d3_selection_creator(name) {
-    function create() {
-      var document = this.ownerDocument, namespace = this.namespaceURI;
-      return namespace ? document.createElementNS(namespace, name) : document.createElement(name);
-    }
-    function createNS() {
+    return typeof name === "function" ? name : (name = d3.ns.qualify(name)).local ? function() {
       return this.ownerDocument.createElementNS(name.space, name.local);
-    }
-    return typeof name === "function" ? name : (name = d3.ns.qualify(name)).local ? createNS : create;
+    } : function() {
+      return this.ownerDocument.createElementNS(this.namespaceURI, name);
+    };
   }
   d3_selectionPrototype.insert = function(name, before) {
     name = d3_selection_creator(name);
@@ -1038,27 +1015,16 @@
     };
   }
   d3.select = function(node) {
-    var group;
-    if (typeof node === "string") {
-      group = [ d3_select(node, d3_document) ];
-      group.parentNode = d3_document.documentElement;
-    } else {
-      group = [ node ];
-      group.parentNode = d3_documentElement(node);
-    }
+    var group = [ typeof node === "string" ? d3_select(node, d3_document) : node ];
+    group.parentNode = d3_documentElement;
     return d3_selection([ group ]);
   };
   d3.selectAll = function(nodes) {
-    var group;
-    if (typeof nodes === "string") {
-      group = d3_array(d3_selectAll(nodes, d3_document));
-      group.parentNode = d3_document.documentElement;
-    } else {
-      group = nodes;
-      group.parentNode = null;
-    }
+    var group = d3_array(typeof nodes === "string" ? d3_selectAll(nodes, d3_document) : nodes);
+    group.parentNode = d3_documentElement;
     return d3_selection([ group ]);
   };
+  var d3_selectionRoot = d3.select(d3_documentElement);
   d3_selectionPrototype.on = function(type, listener, capture) {
     var n = arguments.length;
     if (n < 3) {
@@ -1106,11 +1072,9 @@
     mouseenter: "mouseover",
     mouseleave: "mouseout"
   });
-  if (d3_document) {
-    d3_selection_onFilters.forEach(function(k) {
-      if ("on" + k in d3_document) d3_selection_onFilters.remove(k);
-    });
-  }
+  d3_selection_onFilters.forEach(function(k) {
+    if ("on" + k in d3_document) d3_selection_onFilters.remove(k);
+  });
   function d3_selection_onListener(listener, argumentz) {
     return function(e) {
       var o = d3.event;
@@ -1132,14 +1096,11 @@
       }
     };
   }
-  var d3_event_dragSelect, d3_event_dragId = 0;
-  function d3_event_dragSuppress(node) {
-    var name = ".dragsuppress-" + ++d3_event_dragId, click = "click" + name, w = d3.select(d3_window(node)).on("touchmove" + name, d3_eventPreventDefault).on("dragstart" + name, d3_eventPreventDefault).on("selectstart" + name, d3_eventPreventDefault);
-    if (d3_event_dragSelect == null) {
-      d3_event_dragSelect = "onselectstart" in node ? false : d3_vendorSymbol(node.style, "userSelect");
-    }
+  var d3_event_dragSelect = "onselectstart" in d3_document ? null : d3_vendorSymbol(d3_documentElement.style, "userSelect"), d3_event_dragId = 0;
+  function d3_event_dragSuppress() {
+    var name = ".dragsuppress-" + ++d3_event_dragId, click = "click" + name, w = d3.select(d3_window).on("touchmove" + name, d3_eventPreventDefault).on("dragstart" + name, d3_eventPreventDefault).on("selectstart" + name, d3_eventPreventDefault);
     if (d3_event_dragSelect) {
-      var style = d3_documentElement(node).style, select = style[d3_event_dragSelect];
+      var style = d3_documentElement.style, select = style[d3_event_dragSelect];
       style[d3_event_dragSelect] = "none";
     }
     return function(suppressClick) {
@@ -1160,27 +1121,24 @@
   d3.mouse = function(container) {
     return d3_mousePoint(container, d3_eventSource());
   };
-  var d3_mouse_bug44083 = this.navigator && /WebKit/.test(this.navigator.userAgent) ? -1 : 0;
+  var d3_mouse_bug44083 = /WebKit/.test(d3_window.navigator.userAgent) ? -1 : 0;
   function d3_mousePoint(container, e) {
     if (e.changedTouches) e = e.changedTouches[0];
     var svg = container.ownerSVGElement || container;
     if (svg.createSVGPoint) {
       var point = svg.createSVGPoint();
-      if (d3_mouse_bug44083 < 0) {
-        var window = d3_window(container);
-        if (window.scrollX || window.scrollY) {
-          svg = d3.select("body").append("svg").style({
-            position: "absolute",
-            top: 0,
-            left: 0,
-            margin: 0,
-            padding: 0,
-            border: "none"
-          }, "important");
-          var ctm = svg[0][0].getScreenCTM();
-          d3_mouse_bug44083 = !(ctm.f || ctm.e);
-          svg.remove();
-        }
+      if (d3_mouse_bug44083 < 0 && (d3_window.scrollX || d3_window.scrollY)) {
+        svg = d3.select("body").append("svg").style({
+          position: "absolute",
+          top: 0,
+          left: 0,
+          margin: 0,
+          padding: 0,
+          border: "none"
+        }, "important");
+        var ctm = svg[0][0].getScreenCTM();
+        d3_mouse_bug44083 = !(ctm.f || ctm.e);
+        svg.remove();
       }
       if (d3_mouse_bug44083) point.x = e.pageX, point.y = e.pageY; else point.x = e.clientX, 
       point.y = e.clientY;
@@ -1199,13 +1157,13 @@
     }
   };
   d3.behavior.drag = function() {
-    var event = d3_eventDispatch(drag, "drag", "dragstart", "dragend"), origin = null, mousedown = dragstart(d3_noop, d3.mouse, d3_window, "mousemove", "mouseup"), touchstart = dragstart(d3_behavior_dragTouchId, d3.touch, d3_identity, "touchmove", "touchend");
+    var event = d3_eventDispatch(drag, "drag", "dragstart", "dragend"), origin = null, mousedown = dragstart(d3_noop, d3.mouse, d3_behavior_dragMouseSubject, "mousemove", "mouseup"), touchstart = dragstart(d3_behavior_dragTouchId, d3.touch, d3_behavior_dragTouchSubject, "touchmove", "touchend");
     function drag() {
       this.on("mousedown.drag", mousedown).on("touchstart.drag", touchstart);
     }
     function dragstart(id, position, subject, move, end) {
       return function() {
-        var that = this, target = d3.event.target, parent = that.parentNode, dispatch = event.of(that, arguments), dragged = 0, dragId = id(), dragName = ".drag" + (dragId == null ? "" : "-" + dragId), dragOffset, dragSubject = d3.select(subject(target)).on(move + dragName, moved).on(end + dragName, ended), dragRestore = d3_event_dragSuppress(target), position0 = position(parent, dragId);
+        var that = this, target = d3.event.target, parent = that.parentNode, dispatch = event.of(that, arguments), dragged = 0, dragId = id(), dragName = ".drag" + (dragId == null ? "" : "-" + dragId), dragOffset, dragSubject = d3.select(subject()).on(move + dragName, moved).on(end + dragName, ended), dragRestore = d3_event_dragSuppress(), position0 = position(parent, dragId);
         if (origin) {
           dragOffset = origin.apply(that, arguments);
           dragOffset = [ dragOffset.x - position0[0], dragOffset.y - position0[1] ];
@@ -1249,6 +1207,12 @@
   };
   function d3_behavior_dragTouchId() {
     return d3.event.changedTouches[0].identifier;
+  }
+  function d3_behavior_dragTouchSubject() {
+    return d3.event.target;
+  }
+  function d3_behavior_dragMouseSubject() {
+    return d3_window;
   }
   d3.touches = function(container, touches) {
     if (arguments.length < 2) touches = d3_eventSource().touches;
@@ -1304,15 +1268,6 @@
       y: 0,
       k: 1
     }, translate0, center0, center, size = [ 960, 500 ], scaleExtent = d3_behavior_zoomInfinity, duration = 250, zooming = 0, mousedown = "mousedown.zoom", mousemove = "mousemove.zoom", mouseup = "mouseup.zoom", mousewheelTimer, touchstart = "touchstart.zoom", touchtime, event = d3_eventDispatch(zoom, "zoomstart", "zoom", "zoomend"), x0, x1, y0, y1;
-    if (!d3_behavior_zoomWheel) {
-      d3_behavior_zoomWheel = "onwheel" in d3_document ? (d3_behavior_zoomDelta = function() {
-        return -d3.event.deltaY * (d3.event.deltaMode ? 120 : 1);
-      }, "wheel") : "onmousewheel" in d3_document ? (d3_behavior_zoomDelta = function() {
-        return d3.event.wheelDelta;
-      }, "mousewheel") : (d3_behavior_zoomDelta = function() {
-        return -d3.event.detail;
-      }, "MozMousePixelScroll");
-    }
     function zoom(g) {
       g.on(mousedown, mousedowned).on(d3_behavior_zoomWheel + ".zoom", mousewheeled).on("dblclick.zoom", dblclicked).on(touchstart, touchstarted);
     }
@@ -1467,7 +1422,7 @@
       center0 = null;
     }
     function mousedowned() {
-      var that = this, target = d3.event.target, dispatch = event.of(that, arguments), dragged = 0, subject = d3.select(d3_window(that)).on(mousemove, moved).on(mouseup, ended), location0 = location(d3.mouse(that)), dragRestore = d3_event_dragSuppress(that);
+      var that = this, target = d3.event.target, dispatch = event.of(that, arguments), dragged = 0, subject = d3.select(d3_window).on(mousemove, moved).on(mouseup, ended), location0 = location(d3.mouse(that)), dragRestore = d3_event_dragSuppress();
       d3_selection_interrupt.call(that);
       zoomstarted(dispatch);
       function moved() {
@@ -1482,7 +1437,7 @@
       }
     }
     function touchstarted() {
-      var that = this, dispatch = event.of(that, arguments), locations0 = {}, distance0 = 0, scale0, zoomName = ".zoom-" + d3.event.changedTouches[0].identifier, touchmove = "touchmove" + zoomName, touchend = "touchend" + zoomName, targets = [], subject = d3.select(that), dragRestore = d3_event_dragSuppress(that);
+      var that = this, dispatch = event.of(that, arguments), locations0 = {}, distance0 = 0, scale0, zoomName = ".zoom-" + d3.event.changedTouches[0].identifier, touchmove = "touchmove" + zoomName, touchend = "touchend" + zoomName, targets = [], subject = d3.select(that), dragRestore = d3_event_dragSuppress();
       started();
       zoomstarted(dispatch);
       subject.on(mousedown, null).on(touchstart, started);
@@ -1570,7 +1525,14 @@
     }
     return d3.rebind(zoom, event, "on");
   };
-  var d3_behavior_zoomInfinity = [ 0, Infinity ], d3_behavior_zoomDelta, d3_behavior_zoomWheel;
+  var d3_behavior_zoomInfinity = [ 0, Infinity ];
+  var d3_behavior_zoomDelta, d3_behavior_zoomWheel = "onwheel" in d3_document ? (d3_behavior_zoomDelta = function() {
+    return -d3.event.deltaY * (d3.event.deltaMode ? 120 : 1);
+  }, "wheel") : "onmousewheel" in d3_document ? (d3_behavior_zoomDelta = function() {
+    return d3.event.wheelDelta;
+  }, "mousewheel") : (d3_behavior_zoomDelta = function() {
+    return -d3.event.detail;
+  }, "MozMousePixelScroll");
   d3.color = d3_color;
   function d3_color() {}
   d3_color.prototype.toString = function() {
@@ -1715,9 +1677,7 @@
         }
       }
     }
-    if (color = d3_rgb_names.get(format.toLowerCase())) {
-      return rgb(color.r, color.g, color.b);
-    }
+    if (color = d3_rgb_names.get(format)) return rgb(color.r, color.g, color.b);
     if (format != null && format.charAt(0) === "#" && !isNaN(color = parseInt(format.slice(1), 16))) {
       if (format.length === 4) {
         r = (color & 3840) >> 4;
@@ -1880,7 +1840,6 @@
     plum: 14524637,
     powderblue: 11591910,
     purple: 8388736,
-    rebeccapurple: 6697881,
     red: 16711680,
     rosybrown: 12357519,
     royalblue: 4286945,
@@ -1919,6 +1878,9 @@
     };
   }
   d3.functor = d3_functor;
+  function d3_identity(d) {
+    return d;
+  }
   d3.xhr = d3_xhrType(d3_identity);
   function d3_xhrType(response) {
     return function(url, mimeType, callback) {
@@ -1929,7 +1891,7 @@
   }
   function d3_xhr(url, mimeType, response, callback) {
     var xhr = {}, dispatch = d3.dispatch("beforesend", "progress", "load", "error"), headers = {}, request = new XMLHttpRequest(), responseType = null;
-    if (this.XDomainRequest && !("withCredentials" in request) && /^(http(s)?:)?\/\//.test(url)) request = new XDomainRequest();
+    if (d3_window.XDomainRequest && !("withCredentials" in request) && /^(http(s)?:)?\/\//.test(url)) request = new XDomainRequest();
     "onload" in request ? request.onload = request.onerror = respond : request.onreadystatechange = function() {
       request.readyState > 3 && respond();
     };
@@ -2115,7 +2077,7 @@
   };
   d3.csv = d3.dsv(",", "text/csv");
   d3.tsv = d3.dsv("	", "text/tab-separated-values");
-  var d3_timer_queueHead, d3_timer_queueTail, d3_timer_interval, d3_timer_timeout, d3_timer_active, d3_timer_frame = this[d3_vendorSymbol(this, "requestAnimationFrame")] || function(callback) {
+  var d3_timer_queueHead, d3_timer_queueTail, d3_timer_interval, d3_timer_timeout, d3_timer_active, d3_timer_frame = d3_window[d3_vendorSymbol(d3_window, "requestAnimationFrame")] || function(callback) {
     setTimeout(callback, 17);
   };
   d3.timer = function(callback, delay, then) {
@@ -5676,7 +5638,7 @@
     (function find(node, x1, y1, x2, y2) {
       if (x1 > x3 || y1 > y3 || x2 < x0 || y2 < y0) return;
       if (point = node.point) {
-        var point, dx = x - node.x, dy = y - node.y, distance2 = dx * dx + dy * dy;
+        var point, dx = x - point[0], dy = y - point[1], distance2 = dx * dx + dy * dy;
         if (distance2 < minDistance2) {
           var distance = Math.sqrt(minDistance2 = distance2);
           x0 = x - distance, y0 = y - distance;
@@ -6390,8 +6352,8 @@
             neighbors[o.target.index].push(o.source);
           }
         }
-        var candidates = neighbors[i], j = -1, l = candidates.length, x;
-        while (++j < l) if (!isNaN(x = candidates[j][dimension])) return x;
+        var candidates = neighbors[i], j = -1, m = candidates.length, x;
+        while (++j < m) if (!isNaN(x = candidates[j][dimension])) return x;
         return Math.random() * size;
       }
       return force.resume();
@@ -8631,7 +8593,7 @@
   d3_transitionPrototype.node = d3_selectionPrototype.node;
   d3_transitionPrototype.size = d3_selectionPrototype.size;
   d3.transition = function(selection, name) {
-    return selection && selection.transition ? d3_transitionInheritId ? selection.transition(name) : selection : d3.selection().transition(selection);
+    return selection && selection.transition ? d3_transitionInheritId ? selection.transition(name) : selection : d3_selectionRoot.transition(selection);
   };
   d3.transition.prototype = d3_transitionPrototype;
   d3_transitionPrototype.select = function(selector) {
@@ -8760,7 +8722,7 @@
     }
     function styleString(b) {
       return b == null ? styleNull : (b += "", function() {
-        var a = d3_window(this).getComputedStyle(this, null).getPropertyValue(name), i;
+        var a = d3_window.getComputedStyle(this, null).getPropertyValue(name), i;
         return a !== b && (i = d3_interpolate(a, b), function(t) {
           this.style.setProperty(name, i(t), priority);
         });
@@ -8771,7 +8733,7 @@
   d3_transitionPrototype.styleTween = function(name, tween, priority) {
     if (arguments.length < 3) priority = "";
     function styleTween(d, i) {
-      var f = tween.call(this, d, i, d3_window(this).getComputedStyle(this, null).getPropertyValue(name));
+      var f = tween.call(this, d, i, d3_window.getComputedStyle(this, null).getPropertyValue(name));
       return f && function(t) {
         this.style.setProperty(name, f(t), priority);
       };
@@ -9137,8 +9099,8 @@
       g.selectAll(".extent,.e>rect,.w>rect").attr("height", yExtent[1] - yExtent[0]);
     }
     function brushstart() {
-      var target = this, eventTarget = d3.select(d3.event.target), event_ = event.of(target, arguments), g = d3.select(target), resizing = eventTarget.datum(), resizingX = !/^(n|s)$/.test(resizing) && x, resizingY = !/^(e|w)$/.test(resizing) && y, dragging = eventTarget.classed("extent"), dragRestore = d3_event_dragSuppress(target), center, origin = d3.mouse(target), offset;
-      var w = d3.select(d3_window(target)).on("keydown.brush", keydown).on("keyup.brush", keyup);
+      var target = this, eventTarget = d3.select(d3.event.target), event_ = event.of(target, arguments), g = d3.select(target), resizing = eventTarget.datum(), resizingX = !/^(n|s)$/.test(resizing) && x, resizingY = !/^(e|w)$/.test(resizing) && y, dragging = eventTarget.classed("extent"), dragRestore = d3_event_dragSuppress(), center, origin = d3.mouse(target), offset;
+      var w = d3.select(d3_window).on("keydown.brush", keydown).on("keyup.brush", keyup);
       if (d3.event.changedTouches) {
         w.on("touchmove.brush", brushmove).on("touchend.brush", brushend);
       } else {
@@ -18806,6 +18768,826 @@ L.Map.include({
 	window.HashNav = HashNav;
 
 }));
+
+// SweetAlert
+// 2014 (c) - Tristan Edwards
+// github.com/t4t5/sweetalert
+;(function(window, document, undefined) {
+
+  var modalClass   = '.sweet-alert',
+      overlayClass = '.sweet-overlay',
+      alertTypes   = ['error', 'warning', 'info', 'success'],
+      defaultParams = {
+        title: '',
+        text: '',
+        type: null,
+        allowOutsideClick: false,
+        showConfirmButton: true,
+        showCancelButton: false,
+        closeOnConfirm: true,
+        closeOnCancel: true,
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#AEDEF4',
+        cancelButtonText: 'Cancel',
+        imageUrl: null,
+        imageSize: null,
+        timer: null,
+        customClass: '',
+        html: false,
+        animation: true,
+        allowEscapeKey: true
+      };
+
+
+  /*
+   * Manipulate DOM
+   */
+
+  var getModal = function() {
+      var $modal = document.querySelector(modalClass);
+
+      if (!$modal) {
+        sweetAlertInitialize();
+        $modal = getModal();
+      }
+
+      return $modal;
+    },
+    getOverlay = function() {
+      return document.querySelector(overlayClass);
+    },
+    hasClass = function(elem, className) {
+      return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');
+    },
+    addClass = function(elem, className) {
+      if (!hasClass(elem, className)) {
+        elem.className += ' ' + className;
+      }
+    },
+    removeClass = function(elem, className) {
+      var newClass = ' ' + elem.className.replace(/[\t\r\n]/g, ' ') + ' ';
+      if (hasClass(elem, className)) {
+        while (newClass.indexOf(' ' + className + ' ') >= 0) {
+          newClass = newClass.replace(' ' + className + ' ', ' ');
+        }
+        elem.className = newClass.replace(/^\s+|\s+$/g, '');
+      }
+    },
+    escapeHtml = function(str) {
+      var div = document.createElement('div');
+      div.appendChild(document.createTextNode(str));
+      return div.innerHTML;
+    },
+    _show = function(elem) {
+      elem.style.opacity = '';
+      elem.style.display = 'block';
+    },
+    show = function(elems) {
+      if (elems && !elems.length) {
+        return _show(elems);
+      }
+      for (var i = 0; i < elems.length; ++i) {
+        _show(elems[i]);
+      }
+    },
+    _hide = function(elem) {
+      elem.style.opacity = '';
+      elem.style.display = 'none';
+    },
+    hide = function(elems) {
+      if (elems && !elems.length) {
+        return _hide(elems);
+      }
+      for (var i = 0; i < elems.length; ++i) {
+        _hide(elems[i]);
+      }
+    },
+    isDescendant = function(parent, child) {
+      var node = child.parentNode;
+      while (node !== null) {
+        if (node === parent) {
+          return true;
+        }
+        node = node.parentNode;
+      }
+      return false;
+    },
+    getTopMargin = function(elem) {
+      elem.style.left = '-9999px';
+      elem.style.display = 'block';
+
+      var height = elem.clientHeight,
+          padding;
+      if (typeof getComputedStyle !== "undefined") { /* IE 8 */
+        padding = parseInt(getComputedStyle(elem).getPropertyValue('padding'), 10);
+      } else {
+        padding = parseInt(elem.currentStyle.padding);
+      }
+
+      elem.style.left = '';
+      elem.style.display = 'none';
+      return ('-' + parseInt(height / 2 + padding) + 'px');
+    },
+    fadeIn = function(elem, interval) {
+      if (+elem.style.opacity < 1) {
+        interval = interval || 16;
+        elem.style.opacity = 0;
+        elem.style.display = 'block';
+        var last = +new Date();
+        var tick = function() {
+          elem.style.opacity = +elem.style.opacity + (new Date() - last) / 100;
+          last = +new Date();
+
+          if (+elem.style.opacity < 1) {
+            setTimeout(tick, interval);
+          }
+        };
+        tick();
+      }
+      elem.style.display = 'block'; //fallback IE8
+    },
+    fadeOut = function(elem, interval) {
+      interval = interval || 16;
+      elem.style.opacity = 1;
+      var last = +new Date();
+      var tick = function() {
+        elem.style.opacity = +elem.style.opacity - (new Date() - last) / 100;
+        last = +new Date();
+
+        if (+elem.style.opacity > 0) {
+          setTimeout(tick, interval);
+        } else {
+          elem.style.display = 'none';
+        }
+      };
+      tick();
+    },
+    fireClick = function(node) {
+      // Taken from http://www.nonobtrusive.com/2011/11/29/programatically-fire-crossbrowser-click-event-with-javascript/
+      // Then fixed for today's Chrome browser.
+      if (typeof MouseEvent === 'function') {
+        // Up-to-date approach
+        var mevt = new MouseEvent('click', {
+          view: window,
+          bubbles: false,
+          cancelable: true
+        });
+        node.dispatchEvent(mevt);
+      } else if ( document.createEvent ) {
+        // Fallback
+        var evt = document.createEvent('MouseEvents');
+        evt.initEvent('click', false, false);
+        node.dispatchEvent(evt);
+      } else if( document.createEventObject ) {
+        node.fireEvent('onclick') ;
+      } else if (typeof node.onclick === 'function' ) {
+        node.onclick();
+      }
+    },
+    stopEventPropagation = function(e) {
+      // In particular, make sure the space bar doesn't scroll the main window.
+      if (typeof e.stopPropagation === 'function') {
+        e.stopPropagation();
+        e.preventDefault();
+      } else if (window.event && window.event.hasOwnProperty('cancelBubble')) {
+        window.event.cancelBubble = true;
+      }
+    };
+
+  // Remember state in cases where opening and handling a modal will fiddle with it.
+  var previousActiveElement,
+      previousDocumentClick,
+      previousWindowKeyDown,
+      lastFocusedButton;
+
+
+  /*
+   * Add modal + overlay to DOM
+   */
+
+  var sweetAlertInitialize = function() {
+    var sweetHTML = '<div class="sweet-overlay" tabIndex="-1"></div><div class="sweet-alert" tabIndex="-1"><div class="sa-icon sa-error"><span class="sa-x-mark"><span class="sa-line sa-left"></span><span class="sa-line sa-right"></span></span></div><div class="sa-icon sa-warning"> <span class="sa-body"></span> <span class="sa-dot"></span> </div> <div class="sa-icon sa-info"></div> <div class="sa-icon sa-success"> <span class="sa-line sa-tip"></span> <span class="sa-line sa-long"></span> <div class="sa-placeholder"></div> <div class="sa-fix"></div> </div> <div class="sa-icon sa-custom"></div> <h2>Title</h2><p>Text</p><button class="cancel" tabIndex="2">Cancel</button><button class="confirm" tabIndex="1">OK</button></div>',
+        sweetWrap = document.createElement('div');
+
+    sweetWrap.innerHTML = sweetHTML;
+
+    // Append elements to body
+    while (sweetWrap.firstChild) {
+      document.body.appendChild(sweetWrap.firstChild);
+    }
+  };
+
+
+  /*
+   * Global sweetAlert function
+   */
+  var sweetAlert, swal;
+  
+  sweetAlert = swal = function() {
+    var customizations = arguments[0];
+
+    /*
+     * Use argument if defined or default value from params object otherwise.
+     * Supports the case where a default value is boolean true and should be
+     * overridden by a corresponding explicit argument which is boolean false.
+     */
+    function argumentOrDefault(key) {
+      var args = customizations;
+
+      if (typeof args[key] !== 'undefined') {
+        return args[key];
+      } else {
+        return defaultParams[key];
+      }
+    }
+
+    if (arguments[0] === undefined) {
+      logStr('SweetAlert expects at least 1 attribute!');
+      return false;
+    }
+
+    var params = extend({}, defaultParams);
+
+    switch (typeof arguments[0]) {
+
+      // Ex: swal("Hello", "Just testing", "info");
+      case 'string':
+        params.title = arguments[0];
+        params.text  = arguments[1] || '';
+        params.type  = arguments[2] || '';
+
+        break;
+
+      // Ex: swal({title:"Hello", text: "Just testing", type: "info"});
+      case 'object':
+        if (arguments[0].title === undefined) {
+          logStr('Missing "title" argument!');
+          return false;
+        }
+
+        params.title = arguments[0].title;
+
+        var availableCustoms = [
+          'text',
+          'type',
+          'customClass',
+          'allowOutsideClick',
+          'showConfirmButton',
+          'showCancelButton',
+          'closeOnConfirm',
+          'closeOnCancel',
+          'timer',
+          'confirmButtonColor',
+          'cancelButtonText',
+          'imageUrl',
+          'imageSize',
+          'html',
+          'animation',
+          'allowEscapeKey'];
+
+        // It would be nice to just use .forEach here, but IE8... :(
+        var numCustoms = availableCustoms.length;
+        for (var customIndex = 0; customIndex < numCustoms; customIndex++) {
+          var customName = availableCustoms[customIndex];
+          params[customName] = argumentOrDefault(customName);
+        }
+
+        // Show "Confirm" instead of "OK" if cancel button is visible
+        params.confirmButtonText  = (params.showCancelButton) ? 'Confirm' : defaultParams.confirmButtonText;
+        params.confirmButtonText  = argumentOrDefault('confirmButtonText');
+
+        // Function to call when clicking on cancel/OK
+        params.doneFunction       = arguments[1] || null;
+
+        break;
+
+      default:
+        logStr('Unexpected type of argument! Expected "string" or "object", got ' + typeof arguments[0]);
+        return false;
+
+    }
+
+    setParameters(params);
+    fixVerticalPosition();
+    openModal();
+
+
+    // Modal interactions
+    var modal = getModal();
+
+    // Mouse interactions
+    var onButtonEvent = function(event) {
+      var e = event || window.event;
+      var target = e.target || e.srcElement,
+          targetedConfirm    = (target.className.indexOf("confirm") !== -1),
+          modalIsVisible     = hasClass(modal, 'visible'),
+          doneFunctionExists = (params.doneFunction && modal.getAttribute('data-has-done-function') === 'true');
+
+      switch (e.type) {
+        case ("mouseover"):
+          if (targetedConfirm) {
+            target.style.backgroundColor = colorLuminance(params.confirmButtonColor, -0.04);
+          }
+          break;
+        case ("mouseout"):
+          if (targetedConfirm) {
+            target.style.backgroundColor = params.confirmButtonColor;
+          }
+          break;
+        case ("mousedown"):
+          if (targetedConfirm) {
+            target.style.backgroundColor = colorLuminance(params.confirmButtonColor, -0.14);
+          }
+          break;
+        case ("mouseup"):
+          if (targetedConfirm) {
+            target.style.backgroundColor = colorLuminance(params.confirmButtonColor, -0.04);
+          }
+          break;
+        case ("focus"):
+          var $confirmButton = modal.querySelector('button.confirm'),
+              $cancelButton  = modal.querySelector('button.cancel');
+
+          if (targetedConfirm) {
+            $cancelButton.style.boxShadow = 'none';
+          } else {
+            $confirmButton.style.boxShadow = 'none';
+          }
+          break;
+        case ("click"):
+          if (targetedConfirm && doneFunctionExists && modalIsVisible) { // Clicked "confirm"
+
+            params.doneFunction(true);
+
+            if (params.closeOnConfirm) {
+              sweetAlert.close();
+            }
+          } else if (doneFunctionExists && modalIsVisible) { // Clicked "cancel"
+
+            // Check if callback function expects a parameter (to track cancel actions)
+            var functionAsStr          = String(params.doneFunction).replace(/\s/g, '');
+            var functionHandlesCancel  = functionAsStr.substring(0, 9) === "function(" && functionAsStr.substring(9, 10) !== ")";
+
+            if (functionHandlesCancel) {
+              params.doneFunction(false);
+            }
+
+            if (params.closeOnCancel) {
+              sweetAlert.close();
+            }
+          } else {
+            sweetAlert.close();
+          }
+
+          break;
+      }
+    };
+
+    var $buttons = modal.querySelectorAll('button');
+    for (var i = 0; i < $buttons.length; i++) {
+      $buttons[i].onclick     = onButtonEvent;
+      $buttons[i].onmouseover = onButtonEvent;
+      $buttons[i].onmouseout  = onButtonEvent;
+      $buttons[i].onmousedown = onButtonEvent;
+      //$buttons[i].onmouseup   = onButtonEvent;
+      $buttons[i].onfocus     = onButtonEvent;
+    }
+
+    // Remember the current document.onclick event.
+    previousDocumentClick = document.onclick;
+    document.onclick = function(event) {
+      var e = event || window.event;
+      var target = e.target || e.srcElement;
+
+      var clickedOnModal = (modal === target),
+          clickedOnModalChild = isDescendant(modal, target),
+          modalIsVisible = hasClass(modal, 'visible'),
+          outsideClickIsAllowed = modal.getAttribute('data-allow-ouside-click') === 'true';
+
+      if (!clickedOnModal && !clickedOnModalChild && modalIsVisible && outsideClickIsAllowed) {
+        sweetAlert.close();
+      }
+    };
+
+
+    // Keyboard interactions
+    var $okButton = modal.querySelector('button.confirm'),
+        $cancelButton = modal.querySelector('button.cancel'),
+        $modalButtons = modal.querySelectorAll('button[tabindex]');
+
+
+    function handleKeyDown(event) {
+      var e = event || window.event;
+      var keyCode = e.keyCode || e.which;
+
+      if ([9,13,32,27].indexOf(keyCode) === -1) {
+        // Don't do work on keys we don't care about.
+        return;
+      }
+
+      var $targetElement = e.target || e.srcElement;
+
+      var btnIndex = -1; // Find the button - note, this is a nodelist, not an array.
+      for (var i = 0; i < $modalButtons.length; i++) {
+        if ($targetElement === $modalButtons[i]) {
+          btnIndex = i;
+          break;
+        }
+      }
+
+      if (keyCode === 9) {
+        // TAB
+        if (btnIndex === -1) {
+          // No button focused. Jump to the confirm button.
+          $targetElement = $okButton;
+        } else {
+          // Cycle to the next button
+          if (btnIndex === $modalButtons.length - 1) {
+            $targetElement = $modalButtons[0];
+          } else {
+            $targetElement = $modalButtons[btnIndex + 1];
+          }
+        }
+
+        stopEventPropagation(e);
+        $targetElement.focus();
+        setFocusStyle($targetElement, params.confirmButtonColor); // TODO
+
+      } else {
+        if (keyCode === 13 || keyCode === 32) {
+            if (btnIndex === -1) {
+              // ENTER/SPACE clicked outside of a button.
+              $targetElement = $okButton;
+            } else {
+              // Do nothing - let the browser handle it.
+              $targetElement = undefined;
+            }
+        } else if (keyCode === 27 && params.allowEscapeKey === true) {
+          $targetElement = $cancelButton;
+        } else {
+          // Fallback - let the browser handle it.
+          $targetElement = undefined;
+        }
+
+        if ($targetElement !== undefined) {
+          fireClick($targetElement, e);
+        }
+      }
+    }
+
+    previousWindowKeyDown = window.onkeydown;
+
+    window.onkeydown = handleKeyDown;
+
+    function handleOnBlur(event) {
+      var e = event || window.event;
+      var $targetElement = e.target || e.srcElement,
+          $focusElement = e.relatedTarget,
+          modalIsVisible = hasClass(modal, 'visible');
+
+      if (modalIsVisible) {
+        var btnIndex = -1; // Find the button - note, this is a nodelist, not an array.
+
+        if ($focusElement !== null) {
+          // If we picked something in the DOM to focus to, let's see if it was a button.
+          for (var i = 0; i < $modalButtons.length; i++) {
+            if ($focusElement === $modalButtons[i]) {
+              btnIndex = i;
+              break;
+            }
+          }
+
+          if (btnIndex === -1) {
+            // Something in the dom, but not a visible button. Focus back on the button.
+            $targetElement.focus();
+          }
+        } else {
+          // Exiting the DOM (e.g. clicked in the URL bar);
+          lastFocusedButton = $targetElement;
+        }
+      }
+    }
+
+    $okButton.onblur = handleOnBlur;
+    $cancelButton.onblur = handleOnBlur;
+
+    window.onfocus = function() {
+      // When the user has focused away and focused back from the whole window.
+      window.setTimeout(function() {
+        // Put in a timeout to jump out of the event sequence. Calling focus() in the event
+        // sequence confuses things.
+        if (lastFocusedButton !== undefined) {
+          lastFocusedButton.focus();
+          lastFocusedButton = undefined;
+        }
+      }, 0);
+    };
+  };
+
+
+  /*
+   * Set default params for each popup
+   * @param {Object} userParams
+   */
+  sweetAlert.setDefaults = swal.setDefaults = function(userParams) {
+    if (!userParams) {
+      throw new Error('userParams is required');
+    }
+    if (typeof userParams !== 'object') {
+      throw new Error('userParams has to be a object');
+    }
+
+    extend(defaultParams, userParams);
+  };
+
+
+  /*
+   * Set type, text and actions on modal
+   */
+
+  function setParameters(params) {
+    var modal = getModal();
+
+    var $title = modal.querySelector('h2'),
+        $text = modal.querySelector('p'),
+        $cancelBtn = modal.querySelector('button.cancel'),
+        $confirmBtn = modal.querySelector('button.confirm');
+
+    // Title
+    $title.innerHTML = (params.html) ? params.title : escapeHtml(params.title).split("\n").join("<br>");
+
+    // Text
+    $text.innerHTML = (params.html) ? params.text : escapeHtml(params.text || '').split("\n").join("<br>");
+
+    if (params.text) {
+      show($text);
+    }
+
+    //Custom Class
+    if (params.customClass) {
+      addClass(modal, params.customClass);
+      modal.setAttribute('data-custom-class', params.customClass);
+    } else {
+      // Find previously set classes and remove them
+      var customClass = modal.getAttribute('data-custom-class');
+      removeClass(modal, customClass);
+      modal.setAttribute('data-custom-class', "");
+    }
+
+    // Icon
+    hide(modal.querySelectorAll('.sa-icon'));
+    if (params.type && !isIE8()) {
+      var validType = false;
+      for (var i = 0; i < alertTypes.length; i++) {
+        if (params.type === alertTypes[i]) {
+          validType = true;
+          break;
+        }
+      }
+      if (!validType) {
+        logStr('Unknown alert type: ' + params.type);
+        return false;
+      }
+      var $icon = modal.querySelector('.sa-icon.' + 'sa-' + params.type);
+      show($icon);
+
+      // Animate icon
+      switch (params.type) {
+        case "success":
+          addClass($icon, 'animate');
+          addClass($icon.querySelector('.sa-tip'), 'animateSuccessTip');
+          addClass($icon.querySelector('.sa-long'), 'animateSuccessLong');
+          break;
+        case "error":
+          addClass($icon, 'animateErrorIcon');
+          addClass($icon.querySelector('.sa-x-mark'), 'animateXMark');
+          break;
+        case "warning":
+          addClass($icon, 'pulseWarning');
+          addClass($icon.querySelector('.sa-body'), 'pulseWarningIns');
+          addClass($icon.querySelector('.sa-dot'), 'pulseWarningIns');
+          break;
+      }
+    }
+
+    // Custom image
+    if (params.imageUrl) {
+      var $customIcon = modal.querySelector('.sa-icon.sa-custom');
+
+      $customIcon.style.backgroundImage = 'url(' + params.imageUrl + ')';
+      show($customIcon);
+
+      var _imgWidth  = 80,
+          _imgHeight = 80;
+
+      if (params.imageSize) {
+        var dimensions = params.imageSize.toString().split('x');
+        var imgWidth  = dimensions[0];
+        var imgHeight = dimensions[1];
+
+        if (!imgWidth || !imgHeight) {
+          logStr("Parameter imageSize expects value with format WIDTHxHEIGHT, got " + params.imageSize);
+        } else {
+          _imgWidth  = imgWidth;
+          _imgHeight = imgHeight;
+        }
+      }
+      $customIcon.setAttribute('style', $customIcon.getAttribute('style') + 'width:' + _imgWidth + 'px; height:' + _imgHeight + 'px');
+    }
+
+    // Show cancel button?
+    modal.setAttribute('data-has-cancel-button', params.showCancelButton);
+    if (params.showCancelButton) {
+      $cancelBtn.style.display = 'inline-block';
+    } else {
+      hide($cancelBtn);
+    }
+
+    // Show confirm button?
+    modal.setAttribute('data-has-confirm-button', params.showConfirmButton);
+    if (params.showConfirmButton) {
+      $confirmBtn.style.display = 'inline-block';
+    } else {
+      hide($confirmBtn);
+    }
+
+    // Edit text on cancel and confirm buttons
+    if (params.cancelButtonText) {
+      $cancelBtn.innerHTML = escapeHtml(params.cancelButtonText);
+    }
+    if (params.confirmButtonText) {
+      $confirmBtn.innerHTML = escapeHtml(params.confirmButtonText);
+    }
+
+    // Set confirm button to selected background color
+    $confirmBtn.style.backgroundColor = params.confirmButtonColor;
+
+    // Set box-shadow to default focused button
+    setFocusStyle($confirmBtn, params.confirmButtonColor);
+
+    // Allow outside click?
+    modal.setAttribute('data-allow-ouside-click', params.allowOutsideClick);
+
+    // Done-function
+    var hasDoneFunction = (params.doneFunction) ? true : false;
+    modal.setAttribute('data-has-done-function', hasDoneFunction);
+
+    // Prevent modal from animating
+    if (!params.animation){
+      modal.setAttribute('data-animation', 'none');
+    } else{
+      modal.setAttribute('data-animation', 'pop');
+    }
+
+    // Close timer
+    modal.setAttribute('data-timer', params.timer);
+  }
+
+
+  /*
+   * Set hover, active and focus-states for buttons (source: http://www.sitepoint.com/javascript-generate-lighter-darker-color)
+   */
+
+  function colorLuminance(hex, lum) {
+    // Validate hex string
+    hex = String(hex).replace(/[^0-9a-f]/gi, '');
+    if (hex.length < 6) {
+      hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+    }
+    lum = lum || 0;
+
+    // Convert to decimal and change luminosity
+    var rgb = "#", c, i;
+    for (i = 0; i < 3; i++) {
+      c = parseInt(hex.substr(i*2,2), 16);
+      c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+      rgb += ("00"+c).substr(c.length);
+    }
+
+    return rgb;
+  }
+
+  function extend(a, b){
+    for (var key in b) {
+      if (b.hasOwnProperty(key)) {
+        a[key] = b[key];
+      }
+    }
+
+    return a;
+  }
+
+  function hexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? parseInt(result[1], 16) + ', ' + parseInt(result[2], 16) + ', ' + parseInt(result[3], 16) : null;
+  }
+
+  // Add box-shadow style to button (depending on its chosen bg-color)
+  function setFocusStyle($button, bgColor) {
+    var rgbColor = hexToRgb(bgColor);
+    $button.style.boxShadow = '0 0 2px rgba(' + rgbColor +', 0.8), inset 0 0 0 1px rgba(0, 0, 0, 0.05)';
+  }
+
+
+  // Animation when opening modal
+  function openModal() {
+    var modal = getModal();
+    fadeIn(getOverlay(), 10);
+    show(modal);
+    addClass(modal, 'showSweetAlert');
+    removeClass(modal, 'hideSweetAlert');
+
+    previousActiveElement = document.activeElement;
+    var $okButton = modal.querySelector('button.confirm');
+    $okButton.focus();
+
+    setTimeout(function() {
+      addClass(modal, 'visible');
+    }, 500);
+
+    var timer = modal.getAttribute('data-timer');
+
+    if (timer !== "null" && timer !== "") {
+      modal.timeout = setTimeout(function() {
+        sweetAlert.close();
+      }, timer);
+    }
+  }
+
+
+  // Aninmation when closing modal
+  sweetAlert.close = swal.close = function() {
+    var modal = getModal();
+    fadeOut(getOverlay(), 5);
+    fadeOut(modal, 5);
+    removeClass(modal, 'showSweetAlert');
+    addClass(modal, 'hideSweetAlert');
+    removeClass(modal, 'visible');
+
+
+    // Reset icon animations
+
+    var $successIcon = modal.querySelector('.sa-icon.sa-success');
+    removeClass($successIcon, 'animate');
+    removeClass($successIcon.querySelector('.sa-tip'), 'animateSuccessTip');
+    removeClass($successIcon.querySelector('.sa-long'), 'animateSuccessLong');
+
+    var $errorIcon = modal.querySelector('.sa-icon.sa-error');
+    removeClass($errorIcon, 'animateErrorIcon');
+    removeClass($errorIcon.querySelector('.sa-x-mark'), 'animateXMark');
+
+    var $warningIcon = modal.querySelector('.sa-icon.sa-warning');
+    removeClass($warningIcon, 'pulseWarning');
+    removeClass($warningIcon.querySelector('.sa-body'), 'pulseWarningIns');
+    removeClass($warningIcon.querySelector('.sa-dot'), 'pulseWarningIns');
+
+
+    // Reset the page to its previous state
+    window.onkeydown = previousWindowKeyDown;
+    document.onclick = previousDocumentClick;
+    if (previousActiveElement) {
+      previousActiveElement.focus();
+    }
+    lastFocusedButton = undefined;
+    clearTimeout(modal.timeout);
+  };
+
+
+  /*
+   * Set "margin-top"-property on modal based on its computed height
+   */
+
+  function fixVerticalPosition() {
+    var modal = getModal();
+
+    modal.style.marginTop = getTopMargin(getModal());
+  }
+
+  // If browser is Internet Explorer 8
+  function isIE8() {
+    if (window.attachEvent && !window.addEventListener) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // Error messages for developers
+  function logStr(string) {
+    if (window.console) { // IE...
+      window.console.log("SweetAlert: " + string);
+    }
+  }
+
+    if (typeof define === 'function' && define.amd) {
+      define(function() { return sweetAlert; });
+    } else if (typeof module !== 'undefined' && module.exports) {
+      module.exports = sweetAlert;
+    } else if (typeof window !== 'undefined') {
+      window.sweetAlert = window.swal = sweetAlert;
+    }
+
+})(window, document);
 
 var ECO = ECO || {};
 
