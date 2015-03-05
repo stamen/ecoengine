@@ -74,10 +74,15 @@ text.count {
   font-size: 10px;
   fill-opacity: 0.35;
 }
+small {
+  color: #999;
+  line-height: 1.5em;
+}
 </style>
 <body>
 
 <input type="text" value="quercus" id="title-input"></input><br/>
+<small>Split by </small>
 <select id="chart-split">
   <option value="scientific_name">Scientific Name</option>
   <option value="genus">Genus</option>
@@ -89,6 +94,7 @@ text.count {
   <option value="state_province">State/Province</option>
   <option value="country">Country</option>
   <option value="observation_type">Observation Type</option>
+  <option value="decade">Decade</option>
 </select>
 <div id="maps"></div>
 <div class="notes">
@@ -124,7 +130,7 @@ initHashNav(logHash);
 /* Configuration */
 
 var limit = 24;
-var search_query = "https://dev-ecoengine.berkeley.edu/api/search/?q=" + search_term + "&selected_facets=georeferenced_exact%3A%22true%22&facets_limit=100";
+var search_query = "https://dev-ecoengine.berkeley.edu/api/search/?q=" + search_term + "&selected_facets=georeferenced_exact%3A%22true%22&facets_limit=" + limit;
 var queries = [];
 
 var dispatch = d3.dispatch("refreshbins", "reset");
