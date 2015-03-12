@@ -14,7 +14,8 @@ var copy           = require("gulp-copy"),
     webserver      = require("gulp-webserver"),
     concat         = require('gulp-concat'),
     mainBowerFiles = require('main-bower-files'),
-    wrap           = require("gulp-wrap");
+    wrap           = require("gulp-wrap"),
+    copy           = require("gulp-copy");
 
 // Gulp mix-ins
 
@@ -69,6 +70,11 @@ gulp.task("uglify", function() {
     .pipe(rename({extname: ".min.js"}))
     .pipe(sourcemaps.write("./")) // Write a sourcemap for browser debugging
     .pipe(gulp.dest(paths.publicJs));
+});
+
+gulp.task("dist:holos", function() {
+  return gulp.src(["./static/**","./explore/**","./holosinit/**"], {"prefix":1})
+  .pipe(copy("./build/"));
 });
 
 //
