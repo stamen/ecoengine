@@ -1,0 +1,422 @@
+
+<!-- TODO: Can this be created using overextends on the original template? See
+Mezzanine documentation. -->
+<!doctype html>
+<html lang="en">
+
+<head>
+
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width">
+<meta name="keywords" content="">
+<meta name="description" content="">
+<title> | Holos</title>
+<link rel="shortcut icon" href="/static/img/favicon.ico">
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS" href="/news/feeds/rss/">
+<link rel="alternate" type="application/atom+xml" title="Atom" href="/news/feeds/atom/">
+
+
+
+<link rel="stylesheet" href="http://holos.berkeley.edu/static/css/mezzanine.css">
+<link rel="stylesheet" href="http://holos.berkeley.edu/static/app.css">
+<!-- bootstrap is rolled into app.css via less -->
+<!--<link rel="stylesheet" href="/static/css/bootstrap-theme.css">-->
+<!--<link rel="stylesheet" href="/static/css/bootswatch.min.css">-->
+
+
+
+  <link rel="stylesheet" href="http://holos.berkeley.edu/static/leaflet/dist/leaflet.css">
+  <link rel="stylesheet" href="http://holos.berkeley.edu/static/css/stamen.css">
+
+
+
+
+<script src="http://holos.berkeley.edu/static/mezzanine/js/jquery-1.7.1.min.js"></script>
+<script src="http://holos.berkeley.edu/static/js/bootstrap.js"></script>
+<script src="http://holos.berkeley.edu/static/js/bootstrap-extras.js"></script>
+
+<script src="http://holos.berkeley.edu/static/d3/d3.js"></script>
+<script src="http://holos.berkeley.edu/static/leaflet/dist/leaflet.js"></script>
+<script src="http://holos.berkeley.edu/static/js/stamen/zoom-extras.js"></script>
+<script src="http://holos.berkeley.edu/static/js/stamen/hashnav.js"></script>
+<script src="http://holos.berkeley.edu/static/js/stamen/config-explore.js"></script>
+<script src="http://holos.berkeley.edu/static/js/stamen/ecoengine-explore.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+<link rel="stylesheet" href="http://holos.berkeley.edu/static/css/stamen.css" />
+
+
+<!--[if lt IE 9]>
+<script src="/static/js/html5shiv.js"></script>
+<![endif]-->
+
+
+</head>
+
+<body id="body">
+
+<!-- make display of navbar optional -->
+
+
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <a href="../" class="navbar-brand"><img src="http://holos.berkeley.edu/static/img/holos_navbar_logo.png"></a>
+    </div>
+    <div class="nav-collapse">
+
+<ul class="nav navbar-nav pull-right"><li class="dropdown"
+            id="dropdown-menu-about" role="representation"><a href="/about/">About
+                <b class="caret"></b></a><ul class="dropdown-menu" role="menu"><li
+        id="dropdown-menu-about-berkeley-ecoengine" role="presentation"><a href="/about/berkeley-ecoengine/">Berkeley Ecoinformatics Engine</a></li><li
+        id="dropdown-menu-about-data-discover" role="presentation"><a href="/about/data-discover/">Data Mobilization &amp; Discovery</a></li><li
+        id="dropdown-menu-about-people" role="presentation"><a href="/about/people/">Our Team</a></li><li
+        id="dropdown-menu-about-publications-presentations" role="presentation"><a href="/about/publications-presentations/">Publications &amp; Presentations</a></li><li
+        id="dropdown-menu-about-faqs" role="presentation"><a href="/about/faqs/">FAQ&#39;s</a></li><li
+        id="dropdown-menu-about-institutions" role="presentation"><a href="/about/institutions/">Collaborating Institutions</a></li></ul></li><li class="dropdown"
+            id="dropdown-menu-applications" role="representation"><a href="/applications/">Applications
+                <b class="caret"></b></a><ul class="dropdown-menu" role="menu"><li
+        id="dropdown-menu-http:--vtm.berkeley.edu-" role="presentation"><a href="http://vtm.berkeley.edu/">Wieslander Vegetation Type Mapping</a></li></ul></li><li class="dropdown"
+            id="dropdown-menu-resources" role="representation"><a href="/resources/">Resources
+                <b class="caret"></b></a><ul class="dropdown-menu" role="menu"><li
+        id="dropdown-menu-resources-datasources" role="presentation"><a href="/resources/datasources/">Datasets</a></li><li
+        id="dropdown-menu-resources-code-examples" role="presentation"><a href="/resources/code-examples/">Code examples</a></li><li
+        id="dropdown-menu-resources-tutorials" role="presentation"><a href="/resources/tutorials/">Tutorials</a></li></ul></li><li><a href="/news/">News</a></li><li><a href="/explore/">Explore</a></li><li class="divider-vertical"></li></ul>
+
+    </div>
+  </div>
+</nav>
+
+
+
+<div class="container">
+
+
+
+
+
+
+<!-- <h1></h1> -->
+
+<!-- <ul class="breadcrumb">
+<li id="breadcrumb-menu-explore"
+        class="active">Explore</li>
+</ul> -->
+
+</div>
+
+<div class="container">
+<div class="row">
+
+<!-- <div class="span2 left">
+
+    <div class="panel tree">
+
+<ul class="nav nav-list navlist-menu-level-0"><li class="
+
+
+    " id="tree-menu--"><a href="/">Home</a></li><li class="
+
+
+    " id="tree-menu-about"><a href="/about/">About</a><ul class="nav nav-list navlist-menu-level-1"><li class="
+
+
+    " id="tree-menu-about-berkeley-ecoengine"><a href="/about/berkeley-ecoengine/">Berkeley Ecoinformatics Engine</a></li><li class="
+
+
+    " id="tree-menu-about-data-discover"><a href="/about/data-discover/">Data Mobilization &amp; Discovery</a></li><li class="
+
+
+    " id="tree-menu-about-people"><a href="/about/people/">Our Team</a></li><li class="
+
+
+    " id="tree-menu-about-publications-presentations"><a href="/about/publications-presentations/">Publications &amp; Presentations</a></li><li class="
+
+
+    " id="tree-menu-about-faqs"><a href="/about/faqs/">FAQ&#39;s</a></li><li class="
+
+
+    " id="tree-menu-about-institutions"><a href="/about/institutions/">Collaborating Institutions</a></li></ul></li><li class="
+
+
+    " id="tree-menu-applications"><a href="/applications/">Applications</a><ul class="nav nav-list navlist-menu-level-1"><li class="
+
+
+    " id="tree-menu-http:--vtm.berkeley.edu-"><a href="http://vtm.berkeley.edu/">Wieslander Vegetation Type Mapping</a></li><li class="
+
+
+    " id="tree-menu-applications-datavis"><a href="/applications/datavis/">Visualization Example: Sensors Line Chart using D3.js</a></li><li class="
+
+
+    " id="tree-menu-applications-tree"><a href="/applications/tree/">Taxonomy Tree</a></li><li class="
+
+
+    " id="tree-menu-http:--gif.berkeley.edu-vtmphotos-"><a href="http://gif.berkeley.edu/vtmphotos/">Historic Photo Reshoot - beta app</a></li></ul></li><li class="
+
+
+    " id="tree-menu-resources"><a href="/resources/">Resources</a><ul class="nav nav-list navlist-menu-level-1"><li class="
+
+
+    " id="tree-menu-resources-datasources"><a href="/resources/datasources/">Datasets</a></li><li class="
+
+
+    " id="tree-menu-https:--ecoengine.berkeley.edu"><a href="https://ecoengine.berkeley.edu">API &amp; API Documentation</a></li><li class="
+
+
+    " id="tree-menu-resources-code-examples"><a href="/resources/code-examples/">Code examples</a></li><li class="
+
+
+    " id="tree-menu-resources-tutorials"><a href="/resources/tutorials/">Tutorials</a></li></ul></li><li class="
+
+
+    " id="tree-menu-news"><a href="/news/">News</a></li><li class="
+     active
+     active-branch
+    " id="tree-menu-explore"><a href="/explore/">Explore</a></li></ul>
+</div>
+
+</div> -->
+
+<div class="span12" style='padding-top: 24px'>
+
+<div class="container">
+    <div class="row-fluid">
+        <div class="col-md-12">
+           <div id="stamenexplorer">
+             <div class="stamen-ecoengine">
+               <div class="header">
+                 Search <input type="text" value="" id="searchterm" class="eco-param" placeholder="Species or Location" title="yyyy-mm-dd"></input>
+                 &nbsp; <input type="text" value="" id="minyear" class="eco-param" placeholder="Begin Date" title="yyyy-mm-dd"></input>
+                 <span id="time-slider"></span>
+                 <input type="text" value="" id="maxyear" class="eco-param" placeholder="End Date"></input>
+                 <!-- &nbsp; <div class="search-btn">Search</div> -->
+                 <div style="float: right;">
+                   <a class="cursor" href=".">Reset</a>
+                   &nbsp; <a class="cursor" id="advanced-search-btn">Advanced</a>
+                   &nbsp; <a class="cursor" id="export-btn">Queries</a>
+                 </div>
+               </div>
+               <div id="advanced-search" class="flydown">
+                 <h4>Advanced Search</h4>
+                 <p>
+                   <div style="display:none;">
+                   </div>
+                   <div id="advanced-search-pane"></div>
+                   <p>
+                     <div class="search-btn">Search</div>
+                   </p>
+
+                 </p>
+                 <a href="#" class="hide-btn">Hide</a>
+               </div>
+
+               <div id="export-pane" class="flydown">
+                 <h4>Share</h4>
+                 <p>Copy this URL to share the page. Note that dropdown selections (such as raster layers) are currently not saved. Only parameters used to query the observations API are shared.</p>
+                 <p><a href="#" id="share-the-page"></a></p>
+                 <h4>Export</h4>
+                 <p>These are the queries used to generate the interface on this page.</p>
+                 <h4>Observations</h4>
+                     <a href="#" id="export-observations" target="_blank"></a><br/>
+                 <h4>Search</h4>
+                     <a href="#" id="export-search" target="_blank"></a><br/>
+                 <h4>Photos</h4>
+                     <a href="#" id="photo-gallery" target="_blank">Photo Gallery</a><br/>
+                     <a href="#" id="export-photos" target="_blank"></a><br/>
+                 <h4>Sensors</h4>
+                     <a href="#" id="export-sensors" target="_blank"></a><br/>
+                 <h4>Raster Layers</h4>
+                     Layers <a href="#" id="export-layers" target="_blank"></a><br/>
+                     Rasters <a href="#" id="export-rasters" target="_blank"></a><br/>
+                 <h4>Footprints</h4>
+                     Jepsen Regions <a href="#" id="export-jepson" target="_blank"></a><br/>
+                     Reserves <a href="#" id="export-reserves" target="_blank"></a><br/>
+                 <a href="#" class="hide-btn">Hide</a>
+               </div>
+
+               <div class="map-area left dark" id="details">
+                 <h4><span id="detail-type"></span> Details</h4>
+                 <p id="detail-view">
+                 </p>
+               </div>
+               <div class="map-area">
+                 <div id="map">
+                 </div>
+                 <div class="layer-selection">
+                   <h3>Boundaries</h3>
+                   <select id="boundary-select">
+                     <option value="">None</option>
+                   </select><br/>
+                   <h3>Environment</h3>
+                   <select id="environment-select">
+                     <option>None</option>
+                   </select><br/>
+                   <h3>Basemap</h3>
+                   <select id="layer-select">
+                   </select>
+                   <h3>Data Layers</h3>
+                   <div style="text-align: left; margin-left: 30px;">
+                     <input type="checkbox" id="observations-check"></input> <span class="observations-label">Observations</span><br/>
+                     <input type="checkbox" id="photos-check"></input> <span class="photos-label">Photos</span><br/>
+                     <input type="checkbox" id="sensors-check"></input> <span class="sensors-label">Sensors</span><br/>
+                     <input type="checkbox" id="reserves-check"></input> <span class="reserves-label">Reserves</span><br/>
+                     <input type="checkbox" id="jepson-check"></input> <span class="jepson-label">Jepson Regions</span><br/>
+                   </div>
+                   <div id="bbox-select">
+                     Bounding Box Search
+                   </div>
+                   <strong>Footprint</strong><br/>
+                   <div class="small-note">Selecting a footprint performs a simple bounding box query that contains the region</div>
+                   <select id="reserve-list">
+                     <option value=0>Select Reserve</option>
+                   </select><br/>
+                     <select id="jepson-list">
+                     <option value=0>Select Jepson Region</option>
+                   </select>
+
+                   <div style="display: none;">
+                     <h3>Options</h3>
+                     <input type="checkbox" id="autozoom-check"></input> Autozoom to observations
+                   </div>
+                 </div>
+
+                 <div class="map-info">
+                     <button class="map-info-close">x</button>
+                     <p class="map-info-content"></p>
+                 </div>
+               </div>
+               <div class="panel left" id="facets">
+                 <h4>Filters</h4>
+                 <div class="small-note">These bar charts display the distribution of data across multiple facets.<br/>
+                   Click on a bar to toggle a filter for each field.</em>
+                 </div>
+                 <!-- <p class="infobox">Click a name below to filter by facet</p> -->
+                 <div id="search-loading" class="loading-msg alert-warning"></div>
+                 <div id="search-bars"></div>
+               </div>
+               <div class="wrap">
+                 <div class="panel right">
+                   <h4>Observations</h4>
+                   <div class="export-buttons">
+                     <a href="#" id="export-view">View data</a> or export as
+                     <a href="#" id="export-csv" target="_blank">CSV</a>,
+                     <a href="#" id="export-json" target="_blank">JSON</a>, or
+                     <a href="#" id="export-geojson" target="_blank">GeoJSON</a> from the <a href="https://ecoengine.berkeley.edu/">Berkeley Ecoinformatics Engine</a>
+                   </div>
+                   <div id="results-loading" class="loading-msg alert-warning"></div>
+                   <div id="results"></div>
+                 </div>
+               </div>
+             </div>
+             <script src="http://holos.berkeley.edu/static/js/stamen/ecoengine-explore.js"></script>
+           </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<!-- <div class="span3 right">
+
+
+
+
+
+    <div class="panel">
+
+
+
+
+
+
+
+
+<h3>Recent Tweets</h3>
+<ul class="list-unstyled tweets">
+
+    <li class="tweet">
+        <img class="pull-left tweeter-image" src="//pbs.twimg.com/profile_images/241468265/Alan_in_China_normal.jpg" alt="Alan Sendgikoski">
+        <h4>Alan Sendgikoski <small><a href="http://twitter.com/alansendgikoski" title="Alan Sendgikoski">@alansendgikoski</a></small></h4>
+
+        <h6><span class="glyphicon glyphicon-retweet"></span>
+        <a href="http://twitter.com/stephen_mcd" title="Stephen McDonald">Stephen McDonald</a></h6>
+
+        <p>Experimenting with Twitter feeds and the latest version of Mezzanine by <a href="http://twitter.com/stephen_mcd">@stephen_mcd</a> -- good stuff!<br>
+        <small class="timespan">
+        9 months ago
+        <a href="http://twitter.com/alansendgikoski/status/471074906361192449"><span class="glyphicon glyphicon-new-window"></span></a>
+        </small></p>
+    </li>
+
+    <li class="tweet">
+        <img class="pull-left tweeter-image" src="//pbs.twimg.com/profile_images/1913431494/simo_normal.JPG" alt="Simone Dalla">
+        <h4>Simone Dalla <small><a href="http://twitter.com/simodalla" title="Simone Dalla">@simodalla</a></small></h4>
+
+        <h6><span class="glyphicon glyphicon-retweet"></span>
+        <a href="http://twitter.com/stephen_mcd" title="Stephen McDonald">Stephen McDonald</a></h6>
+
+        <p>Slide for my talk on <a href="http://twitter.com/MezzanineCMS">@MezzanineCMS</a>  at <a href="http://twitter.com/pyconit">@pyconit</a> <a href="http://t.co/dpCCGHaC55">http://t.co/dpCCGHaC55</a> <a href="http://twitter.com/search?q=%23django">#django</a> <a href="http://twitter.com/search?q=%23mezzanine">#mezzanine</a> <a href="http://twitter.com/search?q=%23zolapredosa">#zolapredosa</a> <a href="http://twitter.com/search?q=%23openpa">#openpa</a> <a href="http://twitter.com/search?q=%23pythonanchenellapa">#pythonanchenellapa</a><br>
+        <small class="timespan">
+        9 months, 1 week ago
+        <a href="http://twitter.com/simodalla/status/470303052923031554"><span class="glyphicon glyphicon-new-window"></span></a>
+        </small></p>
+    </li>
+
+</ul>
+
+
+
+
+    </div>
+</div> -->
+
+</div>
+</div>
+
+<footer>
+<div class="container">
+
+
+
+<div class="nav-footer"><ul class="list-unstyled"><li
+            id="footer-menu-about"><a href="/about/">About</a></li><li
+            id="footer-menu-about-data-discover"><a href="/about/data-discover/">Data Mobilization &amp; Discovery</a></li><li
+            id="footer-menu-about-institutions"><a href="/about/institutions/">Collaborating Institutions</a></li></ul><ul class="list-unstyled"><li
+            id="footer-menu-applications"><a href="/applications/">Applications</a></li></ul><ul class="list-unstyled"><li
+            id="footer-menu-resources"><a href="/resources/">Resources</a></li><li
+            id="footer-menu-resources-datasources"><a href="/resources/datasources/">Datasets</a></li><li
+            id="footer-menu-https:--ecoengine.berkeley.edu"><a href="https://ecoengine.berkeley.edu">API &amp; API Documentation</a></li><li
+            id="footer-menu-resources-code-examples"><a href="/resources/code-examples/">Code examples</a></li><li
+            id="footer-menu-resources-tutorials"><a href="/resources/tutorials/">Tutorials</a></li></ul><ul class="list-unstyled"><li
+            id="footer-menu-news"><a href="/news/">News</a></li></ul><ul class="list-unstyled"><li class="active"
+            id="footer-menu-explore"><a href="/explore/">Explore</a></li></ul></div>
+
+
+<p>
+    Powered by
+    <a href="http://mezzanine.jupo.org">Mezzanine</a>
+    and
+    <a href="http://www.djangoproject.com">Django</a>
+    <span class="separator">|</span>
+    Theme by <a href="http://twitter.github.com/bootstrap/">Bootstrap</a>
+
+</p>
+</div>
+</footer>
+
+
+
+
+
+
+
+
+<script>
+
+</script>
+
+
+</body>
+</html>
