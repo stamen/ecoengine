@@ -123,3 +123,5 @@ Integrating with Holos can be done in the following steps:
    1. bring the following contents of the [build branch](https://github.com/stamen/ecoengine/tree/build) into a directory
    2. In that same directory crate an HTML file and include the `holosinit/holos-init.js` file at the end of the body. 
    3. Make sure there is a container with the id of `ecoengine-explore-container` in the document.
+
+Here is a [working example](http://studio.stamen.com/berkeley/show/holos/explore/)
