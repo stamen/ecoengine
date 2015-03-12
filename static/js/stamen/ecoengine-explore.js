@@ -1,5 +1,7 @@
 (function () {
 
+  window.STMN = window.STMN || {};
+
   function init() {
     (function() {
       var isAutozoom = false;
@@ -268,6 +270,14 @@
       });
 
       ECO.map = function() {
+
+        //
+        // Modify path if this is a holos build
+        //
+        if (STMN.dynamicTemplate) {
+          ECO.endpoints.rasters = ECO.endpoints.rasters.replace(/\.\.\/static/, "./static/");
+        }
+
         var __ = {};
 
         var defaultCenter = new L.LatLng(37.7,-122),
@@ -363,7 +373,7 @@
             .classed("loaded", false)
             .classed("error", false)
             .text("Loading...");
-          d3.json(ECO.endpoints.rasters.replace(/\.\.\/static/, "./static/"), function(error, rasters) {
+          d3.json(ECO.endpoints.rasters, function(error, rasters) {
             if (error) {
               d3.select("#loading-view .rasters")
                 .classed("error", true)
