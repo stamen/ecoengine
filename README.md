@@ -7,17 +7,43 @@ Stamen built a search interface to explore the Berkeley Ecoengine API. Here's a 
 ## Prototypes
 
 * [Explore](http://stamen.github.io/ecoengine/explore/)
+  * Faceted search, time filtering, bounding box search, raster layers, reserve polygons, observation markers
+  * See [Explore Features](https://github.com/stamen/ecoengine#explore-features)
+* [Compare](http://stamen.github.io/ecoengine-compare/)
+  * Point, Polygon and Hexbinned observation layers
+  * Accepts any EcoEngine GeoJSON observation query for comparison
 * [Lizards and Woodrats](http://stamen.github.io/ecoengine/prototypes/covis/lizards-woodrats.html)
+  * Spot spatially co-occuring observations by toggling layersj
 * [Taxa Sampling Distributions](http://stamen.github.io/ecoengine/prototypes/covis/multiples-taxa.html)
+  * Example of small mutiples to compare sampling distributions.
+  * ColorBrewer palettes
 * [Woodrats over Decades](http://stamen.github.io/ecoengine/prototypes/covis/multiples-decades.html)
+  * Example of small multiples to compare temporal distributions
 * [Quercus](http://stamen.github.io/ecoengine/prototypes/covis/oaks.html)
+  * Small multiples with search functionality (edit "quercus")
+  * Split by search facet
+  * Displays top 24 facets for a search
 * [Photos](http://stamen.github.io/ecoengine/photos/)
+  * Simple photo-viewing app, accepts URLs in the same format as Explore
 * [Bulk Download](http://stamen.github.io/ecoengine/prototypes/loading/bulk-download.html)
+  * A tool for generating CSV text from a query
+  * Downloads multiple pages of data
 * [Observations](http://stamen.github.io/ecoengine/prototypes/observations/)
+  * An early version of Explore with search box, time filter, pagination and export options
+  * Could be a good starting place for new EcoEngine applications, since the app is only about 250 lines long and uses only [d3.js](http://d3js.org/)
 * [Antarctic Chordata](http://stamen.github.io/ecoengine/prototypes/projections/antarctica.html)
+  * A stress-test of loading all Chordata in a non-Mercator projection centered on Antarctica
 * [Arctic Chordata](http://stamen.github.io/ecoengine/prototypes/projections/arctic.html)
+  * The same as the previous, but centered on the North Pole
 * [Early version of Explore](http://stamen.github.io/ecoengine/prototypes/multi/)
-* [Sensors](http://stamen.github.io/ecoengine/prototypes/sensors/index.html) - a simple "hello world" of accessing and printing EcoEngine data with d3
+  * An early version of explore with a preview of available photos and a "Detail" pane that lists out information about observations that are hovered over.
+* [Sensors](http://stamen.github.io/ecoengine/prototypes/sensors/index.html)
+  * A simple "hello world" of accessing and printing EcoEngine data with d3
+  * Lists an index of available sensors
+* [Scatterplot](http://bl.ocks.org/syntagmatic/df47616fe2f7b683c256)
+  * A simple D3.js scatterplot showing observations by country over time.
+* [Parallel Coordinates](http://bl.ocks.org/syntagmatic/42d5b54c5cfe002e7dd8)
+  * A D3.js parallel coordinates plot showing a sample of 2000 observations.
 
 
 ## Explore Features
