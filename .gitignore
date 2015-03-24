@@ -36,5 +36,3 @@ public/css
 public/*.html
 
 .env.json
-
-build
