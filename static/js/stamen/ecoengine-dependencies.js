@@ -19630,14 +19630,14 @@ L.Map.include({
 var ECO = ECO || {};
 
 ECO.endpoints = {
-  search: 'https://dev-ecoengine.berkeley.edu/api/search/',
-  observations: 'https://dev-ecoengine.berkeley.edu/api/observations/',
-  photos: 'https://dev-ecoengine.berkeley.edu/api/photos/',
-  sensors: 'https://dev-ecoengine.berkeley.edu/api/sensors/?page_size=5000&format=geojson',
-  layers: 'https://dev-ecoengine.berkeley.edu/api/layers/',
+  search: 'https://ecoengine.berkeley.edu/api/search/',
+  observations: 'https://ecoengine.berkeley.edu/api/observations/',
+  photos: 'https://ecoengine.berkeley.edu/api/photos/',
+  sensors: 'https://ecoengine.berkeley.edu/api/sensors/?page_size=5000&format=geojson',
+  layers: 'https://ecoengine.berkeley.edu/api/layers/',
   rasters: '../static/js/stamen/rstore.json',
-  reserves: 'https://dev-ecoengine.berkeley.edu/api/layers/reserves/features/?page_size=500',
-  jepson: 'https://dev-ecoengine.berkeley.edu/api/layers/jepson-regions/features/?page_size=500'
+  reserves: 'https://ecoengine.berkeley.edu/api/layers/reserves/features/?page_size=500',
+  jepson: 'https://ecoengine.berkeley.edu/api/layers/jepson-regions/features/?page_size=500'
 };
 
 ECO.basemaps = {
