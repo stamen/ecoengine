@@ -72,6 +72,11 @@ gulp.task("uglify", function() {
     .pipe(gulp.dest(paths.publicJs));
 });
 
+gulp.task("dist", function() {
+  return gulp.src(["./static/**","./explore/**"], {"prefix":1})
+  .pipe(copy("./build/"));
+});
+
 gulp.task("dist:holos", function() {
   return gulp.src(["./static/**","./explore/**","./holosinit/**"], {"prefix":1})
   .pipe(copy("./build/"));
