@@ -73,7 +73,7 @@ gulp.task("uglify", function() {
 });
 
 gulp.task("dist", function() {
-  return gulp.src(["./static/**","./explore/**"], {"prefix":1})
+  return gulp.src(["./static/**","./explore/**","./prototypes/**"], {"prefix":1})
   .pipe(copy("./build/"));
 });
 
