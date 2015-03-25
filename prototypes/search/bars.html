@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: 12px;
+  font-size: 13px;
+}
+a {
+  color: #317eac;
+}
+a:hover {
+  color: #ee4e32;
+}
+a:hover .bar {
+  background: #ee4e32;
+}
+.field-plot {
+  line-height: 14px;
+}
+.field-plot a {
+  text-decoration: none;
+}
+.field-plot a {
+  color: #222;
+}
+.bar {
+  display: inline-block;
+  margin: 0 8px -1px;
+  background: #317eac;
+}
+h3 {
+  font-size: 1em;
+  line-height: 1em;
+  margin: 10px 0 4px 0;
+}
+</style>
+<body>
+  <p>
+    Search Term: <input type="text" value="rufus" id="searchterm" class="eco-param"></input>
+  </p>
+  <div id="results"></div>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+var barwidth = d3.scale.linear()
+  .range([0, 100])
+
+d3.selectAll(".eco-param")
+  .on("change", function() {
+    page = 1;
+    query();
+  });
+
+query();
+
+function query() {
+  var term = d3.select("#searchterm").node().value;
+  d3.selectAll(".field-plot a").style("color", "#bbb");
+  d3.json("https://dev-ecoengine.berkeley.edu/api/search/?q=" + term + "&format=json", function(error, data) {
+    d3.selectAll(".field-plot a").style("color", null);
+    console.log(data);
+
+    // Total bar width
+    var maxcount = 0;
+    for (var key in data.fields) {
+      var count = 0;
+      data.fields[key].forEach(function(d) {
+        count += d[1];
+      });
+      if (count > maxcount) maxcount = count;
+    }
+    barwidth.domain([0, maxcount]);
+
+    // Groups
+    var fieldplot = d3.select("#results")
+      .html("")
+      .selectAll("div.field-plot")
+      .data(d3.keys(data.fields).map(function(key) { return {
+        "field": key,
+        "values": data.fields[key]
+      }}))
+      .enter().append("div")
+      .attr("class", "field-plot");
+
+    fieldplot.append("h3")
+      .text(function(d) { return d.field});
+
+    var bars = fieldplot.selectAll("div.bars")
+        .data(function(d) { return d.values; })
+        .enter().append("div")
+        .attr("class", "bars")
+        .append("a")
+        .attr("href", function(d) { return d[2]; });
+
+    bars.append("div")
+      .attr("class", "bar")
+      .style("height", "12px")
+      .style("width", function(d) { return Math.round(barwidth(d[1])) + "px"; });
+
+    bars.append("span")
+      .attr("class", "count")
+      .text(function(d) { return d[1]; });
+
+    bars.append("span")
+      .text(function(d) { return " " + capitaliseFirstLetter(d[0]); });
+  });
+};
+
+function capitaliseFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
+</script>

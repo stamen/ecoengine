@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: 30px auto;
+  background: #282828;
+  color: #fff;
+  font-size: 14px;
+  text-align: center;
+}
+#maps {
+  background: #000;
+  margin: 20px 0;
+  padding: 20px 10px 0px;
+  text-align: left;
+}
+#maps svg {
+  margin: 0 6px 6px 0;
+}
+a {
+  color: #fff;
+}
+a:hover {
+  color: #ccc;
+}
+path {
+  fill: none;
+  stroke-linejoin: round;
+}
+
+.land {
+  fill: #181818;
+  stroke: #383838;
+}
+.hexagons path {
+  stroke-width: 0.5px;
+  stroke-opacity: 0.5;
+  stroke: none;
+}
+.notes {
+  background: #333;
+  margin: 20px auto;
+  padding: 2px 10px;
+  text-align: left;
+  width: 600px;
+}
+text {
+  fill: #f3f3f3;
+  font-size: 12px;
+}
+text.count {
+  fill: #fff;
+  font-size: 10px;
+  fill-opacity: 0.35;
+}
+</style>
+<body>
+
+<h3>Dusky-Footed Woodrats over Decades</h3>
+<div id="maps"></div>
+<div class="notes">
+  <h4>Query List</h4>
+  <ul id="query-list">
+  </ul>
+  <p>Small multiples can be used to look for temporal gaps, trends or periodic phenomena.</p>
+  <p>Non-georeferenced points are discarded, so loading counts may not fill completely.</p>
+  <p>See also <a href="multiples-taxa.html">Species Range Maps</a></p>
+</div>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/d3.hexbin.v0.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script>
+// Based on http://bl.ocks.org/mbostock/4330486
+
+var dispatch = d3.dispatch("refreshbins");
+
+/* Configuration */
+
+var api_root = "https://dev-ecoengine.berkeley.edu/api/observations/";
+var queries = [
+  {
+    "alias": '1900s',
+    "url": '?selected_facets=genus_exact%3A"neotoma"&q=&page_size=50&min_date=1900&max_date=1909'
+  },
+  {
+    "alias": '1910s',
+    "url": '?selected_facets=genus_exact%3A"neotoma"&q=&page_size=50&min_date=1910&max_date=1919'
+  },
+  {
+    "alias": '1920s',
+    "url": '?selected_facets=genus_exact%3A"neotoma"&q=&page_size=50&min_date=1920&max_date=1929'
+  },
+  {
+    "alias": '1930s',
+    "url": '?selected_facets=genus_exact%3A"neotoma"&q=&page_size=50&min_date=1930&max_date=1939'
+  },
+  {
+    "alias": '1940s',
+    "url": '?selected_facets=genus_exact%3A"neotoma"&q=&page_size=50&min_date=1940&max_date=1949'
+  },
+  {
+    "alias": '1950s',
+    "url": '?selected_facets=genus_exact%3A"neotoma"&q=&page_size=50&min_date=1950&max_date=1959'
+  },
+  {
+    "alias": '1960s',
+    "url": '?selected_facets=genus_exact%3A"neotoma"&q=&page_size=50&min_date=1960&max_date=1969'
+  },
+  {
+    "alias": '1970s',
+    "url": '?selected_facets=genus_exact%3A"neotoma"&q=&page_size=50&min_date=1970&max_date=1979'
+  },
+  {
+    "alias": '1980s',
+    "url": '?selected_facets=genus_exact%3A"neotoma"&q=&page_size=50&min_date=1980&max_date=1989'
+  },
+  {
+    "alias": '1990s',
+    "url": '?selected_facets=genus_exact%3A"neotoma"&q=&page_size=50&min_date=1990&max_date=1999'
+  },
+  {
+    "alias": '2000s',
+    "url": '?selected_facets=genus_exact%3A"neotoma"&q=&page_size=50&min_date=2000&max_date=2009'
+  },
+  {
+    "alias": '2010s',
+    "url": '?selected_facets=genus_exact%3A"neotoma"&q=&page_size=50&min_date=2010&max_date=2019'
+  }
+];
+
+var colorscale = d3.scale.linear()
+  .domain([0,11])
+  .range(["#bbb", "steelblue"]); 
+
+var lizards = queries.map(function() { return []; });
+
+/* Interface */
+
+d3.select("#query-list")
+  .selectAll("li")
+  .data(queries)
+  .enter().append("li")
+  .append("a")
+  .attr("href", function(d) { return "../../explore/" + d.url.replace("?","#"); })
+  .style("color", function(d,i) { return colorscale(i); })
+  .text(function(d) { return d.alias; })
+
+/* Chart */
+var width = 120,
+    height = 120,
+    parseDate = d3.time.format("%x").parse;
+
+var projection = d3.geo.albers()
+    .scale(240)
+    .translate([5*width/6, height / 2])
+    .precision(.1);
+
+var hexbin = d3.hexbin()
+    .size([width, height])
+    .radius(2);
+
+var radius = d3.scale.sqrt()
+    .domain([1, 500])
+    .range([0.5, 2.5]);
+
+var path = d3.geo.path()
+    .projection(projection);
+
+queries.forEach(function(q,i) {
+  loadChart(q, i);
+});
+
+function loadChart(query, index) {
+  var svg = d3.select("#maps")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+  var background = svg.append("g")
+    .attr("class", "us-map");
+
+  var hexagons = svg.append("g")
+      .attr("class", "hexagons")
+
+  /*
+  svg.append("path")
+    .style("stroke", "rgba(255,255,255,0.12)")
+    .attr("d", hexbin.mesh())
+    */
+
+  svg.append("text")
+    .attr("x", width/2)
+    .attr("y", 12)
+    .attr("text-anchor", "middle")
+    .attr("class", "title")
+    .text(query.alias);
+
+  svg.append("text")
+    .attr("x", width/2)
+    .attr("y", height-12)
+    .attr("text-anchor", "middle")
+    .attr("class", "count")
+    .text("0 of ?");
+
+  function refreshbins() {
+    var color = colorscale(index);
+
+    var hexbins = hexbin(lizards[index])
+      .sort(function(a, b) { return b.length - a.length; });
+
+    radius.domain([1, d3.max(hexbins, function(d) { return d.length; })])
+
+    var hexes = hexagons.selectAll("path")
+      .data(hexbins, function(d) { return [d.x, d.y].join(""); })
+
+    hexes.enter().append("path")
+        .attr("d", function(d) { return hexbin.hexagon(radius(d.length)); })
+        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+    hexes.exit()
+      .transition()
+      .attr("d", function(d) { return hexbin.hexagon(0); })
+
+    hexes
+//        .transition()
+        .attr("d", function(d) { return hexbin.hexagon(radius(d.length)); })
+        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+        .style("fill", color);
+
+    svg.select(".count")
+      .text(lizards[index].length + " / " + queries[index].count);
+  }
+
+  // background us states layer
+  d3.json("world-110m.json", function(error, us) {
+    background.append("path")
+        .datum(topojson.feature(us, us.objects.land))
+        .attr("class", "land")
+        .attr("d", path);
+  });
+
+  loadQuery(api_root + query.url, index);
+
+  dispatch.on("refreshbins." + index, function(i) {
+    if (i == index) refreshbins();
+    if (i == "all") refreshbins();
+  });
+}
+
+function loadQuery(url,index) {
+  d3.json(url, function(error, data) {
+    //console.log(data);
+    queries[index].count = data.count;
+  
+    // use only lizards with geojson
+    lizards[index] = lizards[index].concat(data.results.filter(function(d) {
+      return !!d.geojson;
+    }).map(function(d) {
+      var p = projection(d.geojson.coordinates);
+      d.queryIndex = index;
+      d[0] = p[0];
+      d[1] = p[1];
+      return d;
+    })
+    );
+
+    dispatch.refreshbins(index);
+
+    if (data.next) {
+      function loadNext() {
+        //console.log("load next");
+        loadQuery(data.next, index);
+      };
+      setTimeout(loadNext, 30);
+    } else {
+      //console.log("done.");
+    }
+  });
+}
+
+</script>

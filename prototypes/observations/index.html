@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+body {
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  width: 100%;
+  background: #f6f6f6;
+  margin: 0;
+}
+
+a {
+  color: #317eac;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.wrap {
+  margin: 8px;
+}
+
+/* Time Slider */
+svg {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.brush .extent {
+  stroke: #fff;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+
+#time-slider {
+  display: inline;
+}
+
+#time-slider svg {
+  margin-bottom: -12px;
+}
+
+.pagination {
+  width: 100%;
+}
+
+.pagination span {
+  margin-right: 7px;
+  float: left;
+  cursor: pointer;
+  padding: 1px 3px;
+  color: #317eac;
+}
+.pagination span:hover {
+  text-decoration: underline;
+}
+.pagination span.active {
+  background: #317eac;
+  color: #fff;
+  border-radius: 3px;
+  padding: 1px 6px;
+  cursor: default;
+}
+p.listing {
+  border-bottom: 1px solid #e6e6e6;
+  background: #fff;
+  padding: 6px;
+  margin: 0;
+}
+.listing .key {
+  margin-right: 8px;
+  color: #aaa;
+}
+</style>
+<body>
+<div class="wrap">
+  <p>
+    Search Term: <input type="text" value="rufus" id="searchterm" class="eco-param"></input>
+    Date Range: <input type="text" value="1920" id="minyear" class="eco-param"></input>
+    <span id="time-slider"></span>
+    <input type="text" value="1975" id="maxyear" class="eco-param"></input>
+    <br/>
+    Export <a href="#" id="export-csv" target="_blank">CSV</a> |
+    <a href="#" id="export-json" target="_blank">JSON</a> |
+    <a href="#" id="export-geojson" target="_blank">GeoJSON</a>
+  </p>
+  <div id="results"></div>
+</div>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+var limit = 60;
+var page = 1;
+var fields = [
+  "record",
+  "scientific_name",
+  "country",
+  "state_province",
+  "begin_date",
+  "end_date",
+  "geojson",
+  "observation_type"
+];
+
+query();
+
+// text boxes
+d3.selectAll(".eco-param")
+  .on("change", function() {
+    page = 1;
+    query();
+  });
+
+
+// time slider
+(function() {
+  var margin = {top: 2, right: 14, bottom: 24, left: 14};
+  var height = 1;
+  var width = 350;
+
+  var minyear = d3.select("#minyear").node().value;
+  var maxyear = d3.select("#maxyear").node().value;
+
+  var x = d3.time.scale()
+    .range([0, width])
+    .domain([new Date("1900"), new Date()]).nice();
+//    .domain([new Date(minyear), new Date(maxyear)]).nice();
+
+  var xAxis = d3.svg.axis().scale(x).orient("bottom");
+  var brush = d3.svg.brush()
+      .x(x)
+      .on("brush", brushed)
+      .on("brushend", query);
+
+  var context = d3.select("#time-slider")
+      .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("class", "context")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  context.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  context.append("g")
+      .attr("class", "x brush")
+      .call(brush)
+    .selectAll("rect")
+      .attr("y", -6)
+      .attr("height", height + margin.bottom);
+
+  function brushed() {
+    var extent = brush.extent();
+    d3.select("#minyear").attr("value", extent[0].getFullYear());
+    d3.select("#maxyear").attr("value", extent[1].getFullYear());
+  }
+})();
+
+function query() {
+  d3.select("#results").style("color", "#bbb");
+  var term = d3.select("#searchterm").node().value;
+  var minyear = d3.select("#minyear").node().value;
+  var maxyear = d3.select("#maxyear").node().value;
+  var querystring = "https://dev-ecoengine.berkeley.edu/api/observations/?extra=record&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
+
+  // export links
+  d3.select("#export-csv")
+    .attr("href", "https://dev-ecoengine.berkeley.edu/api/observations/?extra=record&format=csv&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+  d3.select("#export-json")
+    .attr("href", "https://dev-ecoengine.berkeley.edu/api/observations/?extra=record&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+  d3.select("#export-geojson")
+    .attr("href", "https://dev-ecoengine.berkeley.edu/api/observations/?extra=record&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+
+  d3.json(querystring, function(error, data) {
+    d3.select("#results").html("").style("color", null);
+
+    d3.select("#results")
+      .append("p")
+      .html("<strong>Query:</strong> " + querystring);
+
+    if (error) {
+      d3.select("#results").append("div").html(error.responseText).style("color", "red");
+      return;
+    }
+    console.log(data);
+
+    // Display total number of results
+    var countdiv = d3.select("#results p").append("div");
+    countdiv.append("strong").text("Results: ");
+    countdiv.append("span").text(data.count);
+
+    // Paging
+    var pagecount = Math.ceil(data.count/limit);
+    d3.select("#results").append("p")
+      .attr("class", "pagination")
+      .selectAll("span")
+      .data(d3.range(1, pagecount+1))
+      .enter().append("span")
+      .classed("active", function(d) { return d == page;})
+      .text(String)
+      .on("click", function(d) {
+        if (d == page) return;
+        page = d;
+        query();
+      });
+
+    d3.select(".pagination").append("div")
+      .style("clear", "both");
+
+    var startitem = limit*(page-1);
+    var enditem = Math.min(limit*(page),data.count);
+    d3.select("#results").append("p").text("Results " + (startitem+1) + " to " + enditem);
+
+    d3.select("#results")
+      .append("div")
+      .selectAll("p")
+      .data(data.results)
+      .enter().append("p")
+      .attr("class", "listing")
+      .each(function(d) {
+        var entry = d3.select(this)
+          .selectAll("div")
+          .data(fields)
+          .enter().append("div")
+
+        entry.append("span")
+          .attr("class", "key")
+          .text(String);
+
+        entry.append("span")
+          .attr("class", "value")
+          .html(function(key) {
+            if (typeof d[key] == "string") {
+              if (d[key].slice(0,4) == "http") {
+                return "<a href='" + d[key] + "'>" + d[key] + "</a>";
+              }
+              if (key == "record") {
+                return "<a href='" + d["url"] + "'>" + d[key] + "</a>";
+              }
+              return d[key]
+            }
+            return JSON.stringify(d[key]);
+          });
+      });
+  });
+};
+</script>

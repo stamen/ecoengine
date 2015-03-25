@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  width: 100%;
+  color: #222;
+}
+
+a {
+  color: #317eac;
+}
+
+.wrap {
+  margin: 8px;
+}
+
+.pagination {
+  width: 100%;
+}
+
+.pagination span {
+  margin-right: 7px;
+  float: left;
+  cursor: pointer;
+  padding: 1px 3px;
+  color: #317eac;
+}
+.pagination span.active {
+  background: #317eac;
+  color: #fff;
+  border-radius: 3px;
+  padding: 1px 6px;
+  cursor: default;
+}
+p.listing {
+  background: #f4f4f4;
+  line-height: 1.3em;
+  border-bottom: 1px solid #efefef;
+  border-radius: 2px;
+  padding: 6px 9px;
+  margin: 0 12px 12px 0;
+}
+.listing .key {
+  margin-right: 8px;
+  color: #aaa;
+}
+.listing .title {
+  font-weight: bold;
+}
+</style>
+<body>
+<div class="wrap">
+  <p>Search term <input type="text" value="rufus" id="searchterm"></input></p>
+  <div id="results"></div>
+</div>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+var limit = 60;
+var page = 1;
+var term = "rufus";
+
+query();
+
+d3.select("#searchterm")
+  .on("change", function() {
+    term = this.value;
+    page = 1;
+    d3.select("#results").style("color", "#bbb");
+    query();
+  });
+
+function query() {
+  var querystring = "https://dev-ecoengine.berkeley.edu/api/observations/?format=json&q=" + term + "&page_size=" + limit + "&page=" + page;
+  d3.json(querystring, function(error, data) {
+    d3.select("#results").html("").style("color", null);
+
+    d3.select("#results")
+      .append("p")
+      .html("<strong>Query:</strong> " + querystring);
+
+    if (error) {
+      d3.select("#results").append("div").html(error.responseText).style("color", "red");
+      return;
+    }
+    console.log(data);
+
+    // Display total number of results
+    var countdiv = d3.select("#results").append("div");
+    countdiv.append("strong").text("Results: ");
+    countdiv.append("span").text(data.count);
+
+    // Paging
+    var pagecount = Math.ceil(data.count/limit);
+    d3.select("#results").append("p")
+      .attr("class", "pagination")
+      .selectAll("span")
+      .data(d3.range(1, pagecount+1))
+      .enter().append("span")
+      .classed("active", function(d) { return d == page;})
+      .text(String)
+      .on("click", function(d) {
+        if (d == page) return;
+        page = d;
+        d3.select("#results").style("color", "#bbb");
+        query();
+      });
+
+    d3.select(".pagination").append("div")
+      .style("clear", "both");
+
+    var startitem = limit*(page-1);
+    var enditem = Math.min(limit*(page),data.count);
+    d3.select("#results").append("p").text("Results " + (startitem+1) + " to " + enditem);
+      
+    d3.select("#results")
+      .append("div")
+      .selectAll("p")
+      .data(data.results)
+      .enter().append("p")
+      .attr("class", "listing")
+      .each(function(d) {
+        d3.select(this)
+          .append("div")
+          .attr("class", "title")
+          .text(d.scientific_name);
+        d3.select(this)
+          .append("div")
+          .attr("class", "subtitle")
+          .text("Type: " + d.observation_type);
+        d3.select(this)
+          .append("div")
+          .attr("class", "subtitle")
+          .text(d.state_province + ", " + d.country);
+        d3.select(this)
+          .append("div")
+          .attr("class", "date")
+          .text(d3.time.format("%b %d, %Y")(new Date(d.begin_date)));
+        var links = d3.select(this)
+          .append("div")
+          .attr("class", "links")
+        links.append("a")
+          .attr("href", d.url)
+          .text("URL")
+        links.append("span")
+          .text(" | ")
+        links.append("a")
+          .attr("href", d.source)
+          .text("Source")
+        if (d.remote_resource) {
+          links.append("span")
+            .text(" | ")
+          links.append("a")
+            .attr("href", d.remote_resource)
+            .text("Resource")
+        }
+      });
+  });
+};
+</script>

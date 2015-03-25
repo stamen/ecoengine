@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  width: 500px;
+  margin: 0 auto;
+  color: #222;
+  text-align: center;
+}
+
+a, a:visited {
+  color: #999;
+}
+
+a:hover {
+  color: #000;
+}
+
+path {
+  fill: none;
+  stroke-linejoin: round;
+}
+
+.land {
+  fill: #e8e8e8;
+}
+
+.graticule {
+  fill: none;
+  stroke: #c9c9c9;
+  stroke-width: .5px;
+  stroke-opacity: .5;
+}
+
+.states { 
+  stroke: #f5f5f5;
+}
+
+</style>
+<body>
+
+<h2>EcoEngine from Antarctica</h2>
+<p><span id="georeferenced-count">0</span> <a id="query-url">Chordata observations</a> loaded on a <a href="https://www.jasondavies.com/maps/peirce/">Peirce Quincuncial Projection</a></p>
+<div id="eco-map"></div>
+<p><small><em>Warning! This page will attempt to load up to <strong id="total-count">?</strong> observations if you let it run.</em></small></p>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/d3.hexbin.v0.min.js"></script>
+<script src="http://d3js.org/queue.v1.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script src="../lib/d3.geo.projection.js"></script>
+<script>
+// Based on http://bl.ocks.org/mbostock/4330486
+
+var query = 'https://ecoengine.berkeley.edu/api/observations/?selected_facets=phylum_exact%3A%22chordata%22&q=&page_size=200';
+var lizards = [];
+
+d3.select("#query-url").attr("href", query);
+
+continuousLoad(query);
+
+var width = 480,
+    height = 480,
+    parseDate = d3.time.format("%x").parse;
+
+var hexbin = d3.hexbin()
+    .size([width, height])
+    .radius(4.5);
+
+var radius = d3.scale.sqrt()
+    .domain([1, 500, 4000])
+    .range([0.5, 2, 5.5]);
+
+var color = d3.scale.sqrt()
+    .domain([1,500,4000])
+    .range(["#222", "#045a8d", "#2b8cbe"])
+    .interpolate(d3.interpolateLab);
+
+var projection = d3.geo.peirceQuincuncial()
+    .scale(100)
+    .rotate([90,90])
+    .translate([width / 2, height / 2])
+    .precision(.1);
+
+var path = d3.geo.path()
+    .projection(projection);
+
+var graticule = d3.geo.graticule();
+
+var svg = d3.select("#eco-map").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var background = svg.append("g")
+  .attr("class", "us-map");
+
+var hexagons = svg.append("g")
+    .attr("class", "hexagons")
+
+function ready() {
+  lizards.forEach(function(d) {
+    var p = projection(d.geojson.coordinates);
+    d[0] = p[0];
+    d[1] = p[1];
+  });
+
+  var bins = hexbin(lizards).sort(function(a, b) { return b.length - a.length; });
+
+  var binmax = d3.max([4000, bins[0].length]);
+  radius.domain([1,500,binmax]);
+  color.domain([1,500,binmax]);
+
+  var hexbins = hexagons.selectAll("path")
+      .data(bins)
+
+  hexbins.enter().append("path")
+
+  hexbins
+      .attr("d", function(d) { return hexbin.hexagon(radius(d.length)); })
+      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+      .style("fill", function(d) { return color(d.length); })
+}
+
+function continuousLoad(url) {
+  d3.json(url, function(error, data) {
+    //console.log(data);
+
+    // use only lizards with geojson
+    lizards = lizards.concat(data.results.filter(function(d) {
+      return !!d.geojson;
+    }));
+
+    d3.select("#georeferenced-count").text(lizards.length);
+    d3.select("#total-count").text(data.count);
+    //d3.select("#end-date").text(data.results[data.results.length-1].begin_date);
+
+    ready();
+
+    if (data.next) {
+      function loadNext() {
+        //console.log("load next");
+        continuousLoad(data.next);
+      };
+      setTimeout(loadNext, 30);
+    } else {
+      //console.log("done.");
+    }
+  });
+}
+
+// background countries layer
+d3.json("world-110m.json", function(error, us) {
+  background.append("path")
+      .datum(topojson.feature(us, us.objects.land))
+      .attr("class", "land")
+      .attr("d", path);
+
+  background.append("path")
+      .datum(topojson.mesh(us, us.objects.countries, function(a, b) { return a !== b; }))
+      .attr("class", "states")
+      .attr("d", path);
+
+  background.append("path")
+      .datum(graticule)
+      .attr("class", "graticule")
+      .attr("d", path);
+});
+
+</script>
