@@ -23,7 +23,7 @@ Stamen built a search interface to explore the Berkeley Ecoengine API. Here's a 
   * Small multiples with search functionality (edit "quercus")
   * Split by search facet
   * Displays top 24 facets for a search
-* [Photos](http://stamen.github.io/ecoengine/photos/)
+* [Photos](http://stamen.github.io/ecoengine/prototypes/photos/)
   * Simple photo-viewing app, accepts URLs in the same format as Explore
 * [Bulk Download](http://stamen.github.io/ecoengine/prototypes/loading/bulk-download.html)
   * A tool for generating CSV text from a query
