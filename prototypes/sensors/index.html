@@ -21,7 +21,7 @@ pre {
 <script>
 var limit = 100;
 
-d3.json("https://dev-ecoengine.berkeley.edu/api/sensors/?page_size=" + limit, function(error, data) {
+d3.json("https://ecoengine.berkeley.edu/api/sensors/?page_size=" + limit, function(error, data) {
   console.log(data);
 
   // Display total number of results

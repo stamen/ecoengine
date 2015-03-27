@@ -46,7 +46,7 @@ h4 {
     var dispatch = d3.dispatch("pan");
     var maps = {};
 
-    d3.json('https://dev-ecoengine.berkeley.edu/api/layers/', function(error, layers) {
+    d3.json('https://ecoengine.berkeley.edu/api/layers/', function(error, layers) {
       layers.results.forEach(function(d,i) {
         var div = d3.select("#results")
           .append("div")
@@ -87,7 +87,7 @@ h4 {
     var map2 = L.map('map2')
       .setView([37.733795, -122.446747], 10);
 
-    L.tileLayer('https://dev-ecoengine.berkeley.edu/tiles/cacounties/{z}/{x}/{y}.png', {
+    L.tileLayer('https://ecoengine.berkeley.edu/tiles/cacounties/{z}/{x}/{y}.png', {
       maxZoom: 18,
       attribution: ''
     }).addTo(map2);

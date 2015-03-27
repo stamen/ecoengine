@@ -38,13 +38,13 @@ a {
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="../lib/hashnav.js"></script>
 <script>
-var resource = 'https://dev-ecoengine.berkeley.edu/api/photos/?page_size=20';
+var resource = 'https://ecoengine.berkeley.edu/api/photos/?page_size=20';
 
 if ("hash" in window.location && window.location.hash.length > 0) {
   var params = window.location.hash
     .replace("#","")
     .replace("&","?");
-  resource = 'https://dev-ecoengine.berkeley.edu/api/photos/' + params + '&page_size=20';
+  resource = 'https://ecoengine.berkeley.edu/api/photos/' + params + '&page_size=20';
 }
 
 d3.select("#query")

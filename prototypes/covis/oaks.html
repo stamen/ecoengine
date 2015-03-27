@@ -130,7 +130,7 @@ initHashNav(logHash);
 /* Configuration */
 
 var limit = 24;
-var search_query = "https://dev-ecoengine.berkeley.edu/api/search/?q=" + search_term + "&selected_facets=georeferenced_exact%3A%22true%22&facets_limit=" + limit;
+var search_query = "https://ecoengine.berkeley.edu/api/search/?q=" + search_term + "&selected_facets=georeferenced_exact%3A%22true%22&facets_limit=" + limit;
 var queries = [];
 
 var dispatch = d3.dispatch("refreshbins", "reset");
@@ -162,7 +162,7 @@ search(search_query);
 d3.select("#title-input").on("change", function() {
   dispatch.reset();
   search_term = this.value;
-  search_query = "https://dev-ecoengine.berkeley.edu/api/search/?q=" + this.value + "&selected_facets=georeferenced_exact%3A%22true%22&facets_limit=100";
+  search_query = "https://ecoengine.berkeley.edu/api/search/?q=" + this.value + "&selected_facets=georeferenced_exact%3A%22true%22&facets_limit=100";
   search(search_query);
 });
 d3.select("#chart-split").on("change", function() {
