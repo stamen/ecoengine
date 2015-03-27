@@ -307,6 +307,7 @@
 }
 .stamen-ecoengine .panel:last-child {
   margin-right: 0;
+  margin-top: -140px;
 }
 .stamen-ecoengine #facets {
   position: absolute;
