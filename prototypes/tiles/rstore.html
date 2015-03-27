@@ -34,7 +34,7 @@ h5 {
     var maps = {};
     var nummaps = 18;
 
-    // https://dev-ecoengine.berkeley.edu/api/rstore/
+    // https://ecoengine.berkeley.edu/api/rstore/
     d3.json('rstore.json', function(error, layers) {
       layers.results.slice(0,nummaps).forEach(function(d,i) {
         var div = d3.select("#results")

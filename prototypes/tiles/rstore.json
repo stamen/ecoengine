@@ -6,7 +6,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-02-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-02-16/{z}/{x}/{y}/", 
             "id": 28, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2031-02-16.tif", 
             "geom": {
@@ -47,7 +47,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-03-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-03-16/{z}/{x}/{y}/", 
             "id": 18, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2031-03-16.tif", 
             "geom": {
@@ -88,7 +88,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-04-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-04-16/{z}/{x}/{y}/", 
             "id": 30, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2031-04-16.tif", 
             "geom": {
@@ -129,7 +129,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-05-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-05-16/{z}/{x}/{y}/", 
             "id": 1, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2031-05-16.tif", 
             "geom": {
@@ -170,7 +170,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-06-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-06-16/{z}/{x}/{y}/", 
             "id": 51, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2031-06-16.tif", 
             "geom": {
@@ -211,7 +211,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-07-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-07-16/{z}/{x}/{y}/", 
             "id": 21, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2031-07-16.tif", 
             "geom": {
@@ -252,7 +252,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-08-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-08-16/{z}/{x}/{y}/", 
             "id": 14, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2031-08-16.tif", 
             "geom": {
@@ -293,7 +293,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-09-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-09-16/{z}/{x}/{y}/", 
             "id": 47, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2031-09-16.tif", 
             "geom": {
@@ -334,7 +334,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-10-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-10-16/{z}/{x}/{y}/", 
             "id": 20, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2031-10-16.tif", 
             "geom": {
@@ -375,7 +375,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-11-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-11-16/{z}/{x}/{y}/", 
             "id": 29, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2031-11-16.tif", 
             "geom": {
@@ -416,7 +416,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-12-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-12-16/{z}/{x}/{y}/", 
             "id": 45, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2031-12-16.tif", 
             "geom": {
@@ -457,7 +457,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-01-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-01-16/{z}/{x}/{y}/", 
             "id": 9, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-01-16.tif", 
             "geom": {
@@ -498,7 +498,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-02-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-02-16/{z}/{x}/{y}/", 
             "id": 35, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-02-16.tif", 
             "geom": {
@@ -539,7 +539,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-03-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-03-16/{z}/{x}/{y}/", 
             "id": 22, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-03-16.tif", 
             "geom": {
@@ -580,7 +580,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-04-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-04-16/{z}/{x}/{y}/", 
             "id": 3, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-04-16.tif", 
             "geom": {
@@ -621,7 +621,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-05-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-05-16/{z}/{x}/{y}/", 
             "id": 10, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-05-16.tif", 
             "geom": {
@@ -662,7 +662,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-06-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-06-16/{z}/{x}/{y}/", 
             "id": 8, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-06-16.tif", 
             "geom": {
@@ -703,7 +703,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-07-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-07-16/{z}/{x}/{y}/", 
             "id": 55, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-07-16.tif", 
             "geom": {
@@ -744,7 +744,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-08-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-08-16/{z}/{x}/{y}/", 
             "id": 48, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-08-16.tif", 
             "geom": {
@@ -785,7 +785,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-09-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-09-16/{z}/{x}/{y}/", 
             "id": 57, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-09-16.tif", 
             "geom": {
@@ -826,7 +826,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-10-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-10-16/{z}/{x}/{y}/", 
             "id": 49, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-10-16.tif", 
             "geom": {
@@ -867,7 +867,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-11-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-11-16/{z}/{x}/{y}/", 
             "id": 34, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-11-16.tif", 
             "geom": {
@@ -908,7 +908,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-12-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2032-12-16/{z}/{x}/{y}/", 
             "id": 15, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2032-12-16.tif", 
             "geom": {
@@ -949,7 +949,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-01-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-01-16/{z}/{x}/{y}/", 
             "id": 6, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-01-16.tif", 
             "geom": {
@@ -990,7 +990,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-02-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-02-16/{z}/{x}/{y}/", 
             "id": 39, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-02-16.tif", 
             "geom": {
@@ -1031,7 +1031,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-03-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-03-16/{z}/{x}/{y}/", 
             "id": 46, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-03-16.tif", 
             "geom": {
@@ -1072,7 +1072,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-04-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-04-16/{z}/{x}/{y}/", 
             "id": 56, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-04-16.tif", 
             "geom": {
@@ -1113,7 +1113,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-05-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-05-16/{z}/{x}/{y}/", 
             "id": 60, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-05-16.tif", 
             "geom": {
@@ -1154,7 +1154,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-06-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-06-16/{z}/{x}/{y}/", 
             "id": 12, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-06-16.tif", 
             "geom": {
@@ -1195,7 +1195,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-07-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-07-16/{z}/{x}/{y}/", 
             "id": 38, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-07-16.tif", 
             "geom": {
@@ -1236,7 +1236,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-08-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-08-16/{z}/{x}/{y}/", 
             "id": 54, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-08-16.tif", 
             "geom": {
@@ -1277,7 +1277,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-09-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-09-16/{z}/{x}/{y}/", 
             "id": 25, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-09-16.tif", 
             "geom": {
@@ -1318,7 +1318,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-10-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-10-16/{z}/{x}/{y}/", 
             "id": 19, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-10-16.tif", 
             "geom": {
@@ -1359,7 +1359,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-11-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-11-16/{z}/{x}/{y}/", 
             "id": 17, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-11-16.tif", 
             "geom": {
@@ -1400,7 +1400,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-12-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2033-12-16/{z}/{x}/{y}/", 
             "id": 53, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2033-12-16.tif", 
             "geom": {
@@ -1441,7 +1441,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-01-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-01-16/{z}/{x}/{y}/", 
             "id": 59, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-01-16.tif", 
             "geom": {
@@ -1482,7 +1482,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-02-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-02-16/{z}/{x}/{y}/", 
             "id": 58, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-02-16.tif", 
             "geom": {
@@ -1523,7 +1523,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-03-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-03-16/{z}/{x}/{y}/", 
             "id": 41, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-03-16.tif", 
             "geom": {
@@ -1564,7 +1564,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-04-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-04-16/{z}/{x}/{y}/", 
             "id": 24, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-04-16.tif", 
             "geom": {
@@ -1605,7 +1605,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-05-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-05-16/{z}/{x}/{y}/", 
             "id": 36, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-05-16.tif", 
             "geom": {
@@ -1646,7 +1646,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-06-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-06-16/{z}/{x}/{y}/", 
             "id": 43, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-06-16.tif", 
             "geom": {
@@ -1687,7 +1687,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-07-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-07-16/{z}/{x}/{y}/", 
             "id": 50, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-07-16.tif", 
             "geom": {
@@ -1728,7 +1728,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-08-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-08-16/{z}/{x}/{y}/", 
             "id": 13, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-08-16.tif", 
             "geom": {
@@ -1769,7 +1769,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-09-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-09-16/{z}/{x}/{y}/", 
             "id": 27, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-09-16.tif", 
             "geom": {
@@ -1810,7 +1810,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-10-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-10-16/{z}/{x}/{y}/", 
             "id": 31, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-10-16.tif", 
             "geom": {
@@ -1851,7 +1851,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-11-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-11-16/{z}/{x}/{y}/", 
             "id": 40, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-11-16.tif", 
             "geom": {
@@ -1892,7 +1892,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-12-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2034-12-16/{z}/{x}/{y}/", 
             "id": 33, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2034-12-16.tif", 
             "geom": {
@@ -1933,7 +1933,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-01-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-01-16/{z}/{x}/{y}/", 
             "id": 11, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-01-16.tif", 
             "geom": {
@@ -1974,7 +1974,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-02-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-02-16/{z}/{x}/{y}/", 
             "id": 52, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-02-16.tif", 
             "geom": {
@@ -2015,7 +2015,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-03-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-03-16/{z}/{x}/{y}/", 
             "id": 26, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-03-16.tif", 
             "geom": {
@@ -2056,7 +2056,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-04-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-04-16/{z}/{x}/{y}/", 
             "id": 44, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-04-16.tif", 
             "geom": {
@@ -2097,7 +2097,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-05-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-05-16/{z}/{x}/{y}/", 
             "id": 5, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-05-16.tif", 
             "geom": {
@@ -2138,7 +2138,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-06-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-06-16/{z}/{x}/{y}/", 
             "id": 4, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-06-16.tif", 
             "geom": {
@@ -2179,7 +2179,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-07-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-07-16/{z}/{x}/{y}/", 
             "id": 42, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-07-16.tif", 
             "geom": {
@@ -2220,7 +2220,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-08-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-08-16/{z}/{x}/{y}/", 
             "id": 32, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-08-16.tif", 
             "geom": {
@@ -2261,7 +2261,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-09-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-09-16/{z}/{x}/{y}/", 
             "id": 16, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-09-16.tif", 
             "geom": {
@@ -2302,7 +2302,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-10-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-10-16/{z}/{x}/{y}/", 
             "id": 2, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-10-16.tif", 
             "geom": {
@@ -2343,7 +2343,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-11-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-11-16/{z}/{x}/{y}/", 
             "id": 37, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-11-16.tif", 
             "geom": {
@@ -2384,7 +2384,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-12-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2035-12-16/{z}/{x}/{y}/", 
             "id": 7, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2035-12-16.tif", 
             "geom": {
@@ -2425,7 +2425,7 @@
         {
             "units": "kelvin", 
             "tags": [], 
-            "tile_template": "https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2036-01-16/{z}/{x}/{y}/", 
+            "tile_template": "https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2036-01-16/{z}/{x}/{y}/", 
             "id": 23, 
             "image": "gis/rasters/tasmax_rcp60_r1i1p1_GFDL-ESM2M-2036-01-16.tif", 
             "geom": {

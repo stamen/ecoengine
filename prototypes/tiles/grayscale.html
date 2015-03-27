@@ -70,7 +70,7 @@ L.tileLayer.grayscale = function (url, options) {
 
 function init() {
     var map = L.map('map').setView([40, -122], 5);
-    L.tileLayer.grayscale('https://dev-ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-02-16/{z}/{x}/{y}/', {
+    L.tileLayer.grayscale('https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-02-16/{z}/{x}/{y}/', {
         attribution: '',
         maxZoom: 15, minZoom: 2
     }).addTo(map);

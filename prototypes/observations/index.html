@@ -171,15 +171,15 @@ function query() {
   var term = d3.select("#searchterm").node().value;
   var minyear = d3.select("#minyear").node().value;
   var maxyear = d3.select("#maxyear").node().value;
-  var querystring = "https://dev-ecoengine.berkeley.edu/api/observations/?extra=record&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
+  var querystring = "https://ecoengine.berkeley.edu/api/observations/?extra=record&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page;
 
   // export links
   d3.select("#export-csv")
-    .attr("href", "https://dev-ecoengine.berkeley.edu/api/observations/?extra=record&format=csv&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+    .attr("href", "https://ecoengine.berkeley.edu/api/observations/?extra=record&format=csv&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
   d3.select("#export-json")
-    .attr("href", "https://dev-ecoengine.berkeley.edu/api/observations/?extra=record&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+    .attr("href", "https://ecoengine.berkeley.edu/api/observations/?extra=record&format=json&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
   d3.select("#export-geojson")
-    .attr("href", "https://dev-ecoengine.berkeley.edu/api/observations/?extra=record&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
+    .attr("href", "https://ecoengine.berkeley.edu/api/observations/?extra=record&format=geojson&q=" + term + "&min_date=" + minyear + "&max_date=" + maxyear + "&page_size=" + limit + "&page=" + page);
 
   d3.json(querystring, function(error, data) {
     d3.select("#results").html("").style("color", null);
