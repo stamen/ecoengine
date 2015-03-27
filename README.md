@@ -150,5 +150,6 @@ Integrating with Holos can be done in the following steps:
    1. Move the contents of the `build` directory to a folder on the Holos filesystem
    2. In that same directory create an HTML file and include the `holosinit/holos-init.js` file at the end of the body. 
    3. Make sure there is a container with the id of `ecoengine-explore-container` in the document.
+   4. The template of interest in the explore directory is `index.html`. `holos-test.html` exists for testing holos integration if the holos environment is not available
 
 Here is a [working example](http://studio.stamen.com/berkeley/show/holos/explore/)
