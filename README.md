@@ -144,12 +144,9 @@ A basic fullscreen photo viewer.
 Clone the repo and a run a web serve in the project directory to view the project, or deploy it to a web server.
 
 ## Holos integration
-Integrating with Holos can be done in the following steps:
+A django/ninja2 compatible template has been added to the root of the build directory. This can be used as a ninja2 include to bring in the markup needed to run this application without the header and footer. The following files need to be linked in the main document:
 
-   1. Run `gulp && gulp dist:holos` in the root of this repo
-   1. Move the contents of the `build` directory to a folder on the Holos filesystem
-   2. In that same directory create an HTML file and include the `holosinit/holos-init.js` file at the end of the body. 
-   3. Make sure there is a container with the id of `ecoengine-explore-container` in the document.
-   4. The template of interest in the explore directory is `index.html`. `holos-test.html` exists for testing holos integration if the holos environment is not available
-
-Here is a [working example](http://studio.stamen.com/berkeley/show/holos/explore/)
+   * static/stamen.css (in the document head)
+   * js/ecoengine.min.js (at the bottom of the document body)
+ 
+_FYI: There is now only one JS file with dependencies and application code combined_
