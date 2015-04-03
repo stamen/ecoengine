@@ -38,7 +38,6 @@
     "samesies": "0.0.0",
     "gulp-env": "~0.2.0",
     "main-bower-files": "~2.5.0",
-    "gulp-wrap": "~0.10.0",
     "wrap": "~0.1.2",
     "escape-string-regexp": "~1.0.2"
   }

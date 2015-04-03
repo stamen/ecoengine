@@ -14,7 +14,6 @@ var copy           = require("gulp-copy"),
     webserver      = require("gulp-webserver"),
     concat         = require('gulp-concat'),
     mainBowerFiles = require('main-bower-files'),
-    wrap           = require("gulp-wrap"),
     copy           = require("gulp-copy");
 
 // Gulp mix-ins
