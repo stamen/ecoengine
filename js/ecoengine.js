@@ -20850,13 +20850,15 @@ function parametersFromString(paramString) {
             .classed("active", false);
           d3.select(this).classed("active", true);
 
-          var evt = {
-            latlng: [d.geometry.coordinates[1],d.geometry.coordinates[0]],
-            target: {
-              data_: d.properties
+          if (d.geometry && d.geometry.coordinates && d.geometry.coordinates.length) { //Some records have no geometry
+            var evt = {
+              latlng: [d.geometry.coordinates[1],d.geometry.coordinates[0]],
+              target: {
+                data_: d.properties
+              }
             }
+            map.showTooltip(evt);
           }
-          map.showTooltip(evt);
 
         })
         .on("mouseout", function() {
