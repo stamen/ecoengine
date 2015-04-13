@@ -67,7 +67,7 @@ gulp.task("lint", function() {
 
 gulp.task("uglify", function() {
   gulp
-    .src(mainBowerFiles("**/*.js").concat([paths.js, "./viewJS/**"]))
+    .src(mainBowerFiles({filter: new RegExp('.js$', 'i')}).concat([paths.js, "./viewJS/**"]))
     .pipe(sourcemaps.init())
     .pipe(concat('ecoengine.js'))
     .pipe(gulp.dest(paths.publicJs))
