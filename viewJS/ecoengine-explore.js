@@ -1428,7 +1428,7 @@
       "closeOnConfirm"     : false,
       "customClass"        : "modal-share"
     }, function() {
-      location.href = "http://studio.stamen.com/berkeley/show/compare/";
+      location.href = "http://" + window.location.hostname + "/compare/";
     });
 
     var sweetAlert = document.querySelector(".sweet-alert");
