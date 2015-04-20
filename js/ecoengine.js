@@ -21426,7 +21426,7 @@ function parametersFromString(paramString) {
       "closeOnConfirm"     : false,
       "customClass"        : "modal-share"
     }, function() {
-      location.href = "https://holos.berkeley.edu/compare/";
+      location.href = STMN.comparePath ? STMN.comparePath : "";
     });
 
     var sweetAlert = document.querySelector(".sweet-alert");
