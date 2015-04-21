@@ -979,13 +979,10 @@
         .attr("href", ECO.endpoints.jepson)
         .text(ECO.endpoints.jepson);
 
-      loadingCheck("jepson");
       d3.json(ECO.endpoints.jepson, function(error, data) {
         if (error) {
-          errorCheck("jepson", error.status);
           return;
         };
-        loadedCheck("jepson");
 
         if (!data) return;
         data.features.forEach(function(d) {
