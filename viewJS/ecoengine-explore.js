@@ -854,13 +854,15 @@
             .classed("active", false);
           d3.select(this).classed("active", true);
 
-          var evt = {
-            latlng: [d.geometry.coordinates[1],d.geometry.coordinates[0]],
-            target: {
-              data_: d.properties
+          if (d.geometry && d.geometry.coordinates && d.geometry.coordinates.length) { //Some records have no geometry
+            var evt = {
+              latlng: [d.geometry.coordinates[1],d.geometry.coordinates[0]],
+              target: {
+                data_: d.properties
+              }
             }
+            map.showTooltip(evt);
           }
-          map.showTooltip(evt);
 
         })
         .on("mouseout", function() {
@@ -967,13 +969,13 @@
     .attr("href", ECO.endpoints.jepson)
     .text(ECO.endpoints.jepson);
 
-  loadingCheck("jepson");
+  //loadingCheck("jepson");
   d3.json(ECO.endpoints.jepson, function(error, data) {
     if (error) {
-      errorCheck("jepson", error.status);
+      //errorCheck("jepson", error.status);
       return;
     };
-    loadedCheck("jepson");
+    //loadedCheck("jepson");
 
     if (!data) return;
     data.features.forEach(function(d) {
@@ -1428,7 +1430,7 @@
       "closeOnConfirm"     : false,
       "customClass"        : "modal-share"
     }, function() {
-      location.href = "http://" + window.location.hostname + "/compare/";
+      location.href = STMN.comparePath ? STMN.comparePath : "";
     });
 
     var sweetAlert = document.querySelector(".sweet-alert");
