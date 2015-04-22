@@ -1430,7 +1430,8 @@
       "closeOnConfirm"     : false,
       "customClass"        : "modal-share"
     }, function() {
-      location.href = STMN.comparePath ? STMN.comparePath : "";
+      // location.href = STMN.comparePath ? STMN.comparePath : "";
+      location.href = "https://" + window.location.hostname + "/compare/";
     });
 
     var sweetAlert = document.querySelector(".sweet-alert");
