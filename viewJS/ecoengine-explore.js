@@ -1214,13 +1214,13 @@
       .attr("href", querystring)
       .text(querystring);
     d3.select("#export-view")
-      .attr("href", ECO.endpoints.observations + "?" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString);
+      .attr("href", ECO.endpoints.observations + "?" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString + "&fields=");
     d3.select("#export-csv")
-      .attr("href", ECO.endpoints.observations + "?format=csv" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString);
+      .attr("href", ECO.endpoints.observations + "?format=csv" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString + "&fields=");
     d3.select("#export-json")
-      .attr("href", ECO.endpoints.observations + "?format=json" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString);
+      .attr("href", ECO.endpoints.observations + "?format=json" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString + "&fields=");
     d3.select("#export-geojson")
-      .attr("href", ECO.endpoints.observations + "?format=geojson" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString);
+      .attr("href", ECO.endpoints.observations + "?format=geojson" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString + "&fields=");
     d3.select("#export-checklist")
       .attr("href", ECO.endpoints.observations + "?format=csv&fields=scientific_name" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString);
 
