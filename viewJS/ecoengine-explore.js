@@ -1200,7 +1200,8 @@
     var querystring = ECO.endpoints.observations + "?format=geojson" + hashString;
     var searchquerystring = ECO.endpoints.search + "?format=json" + orderString + facetstring+ qString + bboxString + dateString + "&facets_limit=100";
     var photoquerystring = ECO.endpoints.photos  + "?format=geojson" + orderString+ qStringSimple + bboxString + dateString + "&page_size=80page=1";
-    var photogallery = "../photos/#" + orderString+ qStringSimple + bboxString + dateString;
+    // var photogallery = "../photos/#" + orderString+ qStringSimple + bboxString + dateString;
+    var photogallery = "http://berkeley-gif.github.io/ecoengine/photos/#" + orderString+ qStringSimple + bboxString + dateString;
 
     //console.log(querystring);
 
