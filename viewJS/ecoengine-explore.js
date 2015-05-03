@@ -1165,7 +1165,7 @@
 
     var advancedString = "";
     for (var key in queryObj.advanced) {
-      advancedString += ",";
+      //advancedString += ",";
       advancedString += key;
       advancedString += ':"';
       advancedString += queryObj.advanced[key];
