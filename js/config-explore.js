@@ -7,8 +7,8 @@ ECO.endpoints = {
   sensors: 'https://ecoengine.berkeley.edu/api/sensors/?page_size=5000&format=geojson',
   layers: 'https://ecoengine.berkeley.edu/api/layers/',
   rasters: STMN ? STMN.rstorePath : "",
-  reserves: 'https://ecoengine.berkeley.edu/api/layers/reserves/features/?page_size=500&order_by=name',
-  jepson: 'https://ecoengine.berkeley.edu/api/layers/jepson-regions/features/?page_size=500&order_by=name'
+  reserves: 'https://ecoengine.berkeley.edu/api/layers/reserves/features/?ordering=name',
+  jepson: 'https://ecoengine.berkeley.edu/api/layers/jepson-regions/features/?ordering=name'
 };
 
 ECO.basemaps = {
