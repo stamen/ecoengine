@@ -13,7 +13,7 @@ Stamen built a search interface to explore the Berkeley Ecoengine API. Here's a 
   * Point, Polygon and Hexbinned observation layers
   * Accepts any EcoEngine GeoJSON observation query for comparison
 * [Lizards and Woodrats](http://stamen.github.io/ecoengine/prototypes/covis/lizards-woodrats.html)
-  * Spot spatially co-occuring observations by toggling layersj
+  * Spot spatially co-occuring observations by toggling layers
 * [Taxa Sampling Distributions](http://stamen.github.io/ecoengine/prototypes/covis/multiples-taxa.html)
   * Example of small mutiples to compare sampling distributions.
   * ColorBrewer palettes
