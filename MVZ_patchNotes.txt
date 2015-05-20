@@ -1,0 +1,7 @@
+This text file lists all the custom "patches" made to stamen code. They will need to be undone and modified in the future.
+
+May 20, 2015
+Issue: "Remove Layers from the Resource facet (left panel of Explore tool" #120
+To add back layers in the left search panel
+remove the following line of code from ecoengine-explore.js:
+data.fields['resource'].splice(2, 1) /// REMOVE WHEN RASTERS ARE ADDED, THIS IS A CUSOM FIX!!! Holos issue #120

@@ -719,7 +719,9 @@
       var fieldplot = d3.select("#search-bars")
         .html("")
         .selectAll("div.field-plot")
-        .data(searchfields.map(function(key) { return {
+        .data(searchfields.map(function(key) {
+            data.fields['resource'].splice(2, 1) /// REMOVE WHEN RASTERS ARE ADDED, THIS IS A CUSOM FIX!!! Holos issue #120
+        return {
           "field": key,
           "values": data.fields[key]
         }}))
