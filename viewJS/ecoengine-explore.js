@@ -1314,8 +1314,8 @@
       .attr("href", ECO.endpoints.observations + "?format=json" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString + "&fields=");
     d3.select("#export-geojson")
       .attr("href", ECO.endpoints.observations + "?format=geojson" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString + "&fields=");
-
-		document.getElementById("#export-checklist").addEventListener('click',ECO.checkList(speciescheckliststring));
+   // d3.select("#export-checklist")
+		//	 .on("click", ECO.checkList(speciescheckliststring));
 
     loadingCheck("observations");
     d3.select("#results-loading")
