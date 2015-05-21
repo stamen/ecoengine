@@ -914,6 +914,95 @@
     return __;
   };
 
+  ECO.checkList = function(query) {
+		function download (content, fileName, mimeType) {
+		  var a = document.createElement('a');
+		  mimeType = mimeType || 'application/octet-stream';
+
+		  if (navigator.msSaveBlob) { // IE10
+		    return navigator.msSaveBlob(new Blob([content], { type: mimeType }), fileName);
+		  } else if ('download' in a) { //html5 A[download]
+		    a.href = 'data:' + mimeType + ',' + encodeURIComponent(content);
+		    a.setAttribute('download', fileName);
+		    document.body.appendChild(a);
+		    setTimeout(function() {
+		      a.click();
+		      document.body.removeChild(a);
+		    }, 66);
+		    return true;
+		  } else { //do iframe dataURL download (old ch+FF):
+		    var f = document.createElement('iframe');
+		    document.body.appendChild(f);
+		    f.src = 'data:' + mimeType + ',' + encodeURIComponent(content);
+
+		    setTimeout(function() {
+		      document.body.removeChild(f);
+		    }, 333);
+		    return true;
+		  }
+		}
+
+		function JSON2CSV(objArray) {
+		  var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+
+		  var str = '';
+		  var line = '';
+
+		  if ($("#labels").is(':checked')) {
+		    var head = array[0];
+		    if ($("#quote").is(':checked')) {
+		      for (var index in array[0]) {
+		        var value = index + "";
+		        line += '"' + value.replace(/"/g, '""') + '",';
+		      }
+		    } else {
+		      for (var index in array[0]) {
+		        line += index + ',';
+		      }
+		    }
+
+		    line = line.slice(0, -1);
+		    str += line + '\r\n';
+		  }
+
+		  for (var i = 0; i < array.length; i++) {
+		    var line = '';
+
+		    if ($("#quote").is(':checked')) {
+		      for (var index in array[i]) {
+		        var value = array[i][index] + "";
+		        line += '"' + value.replace(/"/g, '""') + '",';
+		      }
+		    } else {
+		      for (var index in array[i]) {
+		        line += array[i][index] + ',';
+		      }
+		    }
+
+		    line = line.slice(0, -1);
+		    str += line + '\r\n';
+		  }
+		  return str;
+		}
+
+		$.getJSON( query , function( data ) {
+
+		  data['results'].forEach( function(curVal) {
+		    for( var key in curVal ){
+		      if( key != 'scientific_name' ){
+		        if(curVal[key]){
+		          curVal[key]=curVal[key].split('/')[curVal[key].split('/').length-2]
+		        }
+		      }
+		    };
+		  });
+
+		  var csv = JSON2CSV(data['results']);
+		  downld = "kingdom,phylum,order,clss,family,genus,scientific_name\n" + csv + "\nEcoengine Query:" + query 
+		  download(downld, 'speciesChecklist.csv', 'text/csv');
+
+		});
+  };
 
   var fieldlist = new ECO.list();
   var datatable = new ECO.datatable();
@@ -1225,7 +1314,8 @@
     d3.select("#export-geojson")
       .attr("href", ECO.endpoints.observations + "?format=geojson" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString + "&fields=");
     d3.select("#export-checklist")
-      .attr("href", ECO.endpoints.observations + "?format=csv&fields=scientific_name" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString);
+			.attr("href","javascript:void(0);")
+      .attr("onclick", ECO.checkList(ECO.endpoints.observations + "?format=csv&fields=scientific_name" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString));
 
     loadingCheck("observations");
     d3.select("#results-loading")
