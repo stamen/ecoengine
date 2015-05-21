@@ -915,7 +915,7 @@
   };
 
   ECO.checkList = function(query) {
-		function download (content, fileName, mimeType) {
+		function download(content, fileName, mimeType) {
 		  var a = document.createElement('a');
 		  mimeType = mimeType || 'application/octet-stream';
 
@@ -1315,7 +1315,7 @@
     d3.select("#export-geojson")
       .attr("href", ECO.endpoints.observations + "?format=geojson" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString + "&fields=");
     d3.select("#export-checklist")
-			.attr("href","javascript:ECO.checkList('" + speciescheckliststring + "');")
+			 .on("click", ECO.checkList(speciescheckliststring))
 
     loadingCheck("observations");
     d3.select("#results-loading")
