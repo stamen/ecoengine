@@ -1125,6 +1125,7 @@
       query();
     });
 
+	// download species checklist
 	d3.select("#export-checklist").on("click", function() { ECO.checkList(ECO.speciescheckliststring) } );
 
   // time slider
