@@ -1125,6 +1125,7 @@
       query();
     });
 
+	d3.select("#export-checklist").on('click', ECO.checkList(ECO.speciescheckliststring));
 
   // time slider
   (function() {
@@ -1536,6 +1537,3 @@
   }, false);
 
 }());
-window.onload = function() {
-  document.getElementById("#export-checklist").addEventListener('click',ECO.checkList(ECO.speciescheckliststring));
-}
