@@ -1536,5 +1536,6 @@
   }, false);
 
 }());
-
-document.getElementById("#export-checklist").addEventListener('click',ECO.checkList(ECO.speciescheckliststring))
+window.onload = function() {
+  document.getElementById("#export-checklist").addEventListener('click',ECO.checkList(ECO.speciescheckliststring));
+}
