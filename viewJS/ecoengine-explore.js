@@ -1293,7 +1293,7 @@
     var photoquerystring = ECO.endpoints.photos  + "?format=geojson" + orderString+ qStringSimple + bboxString + dateString + "&page_size=80page=1";
     // var photogallery = "../photos/#" + orderString+ qStringSimple + bboxString + dateString;
     var photogallery = "http://berkeley-gif.github.io/ecoengine/photos/#" + orderString+ qStringSimple + bboxString + dateString;
-		var speciescheckliststring = ECO.endpoints.observations + "?fields=kingdom,phylum,order,clss,family,genus,scientific_name" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString;
+		ECO.speciescheckliststring = ECO.endpoints.observations + "?fields=kingdom,phylum,order,clss,family,genus,scientific_name" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString;
 
     //console.log(querystring);
 
@@ -1314,8 +1314,6 @@
       .attr("href", ECO.endpoints.observations + "?format=json" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString + "&fields=");
     d3.select("#export-geojson")
       .attr("href", ECO.endpoints.observations + "?format=geojson" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString + "&fields=");
-   // d3.select("#export-checklist")
-		//	 .on("click", ECO.checkList(speciescheckliststring));
 
     loadingCheck("observations");
     d3.select("#results-loading")
@@ -1538,3 +1536,5 @@
   }, false);
 
 }());
+
+document.getElementById("#export-checklist").addEventListener('click',ECO.checkList(ECO.speciescheckliststring))
