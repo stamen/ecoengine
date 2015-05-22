@@ -998,7 +998,7 @@
 		  });
 
 		  var csv = JSON2CSV(data['results']);
-		  downld = "kingdom,phylum,order,clss,family,genus,scientific_name\n" + csv + "\nEcoengine Query:" + query 
+		  downld = "kingdom,phylum,order,clss,family,genus,scientific_name\n" + csv + "\nEcoengine Query: " + query 
 		  download(downld, 'speciesChecklist.csv', 'text/csv');
 
 		});
