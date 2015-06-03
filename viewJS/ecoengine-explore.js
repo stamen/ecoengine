@@ -986,21 +986,21 @@
 		}
 
 		$.getJSON( query , function( data ) {
-			var lookup = {};
-			var results = [];
-		  data['results'].forEach( function(curVal) {
-		    for( var key in curVal ){
+				var lookup = {};
+				var results = []				
+				data['results'].forEach( function(curVal) {
 					if (!(curVal['scientific_name'] in lookup)) {
 						lookup[curVal['scientific_name']] = 1;
-				    if( key != 'scientific_name' ){
-				      if(curVal[key]){
-				        curVal[key]=curVal[key].split('/')[curVal[key].split('/').length-2]
-				      }
-				    }
+					  for( var key in curVal ){
+						  if( key != 'scientific_name' ){
+						    if(curVal[key]){
+						      curVal[key]=curVal[key].split('/')[curVal[key].split('/').length-2]
+						    }
+						  }
+						}
+						results.push(curVal);
 					}
-		    };
-				results.push(curVal);
-		  });
+			  });
 
 		  var csv = JSON2CSV(results);
 		  downld = "kingdom,phylum,order,clss,family,genus,scientific_name\n" + csv + "\nEcoengine Query: " + query 
