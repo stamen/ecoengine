@@ -998,8 +998,8 @@
 				      }
 				    }
 					}
-					results.push(curVal);
 		    };
+				results.push(curVal);
 		  });
 
 		  var csv = JSON2CSV(results);
