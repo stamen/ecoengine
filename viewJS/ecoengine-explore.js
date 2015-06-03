@@ -986,25 +986,20 @@
 		}
 
 		$.getJSON( query , function( data ) {
-				var lookup = {};
-				var results = []				
-				data['results'].forEach( function(curVal) {
-				  for( var key in curVal ){
-						if (!(curVal['scientific_name'] in lookup)) {
-							lookup[curVal['scientific_name']] = 1;
-						  if( key != 'scientific_name' ){
-						    if(curVal[key]){
-						      curVal[key]=curVal[key].split('/')[curVal[key].split('/').length-2]
-						    }
-						  }
-						}
-					results.push(curVal);
-					}
-			  });
-				var csv = JSON2CSV(results);
-				downld = "kingdom,phylum,order,clss,family,genus,scientific_name\n" + csv + "\nEcoengine Query: " + query 
-				download(downld, 'speciesChecklist.csv', 'text/csv');
-			});
+
+		  data['results'].forEach( function(curVal) {
+		    for( var key in curVal ){
+		      if( key != 'scientific_name' ){
+		        if(curVal[key]){
+		          curVal[key]=curVal[key].split('/')[curVal[key].split('/').length-2]
+		        }
+		      }
+		    };
+		  });
+
+		  var csv = JSON2CSV(data['results']);
+		  downld = "kingdom,phylum,order,clss,family,genus,scientific_name\n" + csv + "\nEcoengine Query: " + query 
+		  download(downld, 'speciesChecklist.csv', 'text/csv');
 
 		});
   };
