@@ -942,7 +942,7 @@
 		  }
 		}
 
-		function JSON2CSV(objArray) {
+		function JSON2TSV(objArray) {
 		  var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
 
 		  var str = '';
@@ -957,7 +957,7 @@
 		      }
 		    } else {
 		      for (var index in array[0]) {
-		        line += index + ',';
+		        line += index + '\t';
 		      }
 		    }
 
@@ -1002,9 +1002,9 @@
 					}
 			  });
 
-		  var csv = JSON2CSV(results);
-		  downld = "kingdom,phylum,order,clss,family,genus,scientific_name\n" + csv + "\nEcoengine Query: " + query 
-		  download(downld, 'speciesChecklist.csv', 'text/csv');
+		  var tsv = JSON2TSV(results);
+		  downld = "kingdom,phylum,order,clss,family,genus,scientific_name\n" + tsv + "\nEcoengine Query: " + query 
+		  download(downld, 'speciesChecklist.tsv', 'text/tab-separated-values');
 
 		});
   };
