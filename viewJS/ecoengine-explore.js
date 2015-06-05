@@ -1003,7 +1003,7 @@
 			  });
 
 		  var tsv = JSON2TSV(results);
-		  downld = "kingdom,phylum,order,clss,family,genus,scientific_name\n" + tsv + "\nEcoengine Query: " + query 
+		  downld = "kingdom\tphylum\torder\tclass\tfamily\tgenus\tscientific_name\n" + tsv + "\nEcoengine Query: " + query 
 		  download(downld, 'speciesChecklist.tsv', 'text/tab-separated-values');
 
 		});
