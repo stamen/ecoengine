@@ -975,7 +975,7 @@
 		      }
 		    } else {
 		      for (var index in array[i]) {
-		        line += array[i][index] + ',';
+		        line += array[i][index] + '\t';
 		      }
 		    }
 
