@@ -1532,6 +1532,8 @@
       "customClass"        : "modal-share"
     }, function() {
       // location.href = STMN.comparePath ? STMN.comparePath : "";
+			Copied = d3.select("#export-geojson").attr("href");
+			Copied.execCommand("Copy");
       location.href = "https://" + window.location.hostname + "/compare/";
     });
 
