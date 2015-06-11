@@ -1532,9 +1532,10 @@
       "customClass"        : "modal-share"
     }, function() {
       // location.href = STMN.comparePath ? STMN.comparePath : "";
-			Copied = d3.select("#export-geojson").attr("href");
-			Copied.execCommand("Copy");
       location.href = "https://" + window.location.hostname + "/compare/";
+			holdtext.innerText = d3.select("#export-geojson").attr("href");
+			Copied = holdtext.createTextRange();
+			Copied.execCommand("Copy");
     });
 
     var sweetAlert = document.querySelector(".sweet-alert");
