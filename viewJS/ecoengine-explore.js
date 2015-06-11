@@ -1005,7 +1005,7 @@
 
 		  var tsv = JSON2TSV(results);
 		  downld = "kingdom\tphylum\torder\tclass\tfamily\tgenus\tscientific_name\n" + tsv + "\nEcoengine Query: " + query 
-		  download(downld, 'speciesChecklist.tsv', 'text/tab-separated-values');
+		  download(downld, 'speciesChecklist.txt', 'text/tab-separated-values');
 
 		});
   };
