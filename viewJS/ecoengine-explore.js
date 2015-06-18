@@ -283,7 +283,8 @@
 
     map = __.map = L.map('map', {
       zoomControl: false,
-      attributionControl: false
+      attributionControl: false,
+      worldCopyJump: true
     }).setView(defaultCenter, defaultZoom);
 
     map.scrollWheelZoom.disable();
