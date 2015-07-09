@@ -36,6 +36,10 @@
 
   fields.forEach(function(d) { queryObj.sortFields[d] = false; });
 
+	String.prototype.capitalizeFirstLetter = function() {
+		  return this.charAt(0).toUpperCase() + this.slice(1);
+	}
+
   function logHash(hash) {
     //console.log(hash);
     if (hash.parameters) {
@@ -995,7 +999,7 @@
 					  for( var key in curVal ){
 						  if( key != 'scientific_name' ){
 						    if(curVal[key]){
-						      curVal[key]=curVal[key].split('/')[curVal[key].split('/').length-2]
+						      curVal[key]=curVal[key].split('/')[curVal[key].split('/').length-2].capitalizeFirstLetter()
 						    }
 						  }
 						}
