@@ -1326,6 +1326,8 @@
       .attr("href", ECO.endpoints.observations + "?format=json" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString + "&fields=");
     d3.select("#export-geojson")
       .attr("href", ECO.endpoints.observations + "?format=geojson" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString + "&fields=");
+    d3.select("#bulk-download")
+      .attr("href", ECO.endpoints.observations + "?format=csv" + orderString + facetstring + qString + bboxString + dateString + "&page_size=99999&fields=");
 
     loadingCheck("observations");
     d3.select("#results-loading")
