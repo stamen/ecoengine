@@ -1305,7 +1305,7 @@
     var photoquerystring = ECO.endpoints.photos  + "?format=geojson" + orderString+ qStringSimple + bboxString + dateString + "&page_size=80page=1";
     // var photogallery = "../photos/#" + orderString+ qStringSimple + bboxString + dateString;
     var photogallery = "http://berkeley-gif.github.io/ecoengine/photos/#" + orderString+ qStringSimple + bboxString + dateString;
-		ECO.speciescheckliststring = ECO.endpoints.observations + "?fields=kingdom,phylum,order,clss,family,genus,scientific_name" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString;
+		ECO.speciescheckliststring = ECO.endpoints.observations + "?fields=kingdom,phylum,order,clss,family,genus,scientific_name" + orderString + facetstring + qString + bboxString + dateString + "&page_size=999";
 
     //console.log(querystring);
 
