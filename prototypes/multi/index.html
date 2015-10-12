@@ -80,7 +80,7 @@ h2.app-title {
   border-radius: 2px;
 }
 
-#searchterm { 
+#searchterm {
   width: 120px;
 }
 
@@ -167,9 +167,9 @@ h4 {
   background: #fff;
   border-bottom: 1px solid #114e7c;
   position: fixed;
-  top: 0; 
+  top: 0;
   bottom: 0;
-  height: 100%; 
+  height: 100%;
   width: 100%;
   z-index:2000;
   padding: 8px;
@@ -602,13 +602,13 @@ h3 {
     <p>
       <div class="search-btn">Search</div>
     </p>
-      
+
   </p>
   <a href="#" class="hide-btn">Hide</a>
 </div>
 
 <div id="export-pane" class="flydown">
-  <h4>Export</h4> 
+  <h4>Export</h4>
   <p>This flyout is intended to provide information about the queries and export options for each API.</p>
   <h4>Observations</h4>
   <p>
@@ -711,16 +711,16 @@ var queryObj = {
   bbox: "",
   sortFields: {},
   advanced: {},
-  q: "",          
+  q: "",
   min_date: "",
   max_date: ""
 };
 
 fields.forEach(function(d) { queryObj.sortFields[d] = false; });
 
-function logHash(hash) {            
+function logHash(hash) {
   console.log(hash);
-  if (hash.parameters) {              
+  if (hash.parameters) {
     var parameters = hash.parameters;
     for (var name in parameters) {
       var value = parameters[name];
@@ -751,7 +751,7 @@ function logHash(hash) {
   } else {
     console.log("There are no parameters.");
     console.log(hash.raw);
-  }       
+  }
 }
 
 initHashNav(logHash);
@@ -760,7 +760,7 @@ if (queryObj.q) {
   d3.select("#searchterm").node().value = queryObj.q;
 }
 if (queryObj.min_date) {
-  d3.select("#minyear").node().value = queryObj.min_date; 
+  d3.select("#minyear").node().value = queryObj.min_date;
 }
 if (queryObj.max_date) {
   d3.select("#maxyear").node().value = queryObj.max_date;
@@ -779,7 +779,7 @@ ECO.base = {
     photos: 'https://ecoengine.berkeley.edu/api/photos/',
     sensors: 'https://ecoengine.berkeley.edu/api/sensors/?page_size=5000&format=geojson',
     layers: 'https://ecoengine.berkeley.edu/api/layers/',
-    rasters: '../tiles/rstore.json',
+    rasters: 'https://ecoengine.berkeley.edu/api/series/tasmin_ens-avg_amon_rcp85/rasters/',
     reserves: 'https://ecoengine.berkeley.edu/api/layers/reserves/features/?page_size=500',
     jepson: 'https://ecoengine.berkeley.edu/api/layers/jepson-regions/features/?page_size=500'
   }
@@ -1036,7 +1036,7 @@ ECO.map = function() {
         .classed("error", false)
         .text("Loaded");
       rasters.results.forEach(function(d) {
-        if (d.tags.indexOf("boundaries") > -1) { 
+        if (d.tags.indexOf("boundaries") > -1) {
           d3.select("#overlay-select")
             .append("option")
             .attr("value", d.tile_template)
@@ -1052,7 +1052,7 @@ ECO.map = function() {
 
     if (!layers) return;
     layers.results.forEach(function(d) {
-        if (d.tags.indexOf("boundaries") > -1) { 
+        if (d.tags.indexOf("boundaries") > -1) {
           d3.select("#overlay-select")
             .append("option")
             .attr("value", d.tile_template)
@@ -1147,7 +1147,7 @@ ECO.map = function() {
         fillOpacity: 0.8
 
       }
-    }).addTo(map); 
+    }).addTo(map);
 
     poly.on('mouseover', function() {
       d3.select("#detail-type").text("Reserve ");
@@ -1170,7 +1170,7 @@ ECO.map = function() {
         type = 'photo';
       } else {
         type = 'sensor';
-      }      
+      }
 
       if (type == 'observation') {
         var markerIcon= L.divIcon({
@@ -1242,7 +1242,7 @@ ECO.map = function() {
       } else {
         var content = "<strong>" + type + "</strong><br/>";
       }
-      
+
       if (type == 'Observation') {
         content += evt.target.data_['scientific_name'] + "<br/>" + evt.target.data_['record'];
       }
@@ -1416,7 +1416,7 @@ ECO.list = function() {
       .attr("class", "show-more")
       .text("[+] Show more")
       .on("click", function(d) {
-        bars.filter(function(p,i,g) { 
+        bars.filter(function(p,i,g) {
           return searchfields[g] == d.field;
         })
         .style("display", "block");
@@ -1465,19 +1465,19 @@ ECO.datatable = function() {
       .enter().append("th")
       .text(String)
       .style("color", function(d) {
-        if (queryObj.sortFields[d] == "+") { 
+        if (queryObj.sortFields[d] == "+") {
           return "#0a0";
         }
-        if (queryObj.sortFields[d] == "-") { 
+        if (queryObj.sortFields[d] == "-") {
           return "#b00";
         }
       })
       .on("click", function(d) {
-        if (queryObj.sortFields[d] == false) { 
+        if (queryObj.sortFields[d] == false) {
           queryObj.sortFields[d] = "+";
-        } else if (queryObj.sortFields[d] == "+") { 
+        } else if (queryObj.sortFields[d] == "+") {
           queryObj.sortFields[d] = "-";
-        } else if (queryObj.sortFields[d] == "-") { 
+        } else if (queryObj.sortFields[d] == "-") {
           queryObj.sortFields[d] = "+";
         }
         query();

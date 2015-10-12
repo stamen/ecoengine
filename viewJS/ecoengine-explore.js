@@ -389,7 +389,7 @@
             d3.select("#environment-select")
               .append("option")
               .attr("value", d.tile_template)
-              .text(d.name);
+              .text(d.slug);
           }
         });
       });
@@ -992,7 +992,7 @@
 
 		$.getJSON( query , function( data ) {
 				var lookup = {};
-				var results = []				
+				var results = []
 				data['results'].forEach( function(curVal) {
 					if (!(curVal['scientific_name'] in lookup)) {
 						lookup[curVal['scientific_name']] = 1;
@@ -1008,7 +1008,7 @@
 			  });
 
 		  var tsv = JSON2TSV(results);
-		  downld = "kingdom\tphylum\torder\tclass\tfamily\tgenus\tscientific_name\n" + tsv + "\nEcoengine Query: " + query 
+		  downld = "kingdom\tphylum\torder\tclass\tfamily\tgenus\tscientific_name\n" + tsv + "\nEcoengine Query: " + query
 		  download(downld, 'speciesChecklist.txt', 'text/tab-separated-values');
 
 		});
