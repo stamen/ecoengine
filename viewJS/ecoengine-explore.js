@@ -856,12 +856,11 @@
         .attr("class", "listing")
         .classed("zebra", function(d,i) { return i % 2 == 0;})
         .on("mouseover", function(d) {
-
           __.table.selectAll("tr.listing")
             .classed("active", false);
           d3.select(this).classed("active", true);
-
-          if (d.geometry && d.geometry.coordinates && d.geometry.coordinates.length) { //Some records have no geometry
+          //Some records have no geometry
+          if (d.geometry && d.geometry.coordinates && d.geometry.coordinates.length) {
             var evt = {
               latlng: [d.geometry.coordinates[1],d.geometry.coordinates[0]],
               target: {
@@ -1513,8 +1512,8 @@
     if (!data || !data.hasOwnProperty('features')) return [];
     if (!data.features.length) return [];
 
-    return data.features.filter(function(d){
-      return d.geometry && d.geometry.coordinates.length === 2;
+    return data.features.filter(function(d) {
+      return d.geometry && d.geometry.coordinates && d.geometry.coordinates.length === 2;
     });
   }
 })();
