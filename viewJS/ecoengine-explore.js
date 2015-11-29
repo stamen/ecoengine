@@ -380,7 +380,7 @@
           .classed("error", false)
           .text("Loaded");
         rasters.results.forEach(function(d) {
-          if (d.tags.indexOf("boundaries") > -1) {
+          if (d.tags && d.tags.indexOf("boundaries") > -1) {
             d3.select("#boundary-select")
               .append("option")
               .attr("value", d.tile_template)
