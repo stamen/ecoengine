@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<link href="justifiedGallery.min.css" rel="stylesheet">
+<title>Ecoengine Photos</title>
+<style>
+html, body {
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  background: #000;
+}
+.more {
+  width: 100%;
+  color: #fff;
+  font-size: 18px;
+  text-align: center;
+  background: #111;
+  margin: 24px 0;
+  padding: 24px 0;
+}
+.more:hover {
+  background: #333;
+}
+#query {
+  margin: 6px 0;
+}
+a {
+  color: #317eac;
+  text-decoration: none;
+}
+</style>
+
+<div id="query"></div>
+<div id="photos"></div>
+<div id="photos-more"></div>
+
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="jquery.justifiedGallery.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="../lib/hashnav.js"></script>
+<script>
+var resource = 'https://ecoengine.berkeley.edu/api/photos/?page_size=20';
+
+if ("hash" in window.location && window.location.hash.length > 0) {
+  var params = window.location.hash
+    .replace("#","")
+    .replace("&","?");
+  resource = 'https://ecoengine.berkeley.edu/api/photos/' + params + '&page_size=20';
+}
+
+d3.select("#query")
+  .append("a")
+  .attr("href", resource)
+  .text(resource);
+
+d3.select("#photos-more")
+  .append("div")
+  .attr("class", "more")
+  .text("Loading...");
+
+d3.json(resource, function(error, data) {
+  if (error) {
+    console.log(error);
+    return;
+  }
+
+  var photos = d3.select("#photos")
+    .html("")
+    .selectAll("a")
+    .data(data.results)
+    .enter().append("a")
+    .attr("href", function(d) { return d.url; })
+    .on("mouseover", function(d) {
+    })
+    .on("mouseout", function() {
+    });
+
+  photos.append("img")
+    .attr("src", function(d) { return d.media_url; });
+
+  $("#photos").justifiedGallery({
+    rowHeight: 150,
+    margins: 4,
+    sizeRangeSuffixes: {
+      'lt100':'',    // don't use thumbnail suffixes
+      'lt240':'',
+      'lt320':'',
+      'lt500':'',
+      'lt640':'',
+      'lt1024':''
+    }
+  });
+
+  d3.select("#photos-more")
+    .html("");
+  if (data.next) {
+    d3.select("#photos-more")
+      .append("div")
+      .attr("class", "more")
+      .text(" Load more [+]")
+      .datum(data.next.replace("http:", "https:"))
+      .on("click", loadMorePhotos);
+  }
+
+  function loadMorePhotos(url) {
+    d3.select("#photos-more")
+      .html("")
+      .append("div")
+      .attr("class", "more")
+      .text("Loading...");
+
+    d3.json(url, function(error, data) {
+      d3.select("#photos-more")
+        .html("");
+
+      if (error) {
+        console.log(error);
+        return;
+      }
+
+      var existingPhotos = d3.select("#photos").selectAll("a").data();
+
+      var photos = d3.select("#photos")
+        .selectAll("a")
+        .data(existingPhotos.concat(data.results))
+        .enter().append("a")
+        .attr("href", function(d) { return d.url; })
+        .on("mouseover", function(d) {
+        })
+        .on("mouseout", function() {
+        });
+
+      photos.append("img")
+        .attr("src", function(d) { return d.media_url; });
+
+      $("#photos").justifiedGallery("norewind");
+
+      d3.select("#photos-more")
+        .html("");
+      if (data.next) {
+        d3.select("#photos-more").append("div")
+          .attr("class", "more")
+          .text("Load more [+]")
+          .datum(data.next.replace("http:", "https:"))
+          .on("click", loadMorePhotos);
+      }
+    });
+  };
+});
+
+</script>

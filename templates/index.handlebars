@@ -1,0 +1,132 @@
+{{>header}}
+<script>
+window.STMN = window.STMN || {};
+window.STMN.rstorePath = '{{siteroot}}static/rstore.json';
+window.STMN.comparePath = "https://holos.berkeley.edu/compare/";
+</script>
+<div class="stamen-ecoengine">
+  <div class="header">
+    Search <input type="text" value="" id="searchterm" class="eco-param" placeholder="Species or Location" title="yyyy-mm-dd"></input>
+    &nbsp; <input type="text" value="" id="minyear" class="eco-param" placeholder="Begin Date" title="yyyy-mm-dd"></input>
+    <span id="time-slider"></span>
+    <input type="text" value="" id="maxyear" class="eco-param" placeholder="End Date"></input>
+    <!-- &nbsp; <div class="search-btn">Search</div> -->
+    <div style="float: right;">
+      <a class="cursor" href=".">Reset</a>
+      &nbsp; <a class="cursor" id="advanced-search-btn">Advanced</a>
+      &nbsp; <a class="cursor" id="export-btn">Queries</a>
+      &nbsp; <a class="cursor" id="get-query-btn">Get query for Compare View</a>
+    </div>
+  </div>
+  <div id="advanced-search" class="flydown">
+    <h4>Advanced Search</h4>
+    <p>
+      <div style="display:none;">
+      </div>
+      <div id="advanced-search-pane"></div>
+      <p>
+        <div class="search-btn">Search</div>
+      </p>
+
+    </p>
+    <a href="#" class="hide-btn">Hide</a>
+  </div>
+
+  <div id="export-pane" class="flydown">
+    <h4>Share</h4>
+    <p>Copy this URL to share the page. Note that dropdown selections (such as raster layers) are currently not saved. Only parameters used to query the observations API are shared.</p>
+    <p><a href="#" id="share-the-page"></a></p>
+    <h4>Export</h4>
+    <p>These are the queries used to generate the interface on this page.</p>
+    <h4>Observations</h4>
+        <a href="#" id="export-observations" target="_blank"></a><br/>
+    <h4>Search</h4>
+        <a href="#" id="export-search" target="_blank"></a><br/>
+    <h4>Photos</h4>
+        <a href="#" id="photo-gallery" target="_blank">Photo Gallery</a><br/>
+        <a href="#" id="export-photos" target="_blank"></a><br/>
+    <h4>Sensors</h4>
+        <a href="#" id="export-sensors" target="_blank"></a><br/>
+    <h4>Raster Layers</h4>
+        Layers <a href="#" id="export-layers" target="_blank"></a><br/>
+        Rasters <a href="#" id="export-rasters" target="_blank"></a><br/>
+    <h4>Footprints</h4>
+        Jepsen Regions <a href="#" id="export-jepson" target="_blank"></a><br/>
+        Reserves <a href="#" id="export-reserves" target="_blank"></a><br/>
+    <a href="#" class="hide-btn">Hide</a>
+  </div>
+
+  <div class="map-area left dark" id="details">
+    <h4><span id="detail-type"></span> Details</h4>
+    <p id="detail-view">
+    </p>
+  </div>
+  <div class="map-area">
+    <div id="map">
+    </div>
+    <div class="layer-selection">
+      <h3>Boundaries</h3>
+      <select id="boundary-select">
+        <option value="">None</option>
+      </select><br/>
+      <h3>Environment</h3>
+      <select id="environment-select">
+        <option>None</option>
+      </select><br/>
+      <h3>Basemap</h3>
+      <select id="layer-select">
+      </select>
+      <h3>Data Layers</h3>
+      <div style="text-align: left; margin-left: 30px;">
+        <input type="checkbox" id="observations-check"></input> <span class="observations-label">Observations</span><br/>
+        <input type="checkbox" id="photos-check"></input> <span class="photos-label">Photos</span><br/>
+        <input type="checkbox" id="sensors-check"></input> <span class="sensors-label">Sensors</span><br/>
+        <input type="checkbox" id="reserves-check"></input> <span class="reserves-label">Reserves</span>
+      </div>
+      <div id="bbox-select">
+        Bounding Box Search
+      </div>
+      <strong>Footprint</strong><br/>
+      <div class="small-note">Selecting a footprint performs a simple bounding box query that contains the region</div>
+      <select id="reserve-list">
+        <option value=0>Select Reserve</option>
+      </select><br/>
+        <select id="jepson-list">
+        <option value=0>Select Jepson Region</option>
+      </select>
+
+      <div style="display: none;">
+        <h3>Options</h3>
+        <input type="checkbox" id="autozoom-check"></input> Autozoom to observations
+      </div>
+    </div>
+
+    <div class="map-info">
+        <button class="map-info-close">x</button>
+        <p class="map-info-content"></p>
+    </div>
+  </div>
+  <div class="panel left" id="facets">
+    <h4>Filters</h4>
+    <div class="small-note">These bar charts display the distribution of data across multiple facets.<br/>
+      Click on a bar to toggle a filter for each field.</em>
+    </div>
+    <!-- <p class="infobox">Click a name below to filter by facet</p> -->
+    <div id="search-loading" class="loading-msg alert-warning"></div>
+    <div id="search-bars"></div>
+  </div>
+  <div class="wrap">
+    <div class="panel right">
+      <h4>Observations</h4>
+      <div class="export-buttons">
+        <a href="#" id="export-view">View data</a> or export as
+        <a href="#" id="export-csv" target="_blank">CSV</a>,
+        <a href="#" id="export-json" target="_blank">JSON</a>, or
+        <a href="#" id="export-geojson" target="_blank">GeoJSON</a> from the <a href="https://ecoengine.berkeley.edu/">Berkeley Ecoinformatics Engine</a>
+      </div>
+      <div id="results-loading" class="loading-msg alert-warning"></div>
+      <div id="results"></div>
+    </div>
+  </div>
+</div>
+{{>footer}}
