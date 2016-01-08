@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  width: 780px;
+  margin: 30px auto;
+  color: #222;
+  font-size: 15px;
+  text-align: center;
+}
+#controls {
+  line-height: 1.8em;
+}
+</style>
+<title>Raster layer picker</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+</head>
+<body>
+
+<h2>Raster Layer Picker</h2>
+<p id="controls">
+  Metric: <select id="metric-picker"></select>
+  Model: <select id="model-picker"></select><br/>
+  Raster: <select id="raster-picker"></select>
+</p>
+<div id="map" style="width: 780px; height: 400px"></div>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+<script>
+
+  var map = L.map('map')
+    .setView([37.733795, -122.446747], 6);
+
+  var activeLayer = L.tileLayer('https://ecoengine.berkeley.edu/api/tiles/pr_models_max_rcp45-2050-07-01/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: ''
+  });
+
+  map.addLayer(activeLayer);
+
+  d3.json("slugs.json", function(error, slugs) {
+    console.log(slugs);
+
+    // metric picker 
+    d3.select("#metric-picker")
+      .on("change", function() {
+        populateRasterPicker();
+      })
+      .selectAll("option")
+      .data(slugs.metrics)
+      .enter().append("option")
+      .attr("value", function(d) { return d.slug; })
+      .text(function(d) { return d.name; });
+
+    // metric picker 
+    d3.select("#model-picker")
+      .on("change", function() {
+        populateRasterPicker();
+      })
+      .selectAll("option")
+      .data(slugs.models)
+      .enter().append("option")
+      .attr("value", function(d) { return d.slug; })
+      .text(function(d) { return d.name; });
+
+    // raster picker
+    d3.select("#raster-picker")
+      .on("change", function() {
+        if (this.value == "Select raster layer") return;
+        d3.json(this.value, function(error, resp) {
+          map.removeLayer(activeLayer);
+          activeLayer = L.tileLayer(resp.tile_template);
+          map.addLayer(activeLayer);
+        });
+      });
+
+    populateRasterPicker();
+
+    function populateRasterPicker() {
+      var slug = d3.select("#metric-picker").node().value + "_" + d3.select("#model-picker").node().value;
+      d3.json("https://ecoengine.berkeley.edu/api/series/?slug=" + slug, function(error, resp) {
+        var rasters = resp.results[0].rasters;
+        d3.select("#controls #raster-picker")
+          .html("")
+          .selectAll("option")
+          .data(["Select raster layer"].concat(rasters))
+          .enter().append("option")
+          .text(function(d) { return d; });
+
+        d3.select("#controls #raster-picker")
+          .style("opacity", 0)
+          .transition()
+          .duration(600)
+          .style("opacity", 1);
+      });
+    };
+  });
+</script>
