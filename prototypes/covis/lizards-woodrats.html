@@ -221,9 +221,9 @@ function loadLizards(url) {
   
     // use only lizards with geojson
     lizards = lizards.concat(data.results.filter(function(d) {
-      return !!d.geojson;
+      return !!d.geometry;
     }).map(function(d) {
-      var p = projection(d.geojson.coordinates);
+      var p = projection(d.geometry.coordinates);
       d.type = "lizard";
       d[0] = p[0];
       d[1] = p[1];
@@ -253,9 +253,9 @@ function loadWoodrats(url) {
 
     // use only woodrats with geojson
     woodrats = woodrats.concat(data.results.filter(function(d) {
-      return !!d.geojson;
+      return !!d.geometry;
     }).map(function(d) {
-      var p = projection(d.geojson.coordinates);
+      var p = projection(d.geometry.coordinates);
       d.type = "woodrat";
       d[0] = p[0];
       d[1] = p[1];
