@@ -34,8 +34,7 @@ h5 {
     var maps = {};
     var nummaps = 18;
 
-    // https://ecoengine.berkeley.edu/api/rstore/
-    d3.json('rstore.json', function(error, layers) {
+    d3.json('https://ecoengine.berkeley.edu/api/series/tasmin_ens-avg_amon_rcp85/rasters/', function(error, layers) {
       layers.results.slice(0,nummaps).forEach(function(d,i) {
         var div = d3.select("#results")
           .append("div")
@@ -51,7 +50,7 @@ h5 {
         maps[d.name] = L.map('map' + i)
           .setView([37.733795, -122.446747], 8)
           .on("moveend", function(d) {
-            dispatch.pan(this); 
+            dispatch.pan(this);
           });
 
         L.tileLayer(d.tile_template, {

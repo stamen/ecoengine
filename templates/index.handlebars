@@ -1,8 +1,7 @@
 {{>header}}
 <script>
 window.STMN = window.STMN || {};
-window.STMN.rstorePath = '{{siteroot}}static/rstore.json';
-window.STMN.comparePath = "https://holos.berkeley.edu/compare/";
+// window.STMN.comparePath = "https://" + window.location.hostname + "/compare/";
 </script>
 <div class="stamen-ecoengine">
   <div class="header">
@@ -41,6 +40,7 @@ window.STMN.comparePath = "https://holos.berkeley.edu/compare/";
     <h4>Observations</h4>
         <a href="#" id="export-observations" target="_blank"></a><br/>
     <h4>Search</h4>
+				<!-- Copy Link into <a href="http://stamen.github.io/ecoengine/prototypes/loading/bulk-download.html">Bulk Download Utility</a><br/> -->
         <a href="#" id="export-search" target="_blank"></a><br/>
     <h4>Photos</h4>
         <a href="#" id="photo-gallery" target="_blank">Photo Gallery</a><br/>
@@ -53,6 +53,10 @@ window.STMN.comparePath = "https://holos.berkeley.edu/compare/";
     <h4>Footprints</h4>
         Jepsen Regions <a href="#" id="export-jepson" target="_blank"></a><br/>
         Reserves <a href="#" id="export-reserves" target="_blank"></a><br/>
+    <h4>Quick Resources</h4>
+	<a href="javascript:void(0)" id="export-checklist" target="_blank">Species Checklist</a> (Download a tab-delimited list of unique species names from your query.)<br/>
+	<a href="#" id="bulk-download" target="_blank">Download All Observations</a><br/>
+
     <a href="#" class="hide-btn">Hide</a>
   </div>
 
@@ -117,11 +121,11 @@ window.STMN.comparePath = "https://holos.berkeley.edu/compare/";
   </div>
   <div class="wrap">
     <div class="panel right">
-      <h4>Observations</h4>
+      <h4>Species Occurrences</h4>
       <div class="export-buttons">
-        <a href="#" id="export-view">View data</a> or export as
-        <a href="#" id="export-csv" target="_blank">CSV</a>,
-        <a href="#" id="export-json" target="_blank">JSON</a>, or
+        <a href="#" id="export-view">View data</a> or DOWNLOAD as
+        <a href="#" id="export-csv" target="_blank" download="downlaod.csv">CSV</a>,
+        <a href="#" id="export-json" target="_blank" download="downlaod.json">JSON</a>, or
         <a href="#" id="export-geojson" target="_blank">GeoJSON</a> from the <a href="https://ecoengine.berkeley.edu/">Berkeley Ecoinformatics Engine</a>
       </div>
       <div id="results-loading" class="loading-msg alert-warning"></div>
