@@ -138,13 +138,19 @@ A basic fullscreen photo viewer.
 ## How do I run the project locally?
 
 ### Install the dependencies
-`
+
+```bash
 npm install
+
+# unclear if this is necessary, there's no .env.json.sample in the repo
 cp .env.json.sample .env.json
-`
+```
 
 ### Run the dev server
-`npm start`
+
+```
+npm start
+```
 
 ## Holos integration
 A django/ninja2 compatible template has been added to the root of the build directory. This can be used as a ninja2 include to bring in the markup needed to run this application without the header and footer. The following files need to be linked in the main document:
