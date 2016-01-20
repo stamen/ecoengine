@@ -141,9 +141,6 @@ A basic fullscreen photo viewer.
 
 ```bash
 npm install
-
-# unclear if this is necessary, there's no .env.json.sample in the repo
-cp .env.json.sample .env.json
 ```
 
 ### Run the dev server
