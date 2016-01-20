@@ -515,7 +515,9 @@
     }
 
     function onMarkerClick(evt) {
-      if ('url' in evt.target.data_) {
+      if ('remote_resource' in evt.target.data_ && evt.target.data_['remote_resource'].length > 0) {
+        window.open(evt.target.data_.remote_resource,'_blank');
+      } else if ('url' in evt.target.data_) {
         window.open(evt.target.data_.url,'_blank');
       } else if ('data_url' in evt.target.data_) {
         window.open(evt.target.data_.data_url,'_blank');
