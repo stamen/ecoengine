@@ -317,7 +317,7 @@
 
 /* MAP */
 .stamen-ecoengine .map-area {
-  height: 624px;
+  height: 480px;
   line-height: 1.3em;
 }
 
@@ -380,7 +380,7 @@
   padding: 0 8px 8px;
   text-align: center;
   z-index: 100;
-  width: 176px;
+  width: 190px;
   background: rgba(255,255,255,0.55);
   border-radius: 2px;
 }
