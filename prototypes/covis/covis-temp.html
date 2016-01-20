@@ -190,9 +190,9 @@ function loadQuery(url,index) {
   
     // use only lizards with geojson
     lizards[index] = lizards[index].concat(data.results.filter(function(d) {
-      return !!d.geojson;
+      return !!d.geometry;
     }).map(function(d) {
-      var p = projection(d.geojson.coordinates);
+      var p = projection(d.geometry.coordinates);
       d.queryIndex = index;
       d[0] = p[0];
       d[1] = p[1];
