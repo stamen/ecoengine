@@ -36,6 +36,10 @@
 
   fields.forEach(function(d) { queryObj.sortFields[d] = false; });
 
+	String.prototype.capitalizeFirstLetter = function() {
+		  return this.charAt(0).toUpperCase() + this.slice(1);
+	}
+
   function logHash(hash) {
     //console.log(hash);
     if (hash.parameters) {
@@ -362,6 +366,7 @@
         .classed("loaded", false)
         .classed("error", false)
         .text("Loading...");
+
       d3.json(ECO.endpoints.rasters, function(error, rasters) {
         if (error) {
           d3.select("#loading-view .rasters")
@@ -376,13 +381,8 @@
           .classed("error", false)
           .text("Loaded");
         rasters.results.forEach(function(d) {
-          if (d.tags.indexOf("boundaries") > -1) {
+          if (d.tags && d.tags.indexOf("boundaries") > -1) {
             d3.select("#boundary-select")
-              .append("option")
-              .attr("value", d.tile_template)
-              .text(d.name);
-          } else {
-            d3.select("#environment-select")
               .append("option")
               .attr("value", d.tile_template)
               .text(d.name);
@@ -394,11 +394,6 @@
       layers.results.forEach(function(d) {
           if (d.tags.indexOf("boundaries") > -1) {
             d3.select("#boundary-select")
-              .append("option")
-              .attr("value", d.tile_template)
-              .text(d.name);
-          } else {
-            d3.select("#environment-select")
               .append("option")
               .attr("value", d.tile_template)
               .text(d.name);
@@ -425,10 +420,61 @@
         boundaryLayer.setUrl(this.value);
       });
 
-    d3.select("#environment-select")
-      .on("change", function() {
-        environmentLayer.setUrl(this.value);
-      });
+    d3.json("../static/slugs.json", function(error, slugs) {
+      console.log(slugs);
+
+      // metric picker 
+      d3.select("#metric-picker")
+        .on("change", function() {
+          populateRasterPicker();
+        })
+        .selectAll("option")
+        .data(slugs.metrics)
+        .enter().append("option")
+        .attr("value", function(d) { return d.slug; })
+        .text(function(d) { return d.name; });
+
+      // metric picker 
+      d3.select("#model-picker")
+        .on("change", function() {
+          populateRasterPicker();
+        })
+        .selectAll("option")
+        .data(slugs.models)
+        .enter().append("option")
+        .attr("value", function(d) { return d.slug; })
+        .text(function(d) { return d.name; });
+
+      // raster picker
+      d3.select("#raster-picker")
+        .on("change", function() {
+          if (this.value == "Select raster layer") return;
+          d3.json(this.value, function(error, resp) {
+            environmentLayer.setUrl(resp.tile_template);
+          });
+        });
+
+      populateRasterPicker();
+
+      function populateRasterPicker() {
+        var slug = d3.select("#metric-picker").node().value + "_" + d3.select("#model-picker").node().value;
+        d3.json("https://ecoengine.berkeley.edu/api/series/?slug=" + slug, function(error, resp) {
+          var rasters = resp.results[0].rasters;
+          d3.select("#raster-picker")
+            .html("")
+            .selectAll("option")
+            .data(["Select raster layer"].concat(rasters))
+            .enter().append("option")
+            .text(function(d) { return d; });
+
+          d3.select("#raster-picker")
+            .style("opacity", 0)
+            .transition()
+            .duration(600)
+            .style("opacity", 1);
+        });
+      };
+    });
 
     /*
     var apiLayer = L.tileLayer(ECO.endpoints.tiles, {
@@ -720,7 +766,9 @@
       var fieldplot = d3.select("#search-bars")
         .html("")
         .selectAll("div.field-plot")
-        .data(searchfields.map(function(key) { return {
+        .data(searchfields.map(function(key) {
+            data.fields['resource'].splice(2, 1) /// REMOVE WHEN RASTERS ARE ADDED, THIS IS A CUSOM FIX!!! Holos issue #120
+        return {
           "field": key,
           "values": data.fields[key]
         }}))
@@ -850,12 +898,11 @@
         .attr("class", "listing")
         .classed("zebra", function(d,i) { return i % 2 == 0;})
         .on("mouseover", function(d) {
-
           __.table.selectAll("tr.listing")
             .classed("active", false);
           d3.select(this).classed("active", true);
-
-          if (d.geometry && d.geometry.coordinates && d.geometry.coordinates.length) { //Some records have no geometry
+          //Some records have no geometry
+          if (d.geometry && d.geometry.coordinates && d.geometry.coordinates.length) {
             var evt = {
               latlng: [d.geometry.coordinates[1],d.geometry.coordinates[0]],
               target: {
@@ -913,6 +960,100 @@
     return __;
   };
 
+  ECO.checkList = function(query) {
+		function download(content, fileName, mimeType) {
+		  var a = document.createElement('a');
+		  mimeType = mimeType || 'application/octet-stream';
+
+		  if (navigator.msSaveBlob) { // IE10
+		    return navigator.msSaveBlob(new Blob([content], { type: mimeType }), fileName);
+		  } else if ('download' in a) { //html5 A[download]
+		    a.href = 'data:' + mimeType + ',' + encodeURIComponent(content);
+		    a.setAttribute('download', fileName);
+		    document.body.appendChild(a);
+		    setTimeout(function() {
+		      a.click();
+		      document.body.removeChild(a);
+		    }, 66);
+		    return true;
+		  } else { //do iframe dataURL download (old ch+FF):
+		    var f = document.createElement('iframe');
+		    document.body.appendChild(f);
+		    f.src = 'data:' + mimeType + ',' + encodeURIComponent(content);
+
+		    setTimeout(function() {
+		      document.body.removeChild(f);
+		    }, 333);
+		    return true;
+		  }
+		}
+
+		function JSON2TSV(objArray) {
+		  var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+
+		  var str = '';
+		  var line = '';
+
+		  if ($("#labels").is(':checked')) {
+		    var head = array[0];
+		    if ($("#quote").is(':checked')) {
+		      for (var index in array[0]) {
+		        var value = index + "";
+		        line += '"' + value.replace(/"/g, '""') + '",';
+		      }
+		    } else {
+		      for (var index in array[0]) {
+		        line += index + '\t';
+		      }
+		    }
+
+		    line = line.slice(0, -1);
+		    str += line + '\r\n';
+		  }
+
+		  for (var i = 0; i < array.length; i++) {
+		    var line = '';
+
+		    if ($("#quote").is(':checked')) {
+		      for (var index in array[i]) {
+		        var value = array[i][index] + "";
+		        line += '"' + value.replace(/"/g, '""') + '",';
+		      }
+		    } else {
+		      for (var index in array[i]) {
+		        line += array[i][index] + '\t';
+		      }
+		    }
+
+		    line = line.slice(0, -1);
+		    str += line + '\r\n';
+		  }
+		  return str;
+		}
+
+		$.getJSON( query , function( data ) {
+				var lookup = {};
+				var results = []
+				data['results'].forEach( function(curVal) {
+					if (!(curVal['scientific_name'] in lookup)) {
+						lookup[curVal['scientific_name']] = 1;
+					  for( var key in curVal ){
+						  if( key != 'scientific_name' ){
+						    if(curVal[key]){
+						      curVal[key]=curVal[key].split('/')[curVal[key].split('/').length-2].capitalizeFirstLetter()
+						    }
+						  }
+						}
+						results.push(curVal);
+					}
+			  });
+
+		  var tsv = JSON2TSV(results);
+		  downld = "kingdom\tphylum\torder\tclass\tfamily\tgenus\tscientific_name\n" + tsv + "\nEcoengine Query: " + query
+		  download(downld, 'speciesChecklist.txt', 'text/tab-separated-values');
+
+		});
+  };
 
   var fieldlist = new ECO.list();
   var datatable = new ECO.datatable();
@@ -1035,6 +1176,8 @@
       query();
     });
 
+	// download species checklist
+	d3.select("#export-checklist").on("click", function() { ECO.checkList(ECO.speciescheckliststring) } );
 
   // time slider
   (function() {
@@ -1166,7 +1309,7 @@
 
     var advancedString = "";
     for (var key in queryObj.advanced) {
-      advancedString += ",";
+      //advancedString += ",";
       advancedString += key;
       advancedString += ':"';
       advancedString += queryObj.advanced[key];
@@ -1201,7 +1344,9 @@
     var querystring = ECO.endpoints.observations + "?format=geojson" + hashString;
     var searchquerystring = ECO.endpoints.search + "?format=json" + orderString + facetstring+ qString + bboxString + dateString + "&facets_limit=100";
     var photoquerystring = ECO.endpoints.photos  + "?format=geojson" + orderString+ qStringSimple + bboxString + dateString + "&page_size=80page=1";
-    var photogallery = "../photos/#" + orderString+ qStringSimple + bboxString + dateString;
+    // var photogallery = "../photos/#" + orderString+ qStringSimple + bboxString + dateString;
+    var photogallery = "http://berkeley-gif.github.io/ecoengine/photos/#" + orderString+ qStringSimple + bboxString + dateString;
+		ECO.speciescheckliststring = ECO.endpoints.observations + "?fields=kingdom,phylum,order,clss,family,genus,scientific_name" + orderString + facetstring + qString + bboxString + dateString + "&page_size=999";
 
     //console.log(querystring);
 
@@ -1215,13 +1360,15 @@
       .attr("href", querystring)
       .text(querystring);
     d3.select("#export-view")
-      .attr("href", ECO.endpoints.observations + "?" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString);
+      .attr("href", ECO.endpoints.observations + "?" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString + "&fields=");
     d3.select("#export-csv")
-      .attr("href", ECO.endpoints.observations + "?format=csv" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString);
+      .attr("href", ECO.endpoints.observations + "?format=csv" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString + "&fields=");
     d3.select("#export-json")
-      .attr("href", ECO.endpoints.observations + "?format=json" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString);
+      .attr("href", ECO.endpoints.observations + "?format=json" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString + "&fields=");
     d3.select("#export-geojson")
-      .attr("href", ECO.endpoints.observations + "?format=geojson" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString);
+      .attr("href", ECO.endpoints.observations + "?format=geojson" + orderString + facetstring + qString + bboxString + dateString + "&page_size=" + queryObj.page_size + pageString + "&fields=");
+    d3.select("#bulk-download")
+      .attr("href", ECO.endpoints.observations + "?format=csv" + orderString + facetstring + qString + bboxString + dateString + "&page_size=99999&fields=");
 
     loadingCheck("observations");
     d3.select("#results-loading")
@@ -1407,8 +1554,8 @@
     if (!data || !data.hasOwnProperty('features')) return [];
     if (!data.features.length) return [];
 
-    return data.features.filter(function(d){
-      return d.geometry && d.geometry.coordinates.length === 2;
+    return data.features.filter(function(d) {
+      return d.geometry && d.geometry.coordinates && d.geometry.coordinates.length === 2;
     });
   }
 })();
@@ -1431,7 +1578,8 @@
       "closeOnConfirm"     : false,
       "customClass"        : "modal-share"
     }, function() {
-      location.href = STMN.comparePath ? STMN.comparePath : "";
+      // location.href = STMN.comparePath ? STMN.comparePath : "";
+      location.href = "https://" + window.location.hostname + "/compare/";
     });
 
     var sweetAlert = document.querySelector(".sweet-alert");

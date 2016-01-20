@@ -70,18 +70,16 @@ Some parts of the interface can be configured in `config.js`. Those capabilities
 
 ```
 ECO.endpoints = {
-  search: 'https://dev-ecoengine.berkeley.edu/api/search/',
-  observations: 'https://dev-ecoengine.berkeley.edu/api/observations/',
-  photos: 'https://dev-ecoengine.berkeley.edu/api/photos/',
-  sensors: 'https://dev-ecoengine.berkeley.edu/api/sensors/?page_size=5000&format=geojson',
-  layers: 'https://dev-ecoengine.berkeley.edu/api/layers/',
-  rasters: 'rstore.json',    // permissions issue at this endpoint
-  reserves: 'https://dev-ecoengine.berkeley.edu/api/layers/reserves/features/?page_size=500',
-  jepson: 'https://dev-ecoengine.berkeley.edu/api/layers/jepson-regions/features/?page_size=500'
+  search: 'https://ecoengine.berkeley.edu/api/search/',
+  observations: 'https://ecoengine.berkeley.edu/api/observations/',
+  photos: 'https://ecoengine.berkeley.edu/api/photos/',
+  sensors: 'https://ecoengine.berkeley.edu/api/sensors/?page_size=5000&format=geojson',
+  layers: 'https://ecoengine.berkeley.edu/api/layers/',
+  rasters: 'https://ecoengine.berkeley.edu/api/series/tasmin_ens-avg_amon_rcp85/rasters/',
+  reserves: 'https://ecoengine.berkeley.edu/api/layers/reserves/features/?page_size=500',
+  jepson: 'https://ecoengine.berkeley.edu/api/layers/jepson-regions/features/?page_size=500'
 };
 ```
-
-For production, `dev-` should be removed from each URL.
 
 ### Basemaps
 
@@ -124,14 +122,12 @@ As well as these stylesheets.
 
 ### Data
 
-* All data comes from the Berkeley Ecoinformatics API, documented at https://dev-ecoengine.berkeley.edu/docs/quickstart.html
-* The Stamen prorotype uses the dev API at https://dev-ecoengine.berkeley.edu. See "Configuration" above for instructions for changing to the production version.
+* All data comes from the Berkeley Ecoinformatics API, documented at https://ecoengine.berkeley.edu/docs/quickstart.html
 
 ### Static Assets
 
 * /explore/index.html
 * /explore/config.js
-* /explore/rstore.json          - temporary workaround file, should be removed in the future
 
 ## Photos
 
@@ -142,13 +138,16 @@ A basic fullscreen photo viewer.
 ## How do I run the project locally?
 
 ### Install the dependencies
-`
+
+```bash
 npm install
-cp .env.json.sample .env.json
-`
+```
 
 ### Run the dev server
-`npm start`
+
+```
+npm start
+```
 
 ## Holos integration
 A django/ninja2 compatible template has been added to the root of the build directory. This can be used as a ninja2 include to bring in the markup needed to run this application without the header and footer. The following files need to be linked in the main document:

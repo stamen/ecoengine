@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<meta charset="utf-8">
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-<link rel="stylesheet" href="../static/css/stamen.css" />
-<script src="../static/js/stamen/ecoengine-dependencies.min.js"></script>
-
-<title>Ecoengine Explorer</title>
-<body>
+<script>
+window.STMN = window.STMN || {};
+// window.STMN.comparePath = "https://" + window.location.hostname + "/compare/";
+</script>
 <div class="stamen-ecoengine">
   <div class="header">
     Search <input type="text" value="" id="searchterm" class="eco-param" placeholder="Species or Location" title="yyyy-mm-dd"></input>
@@ -60,6 +55,7 @@
     <h4>Quick Resources</h4>
 	<a href="javascript:void(0)" id="export-checklist" target="_blank">Species Checklist</a> (Download a tab-delimited list of unique species names from your query.)<br/>
 	<a href="#" id="bulk-download" target="_blank">Download All Observations</a><br/>
+
     <a href="#" class="hide-btn">Hide</a>
   </div>
 
@@ -139,6 +135,3 @@
     </div>
   </div>
 </div>
-<script src="./js/ecoengine.min.js"></script>
-</body>
-</html>
