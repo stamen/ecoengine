@@ -148,7 +148,7 @@ gulp.task("watch", function() {
   gulp.watch(mainBowerFiles().concat([paths.js, "./viewJS/**"]),["lint", "uglify"]);
   console.log("watching directory:", paths.js);
 
-  gulp.watch("./templates/**", ["set-env","templates, templates:holos"]);
+  gulp.watch("./templates/**", ["templates, templates:holos"]);
   console.log("watching directory:", paths.templates);
 
   gulp.start("webserver");
