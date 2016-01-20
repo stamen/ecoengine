@@ -85,14 +85,14 @@ body {
       var slug = d3.select("#metric-picker").node().value + "_" + d3.select("#model-picker").node().value;
       d3.json("https://ecoengine.berkeley.edu/api/series/?slug=" + slug, function(error, resp) {
         var rasters = resp.results[0].rasters;
-        d3.select("#controls #raster-picker")
+        d3.select("#raster-picker")
           .html("")
           .selectAll("option")
           .data(["Select raster layer"].concat(rasters))
           .enter().append("option")
           .text(function(d) { return d; });
 
-        d3.select("#controls #raster-picker")
+        d3.select("#raster-picker")
           .style("opacity", 0)
           .transition()
           .duration(600)
