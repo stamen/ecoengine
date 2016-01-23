@@ -45,6 +45,13 @@ h5 {
 <script>
 var dispatch = d3.dispatch("pan");
 var maps = {};
+
+dispatch.on("pan", function(map) {
+  for (var key in maps) {
+    maps[key].setView(map.getCenter(), map.getZoom());
+  }
+});
+
 d3.json("slugs.json", function(error, slugs) {
   console.log(slugs);
 
