@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  width: 780px;
+  margin: 30px auto;
+  color: #222;
+  font-size: 15px;
+  text-align: center;
+}
+#controls {
+  line-height: 1.8em;
+}
+.map-container {
+  width: 180px;
+  height: 205px;
+  margin: 6px;
+  float: left;
+}
+h5 {
+  margin-bottom: 2px;
+}
+.leaflet-control-container {
+  display: none;
+}
+</style>
+<title>Raster layer multiples</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+</head>
+<body>
+
+<h2>Raster Layer Multiples</h2>
+<p id="controls">
+  Model: <select id="metric-picker"></select>
+  Scenario: <select id="model-picker"></select><br/>
+</p>
+<div id="results"></div>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+<script>
+var dispatch = d3.dispatch("pan");
+var maps = {};
+d3.json("slugs.json", function(error, slugs) {
+  console.log(slugs);
+
+  // metric picker 
+  d3.select("#metric-picker")
+    .on("change", function() {
+      populateRasterPicker();
+    })
+    .selectAll("option")
+    .data(slugs.metrics)
+    .enter().append("option")
+    .attr("value", function(d) { return d.slug; })
+    .text(function(d) { return d.name; });
+
+  // metric picker 
+  d3.select("#model-picker")
+    .on("change", function() {
+      populateRasterPicker();
+    })
+    .selectAll("option")
+    .data(slugs.models)
+    .enter().append("option")
+    .attr("value", function(d) { return d.slug; })
+    .text(function(d) { return d.name; });
+
+  // raster picker
+  d3.select("#raster-picker")
+    .on("change", function() {
+      if (this.value == "Select raster layer") return;
+    });
+
+  populateRasterPicker();
+
+  function addMap(raster_url,i) {
+    return function() {
+      d3.json(raster_url, function(error, raster) {
+        console.log(raster);
+        var div = d3.select("#results")
+          .append("div")
+          .attr("class", "map-container");
+
+        div.append("h5").text(raster.slug);
+
+        div.append("div")
+          .style("width", "180px")
+          .style("height", "180px")
+          .attr("id", "map" + i);
+
+        maps[raster.slug] = L.map('map' + i)
+          .setView([37.733795, -122.446747], 5)
+          .on("moveend", function(d) {
+            dispatch.pan(this);
+          });
+
+        L.tileLayer(raster.tile_template, {
+          maxZoom: 14,
+          minZoom: 4,
+          animation: 'false',
+          attribution: ''
+        }).addTo(maps[raster.slug]);
+      });
+    };
+  };
+
+  function populateRasterPicker() {
+    var slug = d3.select("#metric-picker").node().value + "_" + d3.select("#model-picker").node().value;
+    d3.json("https://ecoengine.berkeley.edu/api/series/?slug=" + slug, function(error, resp) {
+      d3.select("#results").html("");
+      var rasters = resp.results[0].rasters;
+
+      rasters.forEach(function(raster_url,i) {
+        setTimeout(addMap(raster_url,i), 300*i);
+      });
+    });
+  };
+});
+</script>
