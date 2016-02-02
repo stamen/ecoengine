@@ -64,11 +64,13 @@
     },
     {
       "name": "precipitation yearly average",
-      "slug": "pr_yr_ens-avg_amon"
+      "slug": "pr_yr_ens-avg_amon",
+      "nex": true
     },
     {
       "name": "maximum temperature ensemble average",
-      "slug": "tasmax_ens-avg_amon"
+      "slug": "tasmax_ens-avg_amon",
+      "nex": true
     },
     {
       "name": "maximum temperature yearly maximum allmodels",
@@ -81,6 +83,21 @@
     {
       "name": "maximum temperature yearly average ACCESS1-0",
       "slug": "tasmax_yr_avg_ACCESS1-0"
+    },
+    {
+      "name": "maximum temperature yearly average",
+      "slug": "tasmax_yr_ens-avg_amon",
+      "nex": true
+    },
+    {
+      "name": "minimum temperature yearly average",
+      "slug": "tasmin_yr_ens-avg_amon",
+      "nex": true
+    },
+    {
+      "name": "minimum temperature ensemble average",
+      "slug": "tasmin_ens-avg_amon",
+      "nex": true
     }
   ]
 }

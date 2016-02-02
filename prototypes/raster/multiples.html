@@ -4,7 +4,7 @@
 <style>
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  width: 780px;
+  min-width: 780px;
   margin: 30px auto;
   color: #222;
   font-size: 15px;
@@ -14,8 +14,8 @@ body {
   line-height: 1.8em;
 }
 .map-container {
-  width: 180px;
-  height: 205px;
+  width: 240px;
+  height: 265px;
   margin: 6px;
   float: left;
 }
@@ -54,6 +54,9 @@ dispatch.on("pan", function(map) {
 
 d3.json("slugs.json", function(error, slugs) {
   console.log(slugs);
+  var nex_datasets = slugs.metrics.filter(function(d) {
+    return "nex" in d && !!d["nex"];     // is this a NASA NEX raster?
+  });
 
   // metric picker 
   d3.select("#metric-picker")
@@ -61,7 +64,7 @@ d3.json("slugs.json", function(error, slugs) {
       populateRasterPicker();
     })
     .selectAll("option")
-    .data(slugs.metrics)
+    .data(nex_datasets)
     .enter().append("option")
     .attr("value", function(d) { return d.slug; })
     .text(function(d) { return d.name; });
@@ -93,21 +96,24 @@ d3.json("slugs.json", function(error, slugs) {
           .append("div")
           .attr("class", "map-container");
 
-        div.append("h5").text(raster.slug);
+        div.append("h5").text(raster.event);
 
         div.append("div")
-          .style("width", "180px")
-          .style("height", "180px")
+          .style("width", "240px")
+          .style("height", "240px")
           .attr("id", "map" + i);
 
-        maps[raster.slug] = L.map('map' + i)
-          .setView([37.733795, -122.446747], 5)
+        maps[raster.slug] = L.map('map' + i,{
+            center: [39.733795, -117.446747],
+            zoom: 4,
+            scrollWheelZoom: false
+          })
           .on("moveend", function(d) {
             dispatch.pan(this);
           });
 
         L.tileLayer(raster.tile_template, {
-          maxZoom: 14,
+          maxZoom: 7,
           minZoom: 4,
           animation: 'false',
           attribution: ''
@@ -120,10 +126,10 @@ d3.json("slugs.json", function(error, slugs) {
     var slug = d3.select("#metric-picker").node().value + "_" + d3.select("#model-picker").node().value;
     d3.json("https://ecoengine.berkeley.edu/api/series/?slug=" + slug, function(error, resp) {
       d3.select("#results").html("");
-      var rasters = resp.results[0].rasters;
+      var rasters = resp.results[0].rasters.slice(0,12);
 
       rasters.forEach(function(raster_url,i) {
-        setTimeout(addMap(raster_url,i), 300*i);
+        setTimeout(addMap(raster_url,i), 360*i);
       });
     });
   };

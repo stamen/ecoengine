@@ -34,17 +34,18 @@ body {
 <script>
 
   var map = L.map('map')
-    .setView([37.733795, -122.446747], 6);
+    .setView([37.733795, -97.446747], 4);
 
-  var activeLayer = L.tileLayer('https://ecoengine.berkeley.edu/api/tiles/pr_models_max_rcp45-2050-07-01/{z}/{x}/{y}.png', {
+  var activeLayer = L.tileLayer('', {
     maxZoom: 18,
     attribution: ''
   });
 
-  map.addLayer(activeLayer);
-
   d3.json("slugs.json", function(error, slugs) {
     console.log(slugs);
+    var nex_datasets = slugs.metrics.filter(function(d) {
+      return "nex" in d && !!d["nex"];     // is this a NASA NEX raster?
+    });
 
     // metric picker 
     d3.select("#metric-picker")
@@ -52,7 +53,7 @@ body {
         populateRasterPicker();
       })
       .selectAll("option")
-      .data(slugs.metrics)
+      .data(nex_datasets)
       .enter().append("option")
       .attr("value", function(d) { return d.slug; })
       .text(function(d) { return d.name; });
