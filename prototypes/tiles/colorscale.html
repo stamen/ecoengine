@@ -15,7 +15,7 @@ body { margin: 0; }
 <div id="map"></div>
 <script>
 var colorscale = d3.scale.linear()
-  .domain([0,255])
+  .domain([255,0])
   .range(["hsl(222,30%,20%)", "hsl(62,100%,90%)"])
   .interpolate(d3.interpolateHcl);
 
@@ -78,7 +78,7 @@ L.tileLayer.grayscale = function (url, options) {
 
 
 var map = L.map('map').setView([40, -122], 5);
-L.tileLayer.grayscale('https://ecoengine.berkeley.edu/api/tiles/tasmax_rcp60_r1i1p1_gfdl-esm2m-2031-02-16/{z}/{x}/{y}/', {
+L.tileLayer.grayscale('https://ecoengine.berkeley.edu/api/tiles/tasmin_yr_ens-avg_amon_rcp85-2099-01-01/{z}/{x}/{y}/?style=Greys', {
     attribution: '',
     maxZoom: 15, minZoom: 2
 }).addTo(map);
