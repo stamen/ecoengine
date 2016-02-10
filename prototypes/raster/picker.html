@@ -25,7 +25,7 @@ body {
 <p id="controls">
   Climate Model: <select id="metric-picker"></select>
   Variable: <select id="model-picker"></select><br/>
-  Date: <select id="raster-picker"></select>
+  Date: <select id="raster-picker"></select><input id="date-slider" type="range" step=1 min=0 value=0></input>
 </p>
 <div id="map" style="width: 780px; height: 400px"></div>
 
@@ -73,16 +73,30 @@ body {
     d3.select("#raster-picker")
       .on("change", function() {
         if (this.value == "Select raster layer") return;
-        map.removeLayer(activeLayer);
-        activeLayer = L.tileLayer(this.value);
-        map.addLayer(activeLayer);
+        changeLayer(this.value);
+        d3.select("#date-slider").node().value = this.selectedIndex;
       });
+
+    function changeLayer(layer) {
+      map.removeLayer(activeLayer);
+      activeLayer = L.tileLayer(layer);
+      map.addLayer(activeLayer);
+    };
 
     populateRasterPicker();
 
     function populateRasterPicker() {
       var slug = d3.select("#metric-picker").node().value + "_" + d3.select("#model-picker").node().value;
       d3.json("https://ecoengine.berkeley.edu/api/series/" + slug + "/rasters/?page_size=1000", function(error, resp) {
+        d3.select("#date-slider")
+          .attr("max", resp.results.length)
+          .on("input", function() {
+            var selected = resp.results[+this.value];
+            changeLayer(selected.tile_template);
+            d3.select("#raster-picker")
+              .node().selectedIndex = (+this.value) + 1;
+          });
+
         d3.select("#raster-picker")
           .html("")
 
