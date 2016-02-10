@@ -11,7 +11,7 @@ body {
 }
 #maps {
   background: #111;
-  margin: 20px 0;
+  margin: 14px 0;
   padding: 20px 10px 0px;
   text-align: left;
 }
@@ -19,7 +19,7 @@ body {
   margin: 0 6px 6px 0;
 }
 .map {
-  padding: 18px 18px;
+  padding: 14px;
   display: inline-block;
   height: 180px;
   width: 180px;
@@ -119,6 +119,8 @@ small {
   <option value="decade">Decade</option>
 </select>
 <div id="maps"></div>
+<p>Color palette <select id="colorbrewer"><option>RdYlGn</option></select> <span id="color-blocks"></span></p>
+<p>Hex radius <input type="range" id="bin-size" value="3" min="0.5" max="10" step="0.5"> <strong><span id="bin-size-print" style="display: inline-block; width: 24px;">3</span> px</strong></p> 
 <div class="notes">
   <h4>What is this?</h4>
   <p>Hexbin maps of georeferenced observations from <a href="https://ecoengine.berkeley.edu/">Berkeley Ecoengine</a>.</p>
@@ -149,9 +151,8 @@ small {
 // Based on http://bl.ocks.org/mbostock/4330486
 var search_term = "Sceloporus";
 var chart_split = "country";
-
-var colorscale = d3.scale.ordinal()
-    .range(colorbrewer.RdYlGn[6]); 
+var colors = colorbrewer.RdYlGn[6];
+updateColorBlocks(colors);
 
 /* A useful console command to get colorbrewer scales as hex-codes */
 // colorscale.range().map(function(d,i) { return d3.rgb(d).toString(); }).join(" ")
@@ -217,7 +218,23 @@ d3.select("#chart-split").on("change", function() {
 function ready(queries) {
   var lizards = queries.map(function() { return []; });
 
+  var colorscale = d3.scale.ordinal()
+      .range(colors); 
+
   /* Interface */
+
+  d3.select("#colorbrewer")
+    .on("change", function() {
+      colors = colorbrewer[this.value][6];
+      colorscale.range(colors);
+      updateColorBlocks(colors);
+      d3.selectAll("#query-list li a").style("color", function(d,i) { return colors[i]; })
+      dispatch.refreshbins("all");
+    })
+    .selectAll("option")
+    .data(d3.keys(colorbrewer))
+    .enter().append("option")
+    .text(String)
 
   d3.select("#query-list")
     .selectAll("li")
@@ -245,6 +262,22 @@ function ready(queries) {
   var radius = d3.scale.sqrt()
       .domain([1, 500])
       .range([1, 3]);
+
+  d3.select("#bin-size")
+    .on("change", function() {
+      d3.select("#bin-size-print").text(this.value);
+      hexbin.radius(this.value);
+      radius.range([1, +this.value+0.5]);
+      d3.selectAll(".hexagons path").remove();
+      dispatch.refreshbins("all");
+    })
+    .on("input", function() {
+      d3.select("#bin-size-print").text(this.value);
+      hexbin.radius(this.value);
+      radius.range([1, +this.value+0.5]);
+      d3.selectAll(".hexagons path").remove();
+      dispatch.refreshbins("all");
+    });
 
   var path = d3.geo.path()
       .projection(projection);
@@ -391,4 +424,21 @@ function ready(queries) {
     });
   }
 }
+
+function updateColorBlocks(palette) {
+  var blocks = d3.select("#color-blocks")
+    .selectAll("span")
+    .data(palette)
+
+  blocks.exit().remove();
+
+  blocks.enter().append("span")
+    .style("margin-bottom", "-2px")
+    .style("width", "14px")
+    .style("height", "14px")
+    .style("display", "inline-block")
+
+  blocks
+    .style("background", String)
+};
 </script>
