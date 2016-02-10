@@ -8,11 +8,27 @@
 <![endif]-->
 <script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/1.8.0/d3-legend.js"></script>
 <style>
-body { margin: 0; }
+body {
+  margin: 0;
+  font-family: "Montserrat", Avenir Next, Arial, Helvetica, sans-serif;
+}
 #map { height: 100%; }
+#legend {
+  position: absolute;
+  left: 15px;
+  bottom: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  width: 80px;
+}
+#legend h3 {
+  text-align: center;
+  margin: 0 0 9px 0;
+}
 </style>
 <div id="map"></div>
+<div id="legend"></div>
 <script>
 var colorscale = d3.scale.linear()
   .domain([255,0])
@@ -75,11 +91,29 @@ L.tileLayer.grayscale = function (url, options) {
   return new L.TileLayer.Grayscale(url, options);
 };
 
+d3.json("https://ecoengine.berkeley.edu/api/rstore/tasmin_yr_ens-avg_amon_rcp85-2099-01-01/", function(error, raster) {
+  var map = L.map('map').setView([40, -122], 5);
+  L.tileLayer.grayscale(raster.tile_template + '?style=Greys', {
+      attribution: '',
+      maxZoom: 15, minZoom: 2
+  }).addTo(map);
 
+  var legendscale = d3.scale.linear()
+    .domain([raster.minval,raster.maxval])
+    .range(colorscale.range())
+    .interpolate(d3.interpolateHcl);
 
-var map = L.map('map').setView([40, -122], 5);
-L.tileLayer.grayscale('https://ecoengine.berkeley.edu/api/tiles/tasmin_yr_ens-avg_amon_rcp85-2099-01-01/{z}/{x}/{y}/?style=Greys', {
-    attribution: '',
-    maxZoom: 15, minZoom: 2
-}).addTo(map);
+  d3.select("#legend")
+    .append("h3")
+    .text(raster.units);
+
+  d3.select("#legend")
+    .append("svg")
+    .attr("height", "220px")
+    .call(d3.legend.color()
+      .scale(legendscale)
+      .shapeWidth(20)
+      .shapeHeight(20)
+      .cells(10))
+});
 </script>
