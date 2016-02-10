@@ -39,6 +39,12 @@ a {
 a:hover {
   color: #ccc;
 }
+p {
+  color: #bbb;
+}
+p strong {
+  color: #eee;
+}
 #title-input {
   text-align: center;
   background: #111;
@@ -97,9 +103,10 @@ small {
 </style>
 <body>
 
-<input type="text" value="sceloporus" id="title-input" placeholder=""></input><br/>
+<input type="text" value="Sceloporus" id="title-input" placeholder=""></input><br/>
 <small>Split by </small>
 <select id="chart-split">
+  <option value="country">Country</option>
   <option value="scientific_name">Scientific Name</option>
   <option value="genus">Genus</option>
   <option value="family">Family</option>
@@ -108,16 +115,29 @@ small {
   <option value="phylum">Phylum</option>
   <option value="kingdom">Kingdom</option>
   <option value="state_province">State/Province</option>
-  <option value="country">Country</option>
   <option value="observation_type">Observation Type</option>
   <option value="decade">Decade</option>
 </select>
 <div id="maps"></div>
 <div class="notes">
+  <h4>What is this?</h4>
+  <p>Hexbin maps of georeferenced observations from <a href="https://ecoengine.berkeley.edu/">Berkeley Ecoengine</a>.</p>
+  <p>You can search the Ecoengine right on this page!</p>
+  <h4>How?</h4>
+  <p>Use the blinking search box at the top. Hit <strong>Enter</strong> to search!
+  <p>Some example terms:</p>
+  <ul>
+    <li>Quercus</li>
+    <li>Poaceae</li>
+    <li>Dipodomys</li>
+    <li>Bufo</li>
+  </ul>
+  <p>Leave the field blank to see results from the entire collection. Pretty cool!</p>
+  <p>Multiple charts will be drawn based on the <strong>Split by</strong> dropdown. Try searching for "Rufus" and splitting by Class. You'll notice this query returns both mammals and birds.</p>
+  <p>If loading seems to stop, try "kicking it" by refreshing the page.</p>
   <h4>Query List</h4>
   <ul id="query-list">
   </ul>
-  <p>See also <a href="multiples-taxa.html">Species Range Maps</a></p>
 </div>
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -127,9 +147,8 @@ small {
 <script src="../lib/hashnav.js"></script>
 <script>
 // Based on http://bl.ocks.org/mbostock/4330486
-var search_term = "sceloporus";
-var chart_split = "scientific_name";
-
+var search_term = "Sceloporus";
+var chart_split = "country";
 
 var colorscale = d3.scale.ordinal()
     .range(colorbrewer.RdYlGn[6]); 
@@ -188,6 +207,7 @@ d3.select("#title-input").on("change", function() {
   search_query = "https://ecoengine.berkeley.edu/api/search/?q=" + this.value + "&selected_facets=georeferenced_exact%3A%22true%22&facets_limit=100";
   search(search_query);
 });
+
 d3.select("#chart-split").on("change", function() {
   dispatch.reset();
   chart_split = this.value;  
@@ -214,8 +234,8 @@ function ready(queries) {
       parseDate = d3.time.format("%x").parse;
 
   var projection = d3.geo.albers()
-      .scale(180)
-      .translate([width/2, height/2])
+      .scale(200)
+      .translate([0.5*width, 0.43*height])
       .precision(.1);
 
   var hexbin = d3.hexbin()
@@ -290,6 +310,7 @@ function ready(queries) {
           .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
           .style("fill", color)
           .on("mouseover", function(d) {
+            return;
             d3.selectAll(".hexagons path")
               .style("fill-opacity", 0.2)
               .filter(function(p) {
@@ -299,6 +320,7 @@ function ready(queries) {
             d3.select(this).style("fill-opacity", 1);
           })
           .on("mouseout", function(d) {
+            return;
             d3.selectAll(".hexagons path")
               .style("fill-opacity", null);
           });
@@ -369,5 +391,4 @@ function ready(queries) {
     });
   }
 }
-
 </script>
