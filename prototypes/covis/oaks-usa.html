@@ -395,9 +395,6 @@ function ready(queries) {
     d3.json(url, function(error, data) {
       if (bail) return;
 
-      //console.log(data);
-      queries[index].count = data.count;
-    
       // use only lizards with geojson
       lizards[index] = lizards[index].concat(data.results.filter(function(d) {
         return !!d.geometry;
