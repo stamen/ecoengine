@@ -310,6 +310,7 @@ function ready(queries) {
           .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
           .style("fill", color)
           .on("mouseover", function(d) {
+            return;
             d3.selectAll(".hexagons path")
               .style("fill-opacity", 0.2)
               .filter(function(p) {
@@ -319,6 +320,7 @@ function ready(queries) {
             d3.select(this).style("fill-opacity", 1);
           })
           .on("mouseout", function(d) {
+            return;
             d3.selectAll(".hexagons path")
               .style("fill-opacity", null);
           });
