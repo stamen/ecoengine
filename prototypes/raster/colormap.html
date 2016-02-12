@@ -286,6 +286,11 @@ var colormap = {
           '#ff61c0', '#ffa0ff', '#ffa0ff', '#ffe0ff', '#ffe0e1']
 };
 
+// Ad reversed colors
+for (var k in colormap) {
+  colormap[k + "_r"] = colormap[k].reverse();
+}
+
 var map = L.map('map')
   .setView([37.733795, -97.446747], 4);
 
