@@ -288,7 +288,7 @@ var colormap = {
 
 // Add reversed colors
 for (var k in colormap) {
-  colormap[k + "_r"] = colormap[k].reverse();
+  colormap[k + "_r"] = colormap[k].slice().reverse();
 }
 
 var map = L.map('map')

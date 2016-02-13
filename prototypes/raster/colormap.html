@@ -291,11 +291,11 @@ var colormap = {
 
 // Add reversed colors
 for (var k in colormap) {
-  colormap[k + "_r"] = colormap[k].reverse();
+  colormap[k + "_r"] = colormap[k].slice().reverse();
 }
 
 var colorscale = d3.scale.linear()
-  .range(colormap[selected_color]);
+  .range(colormap[selected_color].slice().reverse());
 
 var activeLayer = L.tileLayer('', {
   maxZoom: 18,
@@ -309,7 +309,7 @@ d3.json("https://ecoengine.berkeley.edu/api/rstore/pr_yr_ens-avg_amon_rcp45-2050
   d3.select("#color-ramp")
     .on("change", function() {
       selected_color = this.value;
-      colorscale.range(colormap[selected_color]);
+      colorscale.range(colormap[selected_color].slice().reverse());
       updateLayer();
     })
     .selectAll("option")
