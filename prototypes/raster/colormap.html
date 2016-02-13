@@ -1,40 +1,43 @@
-<!DOCTYPE html>
+<meta charset="utf-8">
+<!-- based on https://gist.github.com/wboykinm/5264244 -->
 <html>
-<head>
+<title>Custom Colorscale Test</title>
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
+<!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.ie.css" />
+<![endif]-->
+<script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/1.8.0/d3-legend.js"></script>
 <style>
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  width: 780px;
-  margin: 30px auto;
-  color: #222;
-  font-size: 15px;
-  text-align: center;
+  margin: 0;
+  font-family: "Montserrat", Avenir Next, Arial, Helvetica, sans-serif;
 }
-#controls {
-  line-height: 1.8em;
+#map { height: 100%; }
+#legend {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  padding: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  width: 100px;
+}
+#legend h3 {
+  text-align: center;
+  margin: 9px 0 6px;
+  font-size: 13px;
+  line-height: 1.2em;
 }
 </style>
-<title>Raster layer picker</title>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
-</head>
-<body>
-
-<h2>Raster Layer Picker</h2>
-<p id="controls">
-  Climate Model: <select id="metric-picker"></select>
-  Variable: <select id="model-picker"></select><br/>
-  Date: <select id="raster-picker"></select><input id="date-slider" type="range" step=1 min=0 value=0></input><br/>
-  Color Ramp: <select id="color-ramp"></select><br/>
-</p>
-<div id="map" style="width: 780px; height: 400px"></div>
-
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+<div id="map"></div>
+<div id="legend">
+  <div class="legend"></div>
+  <h3>Color Ramp</h3>
+  <select id="color-ramp"></select><br/>
+</div>
 <script>
 var selected_color = "YlGnBu";
-var selected_layer = "";
 
 var colormap = {
   // ColorBrewer http://colorbrewer2.org/
@@ -286,60 +289,28 @@ var colormap = {
           '#ff61c0', '#ffa0ff', '#ffa0ff', '#ffe0ff', '#ffe0e1']
 };
 
-// Ad reversed colors
+// Add reversed colors
 for (var k in colormap) {
-  colormap[k + "_r"] = colormap[k].reverse();
+  colormap[k + "_r"] = colormap[k].slice().reverse();
 }
 
-var map = L.map('map')
-  .setView([37.733795, -97.446747], 4);
+var colorscale = d3.scale.linear()
+  .range(colormap[selected_color].slice().reverse());
 
 var activeLayer = L.tileLayer('', {
   maxZoom: 18,
   attribution: ''
 });
 
-d3.json("slugs.json", function(error, slugs) {
-  console.log(slugs);
-  var nex_datasets = slugs.metrics.filter(function(d) {
-    return "nex" in d && !!d["nex"];     // is this a NASA NEX raster?
-  });
+d3.json("https://ecoengine.berkeley.edu/api/rstore/pr_yr_ens-avg_amon_rcp45-2050-01-01/", function(error, raster) {
+  var map = L.map('map').setView([40, -122], 5);
 
-  // metric picker 
-  d3.select("#metric-picker")
-    .on("change", function() {
-      populateRasterPicker();
-    })
-    .selectAll("option")
-    .data(nex_datasets)
-    .enter().append("option")
-    .attr("value", function(d) { return d.slug; })
-    .text(function(d) { return d.name; });
-
-  // metric picker 
-  d3.select("#model-picker")
-    .on("change", function() {
-      populateRasterPicker();
-    })
-    .selectAll("option")
-    .data(slugs.models)
-    .enter().append("option")
-    .attr("value", function(d) { return d.slug; })
-    .text(function(d) { return d.name; });
-
-  // raster picker
-  d3.select("#raster-picker")
-    .on("change", function() {
-      if (this.value == "Select raster layer") return;
-      changeLayer(this.value);
-      d3.select("#date-slider").node().value = this.selectedIndex;
-    });
-
-  // metric picker 
+  // color picker 
   d3.select("#color-ramp")
     .on("change", function() {
       selected_color = this.value;
-      changeLayer(selected_layer);
+      colorscale.range(colormap[selected_color].slice().reverse());
+      updateLayer();
     })
     .selectAll("option")
     .data(d3.keys(colormap))
@@ -347,48 +318,34 @@ d3.json("slugs.json", function(error, slugs) {
     .attr("value", String)
     .text(String);
 
-  function changeLayer(layer) {
-    selected_layer = layer;
+  updateLayer();
+
+  function updateLayer() {
     map.removeLayer(activeLayer);
-    activeLayer = L.tileLayer(layer + "?style=" + selected_color);
-    map.addLayer(activeLayer);
-  };
-
-  populateRasterPicker();
-
-  function populateRasterPicker() {
-    var slug = d3.select("#metric-picker").node().value + "_" + d3.select("#model-picker").node().value;
-    d3.json("https://ecoengine.berkeley.edu/api/series/" + slug + "/rasters/?page_size=1000", function(error, resp) {
-      d3.select("#date-slider")
-        .attr("max", resp.results.length)
-        .on("input", function() {
-          var selected = resp.results[+this.value];
-          changeLayer(selected.tile_template);
-          d3.select("#raster-picker")
-            .node().selectedIndex = (+this.value) + 1;
-        });
-
-      d3.select("#raster-picker")
-        .html("")
-
-      d3.select("#raster-picker")
-        .append("option")
-        .text("Select raster layer")
-
-      d3.select("#raster-picker")
-        .selectAll("option.raster-option")
-        .data(resp.results)
-        .enter().append("option")
-        .attr("class", "raster-option")
-        .attr("value", function(d) { return d.tile_template; })
-        .text(function(d) { return d.event; });
-
-      d3.select("#raster-picker")
-        .style("opacity", 0)
-        .transition()
-        .duration(600)
-        .style("opacity", 1);
+    activeLayer = L.tileLayer(raster.tile_template + "?style=" + selected_color, {
+        attribution: '',
+        maxZoom: 15, minZoom: 2
     });
+    map.addLayer(activeLayer);
+
+    var steps = colormap[selected_color].length - 1;
+    var step_size = (raster.maxval - raster.minval) / steps;
+    colorscale.domain(d3.range(raster.minval,raster.maxval,step_size).reverse());
+
+    d3.select("#legend .legend")
+      .html("")
+      .append("h3")
+      .text(raster.units);
+
+    d3.select("#legend .legend")
+      .append("svg")
+      .attr("height", "220px")
+      .call(d3.legend.color()
+        .scale(colorscale)
+        .shapeWidth(20)
+        .shapeHeight(20)
+        .cells(10)
+        .labelFormat(d3.format(".4s")))
   };
 });
 </script>
