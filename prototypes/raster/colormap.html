@@ -8,7 +8,6 @@
 <![endif]-->
 <script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/1.8.0/d3-legend.js"></script>
 <style>
 body {
   margin: 0;
@@ -25,13 +24,37 @@ body {
 }
 #legend h3 {
   text-align: center;
-  margin: 9px 0 6px;
-  font-size: 13px;
+  margin: 6px 0;
+  font-size: 12px;
   line-height: 1.2em;
+}
+#legend .legend {
+  position: relative;
+  height: 210px;
+  width: 20px;
+  left: 25px;
+}
+.axis text {
+  font: 12px sans-serif;
+}
+.axis path {
+  display: none;
+}
+.axis line {
+  fill: none;
+  stroke: #000;
+}
+#legend .legend svg,
+#legend .legend canvas {
+  position: absolute; 
+}
+#legend .legend canvas {
+  border: 1px solid #000;
 }
 </style>
 <div id="map"></div>
 <div id="legend">
+  <h3 id="legend-title"></h3>
   <div class="legend"></div>
   <h3>Color Ramp</h3>
   <select id="color-ramp"></select><br/>
@@ -294,9 +317,6 @@ for (var k in colormap) {
   colormap[k + "_r"] = colormap[k].slice().reverse();
 }
 
-var colorscale = d3.scale.linear()
-  .range(colormap[selected_color].slice().reverse());
-
 var activeLayer = L.tileLayer('', {
   maxZoom: 18,
   attribution: ''
@@ -309,7 +329,6 @@ d3.json("https://ecoengine.berkeley.edu/api/rstore/pr_yr_ens-avg_amon_rcp45-2050
   d3.select("#color-ramp")
     .on("change", function() {
       selected_color = this.value;
-      colorscale.range(colormap[selected_color].slice().reverse());
       updateLayer();
     })
     .selectAll("option")
@@ -328,24 +347,52 @@ d3.json("https://ecoengine.berkeley.edu/api/rstore/pr_yr_ens-avg_amon_rcp45-2050
     });
     map.addLayer(activeLayer);
 
-    var steps = colormap[selected_color].length - 1;
-    var step_size = (raster.maxval - raster.minval) / steps;
-    colorscale.domain(d3.range(raster.minval,raster.maxval,step_size).reverse());
+    /* Legend */
+    var legendheight = 200;
+    var steps = colormap[selected_color].length;
 
-    d3.select("#legend .legend")
-      .html("")
-      .append("h3")
+    d3.select("#legend-title")
       .text(raster.units);
 
-    d3.select("#legend .legend")
+    var canvas = d3.select("#legend .legend")
+      .append("canvas")
+      .attr("height", legendheight + "px")
+      .attr("width", "20px").node();
+    var ctx = canvas.getContext("2d");
+
+    var colorscale = d3.scale.linear()
+      .domain(d3.range(0,legendheight,legendheight/steps).reverse())
+      .range(colormap[selected_color]);
+
+    var legendscale = d3.scale.linear()
+      .range([0, legendheight])
+      .domain([raster.maxval, raster.minval]);
+
+    d3.range(legendheight).forEach(function(i) {
+      ctx.fillStyle = colorscale(i);
+      ctx.fillRect(0,i,20,1);
+    });
+
+    var legendaxis = d3.svg.axis()
+      .scale(legendscale)
+      .orient("right")
+      .tickFormat(d3.format("s"))
+      .tickSize(5)
+      .ticks(8);
+
+    var svg = d3.select("#legend .legend")
       .append("svg")
-      .attr("height", "220px")
-      .call(d3.legend.color()
-        .scale(colorscale)
-        .shapeWidth(20)
-        .shapeHeight(20)
-        .cells(10)
-        .labelFormat(d3.format(".4s")))
+      .attr("height", (legendheight+4) + "px")
+      .attr("width", "80px")
+      .style("top", "-1px")
+      .style("left", "-1px")
+
+    svg
+      .append("g")
+      .attr("class", "axis")
+      .attr("transform", "translate(22, 2)")
+      .call(legendaxis);
+
   };
 });
 </script>
