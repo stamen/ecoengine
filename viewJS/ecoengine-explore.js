@@ -423,13 +423,17 @@
     d3.json("../static/slugs.json", function(error, slugs) {
       console.log(slugs);
 
+      var nex_datasets = slugs.metrics.filter(function(d) {
+        return "nex" in d && !!d["nex"];     // is this a NASA NEX raster?
+      });
+
       // metric picker 
       d3.select("#metric-picker")
         .on("change", function() {
           populateRasterPicker();
         })
         .selectAll("option")
-        .data(slugs.metrics)
+        .data(nex_datasets)
         .enter().append("option")
         .attr("value", function(d) { return d.slug; })
         .text(function(d) { return d.name; });
