@@ -21897,6 +21897,7 @@ function ColorRamp(selector_id, layer) {
     updateLayer: updateLayer,
     raster: function(d) { 
       if (!d) return raster;
+      console.log(d);
       raster = d;
     }
   };
@@ -22721,29 +22722,39 @@ function parametersFromString(paramString) {
         .text(function(d) { return d.name; });
 
       // raster picker
+      var rasterLookup = {};
       d3.select("#raster-picker")
-        .on("change", function() {
+        .on("change", function(d) {
           if (this.value == "Select raster layer") return;
-          d3.json(this.value, function(error, resp) {
-            d3.select("#color-ramp-legend").style("display", "block");
-            var colorRamp = ColorRamp("#color-ramp", environmentLayer);
-            colorRamp.raster(resp);
-            colorRamp.updateLayer();
-          });
+          d3.select("#color-ramp-legend").style("display", "block");
+          var colorRamp = ColorRamp("#color-ramp", environmentLayer);
+          colorRamp.raster(rasterLookup[this.value]);
+          colorRamp.updateLayer();
         });
 
       populateRasterPicker();
 
       function populateRasterPicker() {
         var slug = d3.select("#metric-picker").node().value + "_" + d3.select("#model-picker").node().value;
-        d3.json("https://ecoengine.berkeley.edu/api/series/?slug=" + slug, function(error, resp) {
-          var rasters = resp.results[0].rasters;
+        d3.json("https://ecoengine.berkeley.edu/api/series/" + slug + "/rasters/?page_size=1000", function(error, resp) {
+          resp.results.forEach(function(d) {
+            rasterLookup[d.tile_template] = d;
+          });
+          
           d3.select("#raster-picker")
             .html("")
-            .selectAll("option")
-            .data(["Select raster layer"].concat(rasters))
+
+          d3.select("#raster-picker")
+            .append("option")
+            .text("Select raster layer")
+
+          d3.select("#raster-picker")
+            .selectAll("option.raster-option")
+            .data(resp.results)
             .enter().append("option")
-            .text(function(d) { return d; });
+            .attr("class", "raster-option")
+            .attr("value", function(d) { return d.tile_template; })
+            .text(function(d) { return d.event; });
 
           d3.select("#raster-picker")
             .style("opacity", 0)
