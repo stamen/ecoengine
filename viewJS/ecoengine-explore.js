@@ -423,13 +423,17 @@
     d3.json("../static/slugs.json", function(error, slugs) {
       console.log(slugs);
 
+      var nex_datasets = slugs.metrics.filter(function(d) {
+        return "nex" in d && !!d["nex"];     // is this a NASA NEX raster?
+      });
+
       // metric picker 
       d3.select("#metric-picker")
         .on("change", function() {
           populateRasterPicker();
         })
         .selectAll("option")
-        .data(slugs.metrics)
+        .data(nex_datasets)
         .enter().append("option")
         .attr("value", function(d) { return d.slug; })
         .text(function(d) { return d.name; });
@@ -450,7 +454,10 @@
         .on("change", function() {
           if (this.value == "Select raster layer") return;
           d3.json(this.value, function(error, resp) {
-            environmentLayer.setUrl(resp.tile_template);
+            d3.select("#color-ramp-legend").style("display", "block");
+            var colorRamp = ColorRamp("#color-ramp", environmentLayer);
+            colorRamp.raster(resp);
+            colorRamp.updateLayer();
           });
         });
 

@@ -64,8 +64,14 @@ window.STMN = window.STMN || {};
     <p id="detail-view">
     </p>
   </div>
-  <div class="map-area">
+  <div class="map-area right">
     <div id="map">
+    </div>
+    <div id="color-ramp-legend" style="display:none;">
+      <h3 class="title"></h3>
+      <div class="legend"></div>
+      <h3>Color Ramp</h3>
+      <select id="color-ramp"></select><br/>
     </div>
     <div class="layer-selection">
       <h3>Boundaries</h3>
@@ -73,11 +79,11 @@ window.STMN = window.STMN || {};
         <option value="">None</option>
       </select><br/>
       <h3>Environment</h3>
-        <small>Model:<br/></small>
+        <small>Climate Model:<br/></small>
         <select id="metric-picker"></select><br/>
-        <small>Scenario:<br/></small>
+        <small>Variable:<br/></small>
         <select id="model-picker"></select><br/>
-        <small>Raster:<br/></small>
+        <small>Date:<br/></small>
         <select id="raster-picker"></select><br/>
       <h3>Basemap</h3>
       <select id="layer-select">
