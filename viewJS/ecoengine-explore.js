@@ -454,7 +454,10 @@
         .on("change", function() {
           if (this.value == "Select raster layer") return;
           d3.json(this.value, function(error, resp) {
-            environmentLayer.setUrl(resp.tile_template);
+            d3.select("#color-ramp-legend").style("display", "block");
+            var colorRamp = ColorRamp("#color-ramp", environmentLayer);
+            colorRamp.raster(resp);
+            colorRamp.updateLayer();
           });
         });
 
