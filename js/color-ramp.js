@@ -326,6 +326,7 @@ function ColorRamp(selector_id, layer) {
     updateLayer: updateLayer,
     raster: function(d) { 
       if (!d) return raster;
+      console.log(d);
       raster = d;
     }
   };
