@@ -21856,7 +21856,7 @@ function ColorRamp(selector_id, layer) {
     var canvas = d3.select("#color-ramp-legend .legend")
       .append("canvas")
       .attr("height", legendheight + "px")
-      .attr("width", "20px").node();
+      .attr("width", "22px").node();
     var ctx = canvas.getContext("2d");
 
     var colorscale = d3.scale.linear()
@@ -21869,7 +21869,7 @@ function ColorRamp(selector_id, layer) {
 
     d3.range(legendheight).forEach(function(i) {
       ctx.fillStyle = colorscale(i);
-      ctx.fillRect(0,i,20,1);
+      ctx.fillRect(0,i,22,1);
     });
 
     var legendaxis = d3.svg.axis()
@@ -21889,7 +21889,7 @@ function ColorRamp(selector_id, layer) {
     svg
       .append("g")
       .attr("class", "axis")
-      .attr("transform", "translate(22, 2)")
+      .attr("transform", "translate(24, 2)")
       .call(legendaxis);
   };
 

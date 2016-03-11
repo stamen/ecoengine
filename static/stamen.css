@@ -681,11 +681,11 @@
 
 #color-ramp-legend {
   position: absolute;
-  left: 10px;
-  bottom: 12px;
-  padding: 3px;
-  background: rgba(255, 255, 255, 0.2);
-  width: 100px;
+  left: 5px;
+  bottom: 5px;
+  padding: 6px;
+  background: rgba(255, 255, 255, 0.35);
+  width: 110px;
 }
 #color-ramp-legend h3 {
   margin: 0 0 6px;
