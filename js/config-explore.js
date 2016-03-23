@@ -162,3 +162,107 @@ ECO.advancedSearch = [
   }
   */
 ];
+
+ECO.rasterPicker = {
+  "models": [
+    {
+      "name": "modern",
+      "slug": "historical"
+    },
+    {
+      "name": "RCP 4.5",
+      "slug": "rcp45"
+    },
+    {
+      "name": "RCP 8.5",
+      "slug": "rcp85"
+    }
+  ],
+  "metrics": [
+    {
+      "name": "precipitation yearly maximum allmodels",
+      "slug": "pr_models_max"
+    },
+    {
+      "name": "precipitation yearly minimum allmodels",
+      "slug": "pr_models_min"
+    },
+    {
+      "name": "precipitation yearly average ACCESS1-0",
+      "slug": "pr_yr_avg_ACCESS1-0"
+    },
+    {
+      "name": "precipitation yearly average CanESM2",
+      "slug": "pr_yr_avg_CanESM2"
+    },
+    {
+      "name": "precipitation yearly average CCSM4",
+      "slug": "pr_yr_avg_CCSM4"
+    },
+    {
+      "name": "precipitation yearly average CESM1-BGC",
+      "slug": "pr_yr_avg_CESM1-BGC"
+    },
+    {
+      "name": "precipitation yearly average CMCC-CMS",
+      "slug": "pr_yr_avg_CMCC-CMS"
+    },
+    {
+      "name": "precipitation yearly average CNRM-CM5",
+      "slug": "pr_yr_avg_CNRM-CM5"
+    },
+    {
+      "name": "precipitation yearly average GFDL-CM3",
+      "slug": "pr_yr_avg_GFDL-CM3"
+    },
+    {
+      "name": "precipitation yearly average HadGEM2-CC",
+      "slug": "pr_yr_avg_HadGEM2-CC"
+    },
+    {
+      "name": "precipitation yearly average HadGEM2-ES",
+      "slug": "pr_yr_avg_HadGEM2-ES"
+    },
+    {
+      "name": "precipitation yearly average MIROC5",
+      "slug": "pr_yr_avg_MIROC5"
+    },
+    {
+      "name": "precipitation yearly average",
+      "slug": "pr_yr_ens-avg_amon",
+      "nex": true
+    },
+    {
+      "name": "maximum temperature ensemble average",
+      "slug": "tasmax_ens-avg_amon",
+      "nex": true
+    },
+    {
+      "name": "maximum temperature yearly maximum allmodels",
+      "slug": "tasmax_models_max"
+    },
+    {
+      "name": "maximum temperature yearly minimum allmodels",
+      "slug": "tasmax_models_min"
+    },
+    {
+      "name": "maximum temperature yearly average ACCESS1-0",
+      "slug": "tasmax_yr_avg_ACCESS1-0"
+    },
+    {
+      "name": "maximum temperature yearly average",
+      "slug": "tasmax_yr_ens-avg_amon",
+      "nex": true
+    },
+    {
+      "name": "minimum temperature yearly average",
+      "slug": "tasmin_yr_ens-avg_amon",
+      "nex": true
+    },
+    {
+      "name": "minimum temperature ensemble average",
+      "slug": "tasmin_ens-avg_amon",
+      "nex": true
+    }
+  ]
+};
