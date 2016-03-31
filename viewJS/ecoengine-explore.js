@@ -460,16 +460,16 @@
       });
 
     d3.select("#raster-close")
-      .on("click", function() {
-        d3.select("#color-ramp-legend").style("display", "none");
-        d3.selectAll(".raster-info").style("display", "none");
-        environmentLayer.setUrl(""); 
-        populateRasterPicker();
-      });
+      .on("click", populateRasterPicker);
 
     populateRasterPicker();
 
     function populateRasterPicker() {
+      // reset raster layer
+      d3.select("#color-ramp-legend").style("display", "none");
+      d3.selectAll(".raster-info").style("display", "none");
+      environmentLayer.setUrl(""); 
+
       var slug = d3.select("#metric-picker").node().value + "_" + d3.select("#model-picker").node().value;
       d3.json("https://ecoengine.berkeley.edu/api/series/" + slug + "/rasters/?page_size=1000", function(error, resp) {
         resp.results.forEach(function(d) {
