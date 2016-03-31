@@ -230,12 +230,14 @@ ECO.rasterPicker = {
     {
       "name": "precipitation yearly average",
       "slug": "pr_yr_ens-avg_amon",
-      "nex": true
+      "nex": true,
+      "palette": "YlGnBu",
     },
     {
       "name": "maximum temperature ensemble average",
       "slug": "tasmax_ens-avg_amon",
-      "nex": true
+      "nex": true,
+      "palette": "YlOrRd",
     },
     {
       "name": "maximum temperature yearly maximum allmodels",
@@ -252,17 +254,23 @@ ECO.rasterPicker = {
     {
       "name": "maximum temperature yearly average",
       "slug": "tasmax_yr_ens-avg_amon",
-      "nex": true
+      "nex": true,
+      "palette": "YlOrRd",
+
     },
     {
       "name": "minimum temperature yearly average",
       "slug": "tasmin_yr_ens-avg_amon",
-      "nex": true
+      "nex": true,
+      "palette": "YlOrRd",
+
     },
     {
       "name": "minimum temperature ensemble average",
       "slug": "tasmin_ens-avg_amon",
-      "nex": true
+      "nex": true,
+      "palette": "YlOrRd",
+
     }
   ]
 };

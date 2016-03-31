@@ -424,6 +424,12 @@
       return "nex" in d && !!d["nex"];     // is this a NASA NEX raster?
     });
 
+    var active_raster_color = "PuRd";
+    var raster_color_lookup = {};
+    nex_datasets.forEach(function(d) {
+      raster_color_lookup[d.slug] = "palette" in d ? d.palette : "YlGnBu";
+    });
+
     // metric picker 
     d3.select("#metric-picker")
       .on("change", function() {
@@ -452,7 +458,7 @@
       .on("change", function(d) {
         if (this.value == "Select raster layer") return;
         d3.select("#color-ramp-legend").style("display", "block");
-        var colorRamp = ColorRamp("#color-ramp", environmentLayer);
+        var colorRamp = ColorRamp("#color-ramp", environmentLayer, active_raster_color);
         colorRamp.raster(rasterLookup[this.value]);
         colorRamp.updateLayer();
         d3.selectAll(".raster-info").style("display", "inline-block");
@@ -471,6 +477,8 @@
       environmentLayer.setUrl(""); 
 
       var slug = d3.select("#metric-picker").node().value + "_" + d3.select("#model-picker").node().value;
+      active_raster_color = raster_color_lookup[d3.select("#metric-picker").node().value];
+
       d3.json("https://ecoengine.berkeley.edu/api/series/" + slug + "/rasters/?page_size=1000", function(error, resp) {
         resp.results.forEach(function(d) {
           rasterLookup[d.tile_template] = d;

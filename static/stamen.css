@@ -475,11 +475,14 @@
   border-radius: 6px;
   display: inline-block;
   cursor: pointer;
+  background: rgba(25,25,25,0.07);
+  margin-right: 2px;
 }
 
 .stamen-ecoengine #raster-close:hover {
   color: #fff;
   background: #d94402;
+  background-opacity: 1;
 }
 
 .stamen-ecoengine #raster-info {
@@ -492,11 +495,13 @@
   border-radius: 6px;
   display: inline-block;
   cursor: pointer;
+  background: rgba(25,25,25,0.07);
 }
 
 .stamen-ecoengine #raster-info:hover {
   color: #fff;
   background: #777;
+  background-opacity: 1;
 }
 
 .stamen-ecoengine .leaflet-marker-icon.eco-basic-icon {

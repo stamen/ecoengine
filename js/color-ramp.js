@@ -1,5 +1,5 @@
-function ColorRamp(selector_id, layer) {
-  var selected_color = "YlGnBu";
+function ColorRamp(selector_id, layer, default_color) {
+  var selected_color = default_color || "YlGnBu";
   var raster = "https://ecoengine.berkeley.edu/api/rstore/pr_yr_ens-avg_amon_rcp45-2050-01-01/";
 
   var colormap = {
@@ -268,6 +268,7 @@ function ColorRamp(selector_id, layer) {
     .data(d3.keys(colormap))
     .enter().append("option")
     .attr("value", String)
+    .attr("selected", function(d) { return d == selected_color ? "selected" : null; })
     .text(String);
 
   function updateLayer() {
