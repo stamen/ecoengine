@@ -21569,8 +21569,8 @@ L.Map.include({
 
 })(window, document);
 
-function ColorRamp(selector_id, layer) {
-  var selected_color = "YlGnBu";
+function ColorRamp(selector_id, layer, default_color) {
+  var selected_color = default_color || "YlGnBu";
   var raster = "https://ecoengine.berkeley.edu/api/rstore/pr_yr_ens-avg_amon_rcp45-2050-01-01/";
 
   var colormap = {
@@ -21839,6 +21839,7 @@ function ColorRamp(selector_id, layer) {
     .data(d3.keys(colormap))
     .enter().append("option")
     .attr("value", String)
+    .attr("selected", function(d) { return d == selected_color ? "selected" : null; })
     .text(String);
 
   function updateLayer() {
@@ -22134,12 +22135,14 @@ ECO.rasterPicker = {
     {
       "name": "precipitation yearly average",
       "slug": "pr_yr_ens-avg_amon",
-      "nex": true
+      "nex": true,
+      "palette": "YlGnBu",
     },
     {
       "name": "maximum temperature ensemble average",
       "slug": "tasmax_ens-avg_amon",
-      "nex": true
+      "nex": true,
+      "palette": "YlOrRd",
     },
     {
       "name": "maximum temperature yearly maximum allmodels",
@@ -22156,17 +22159,23 @@ ECO.rasterPicker = {
     {
       "name": "maximum temperature yearly average",
       "slug": "tasmax_yr_ens-avg_amon",
-      "nex": true
+      "nex": true,
+      "palette": "YlOrRd",
+
     },
     {
       "name": "minimum temperature yearly average",
       "slug": "tasmin_yr_ens-avg_amon",
-      "nex": true
+      "nex": true,
+      "palette": "YlOrRd",
+
     },
     {
       "name": "minimum temperature ensemble average",
       "slug": "tasmin_ens-avg_amon",
-      "nex": true
+      "nex": true,
+      "palette": "YlOrRd",
+
     }
   ]
 };
@@ -22799,6 +22808,12 @@ function parametersFromString(paramString) {
       return "nex" in d && !!d["nex"];     // is this a NASA NEX raster?
     });
 
+    var active_raster_color = "PuRd";
+    var raster_color_lookup = {};
+    nex_datasets.forEach(function(d) {
+      raster_color_lookup[d.slug] = "palette" in d ? d.palette : "YlGnBu";
+    });
+
     // metric picker 
     d3.select("#metric-picker")
       .on("change", function() {
@@ -22827,7 +22842,7 @@ function parametersFromString(paramString) {
       .on("change", function(d) {
         if (this.value == "Select raster layer") return;
         d3.select("#color-ramp-legend").style("display", "block");
-        var colorRamp = ColorRamp("#color-ramp", environmentLayer);
+        var colorRamp = ColorRamp("#color-ramp", environmentLayer, active_raster_color);
         colorRamp.raster(rasterLookup[this.value]);
         colorRamp.updateLayer();
         d3.selectAll(".raster-info").style("display", "inline-block");
@@ -22846,6 +22861,8 @@ function parametersFromString(paramString) {
       environmentLayer.setUrl(""); 
 
       var slug = d3.select("#metric-picker").node().value + "_" + d3.select("#model-picker").node().value;
+      active_raster_color = raster_color_lookup[d3.select("#metric-picker").node().value];
+
       d3.json("https://ecoengine.berkeley.edu/api/series/" + slug + "/rasters/?page_size=1000", function(error, resp) {
         resp.results.forEach(function(d) {
           rasterLookup[d.tile_template] = d;
