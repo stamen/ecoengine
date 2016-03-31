@@ -455,6 +455,16 @@
         var colorRamp = ColorRamp("#color-ramp", environmentLayer);
         colorRamp.raster(rasterLookup[this.value]);
         colorRamp.updateLayer();
+        d3.selectAll(".raster-info").style("display", "inline-block");
+        d3.select("#raster-info").attr("href", "https://ecoengine.berkeley.edu/api/rstore/" + rasterLookup[this.value].slug);
+      });
+
+    d3.select("#raster-close")
+      .on("click", function() {
+        d3.select("#color-ramp-legend").style("display", "none");
+        d3.selectAll(".raster-info").style("display", "none");
+        environmentLayer.setUrl(""); 
+        populateRasterPicker();
       });
 
     populateRasterPicker();
