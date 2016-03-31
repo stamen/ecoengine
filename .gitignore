@@ -38,3 +38,5 @@ public/*.html
 .env.json
 
 *.swp
+
+build/
