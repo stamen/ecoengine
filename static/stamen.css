@@ -95,6 +95,15 @@
   text-decoration: underline;
 }
 
+.stamen-ecoengine .header .grey-button {
+  background: #CDD2D4;
+  border: 1px solid: #bbb;
+  border-radius: 6px;
+  display: inline-block;
+  padding: 0 6px;
+  margin: 0 4px;
+}
+
 .stamen-ecoengine h2.app-title {
   margin: 0 12px 0 0;
   display: inline-block;
