@@ -385,6 +385,7 @@
   text-align: center;
   z-index: 100;
   width: 190px;
+  height: 464px;
   background: rgba(255,255,255,0.55);
   border-radius: 2px;
 }
@@ -454,6 +455,39 @@
   background: #00B5E2;
   background: rgba(49,126,172,1);
   border: 1px solid #fff;
+}
+
+.stamen-ecoengine #raster-close {
+  width: 19px;
+  height: 19px;
+  padding: 1px;
+  color: #d94402;
+  font-weight: bold;
+  border-radius: 6px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.stamen-ecoengine #raster-close:hover {
+  color: #fff;
+  background: #d94402;
+}
+
+.stamen-ecoengine #raster-info {
+  text-decoration: none;
+  width: 19px;
+  height: 19px;
+  padding: 1px;
+  color: #777;
+  font-weight: bold;
+  border-radius: 6px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.stamen-ecoengine #raster-info:hover {
+  color: #fff;
+  background: #777;
 }
 
 .stamen-ecoengine .leaflet-marker-icon.eco-basic-icon {
